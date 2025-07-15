@@ -1,0 +1,161 @@
+﻿using _MGMod.types.models.Custom;
+using _MGMod.types.models.Paths;
+using _MGMod.types.server;
+using _MGMod.types.utils;
+using SPTarkov.DI.Annotations;
+using SPTarkov.Server.Core.DI;
+using SPTarkov.Server.Core.Models.Utils;
+using SPTarkov.Server.Core.Services.Mod;
+
+namespace _MGMod.types.services;
+
+[Injectable(TypePriority = OnLoadOrder.PostDBModLoader + 1)]
+public class ConfigSettingServices
+{
+    private ISptLogger<ConfigSettingServices> logger;
+    private ConfigSettingType? configJson;
+    private MGUtils mgUtils;
+
+    private BotsServer botsServer;
+    private ConfigsServer configsServer;
+    private GlobalsServer globalsServer;
+    private HideoutServer hideoutServer;
+    private LocationsServer locationsServer;
+    private TemplatesServer templatesServer;
+    private TradersServer tradersServer;
+
+    private CustomItemServices customItemServices;
+
+    public ConfigSettingServices(
+        ISptLogger<ConfigSettingServices> _logger,
+        MGUtils _mgUtils,
+
+        BotsServer _botsServer,
+        ConfigsServer _configsServer,
+        GlobalsServer _globalsServer,
+        HideoutServer _hideoutServer,
+        LocationsServer _locationsServer,
+        TemplatesServer _templatesServer,
+        TradersServer _tradersServer,
+
+        CustomItemServices _customItemServices
+        )
+    {
+        logger = _logger;
+        mgUtils = _mgUtils;
+
+        botsServer = _botsServer;
+        configsServer = _configsServer;
+        globalsServer = _globalsServer;
+        hideoutServer = _hideoutServer;
+        locationsServer = _locationsServer;
+        templatesServer = _templatesServer;
+        tradersServer = _tradersServer;
+
+        customItemServices = _customItemServices;
+
+        configJson = mgUtils.GetJsonDataFromFile<ConfigSettingType>(Paths.ConfigJson);
+    }
+
+    public void ModSetting()
+    {
+        customItemServices.start();
+        botsServer.MGmodBots(GetBotSetting());
+        configsServer.MGmodConfigs(GetConfigSetting());
+        globalsServer.MGmodGlobals(GetGlobalsSetting());
+        hideoutServer.MGmodHideout(GetHideoutSetting());
+        locationsServer.MGmodLocations(GetLocationsSetting());
+        templatesServer.MGmodTemplates(GetTemplatesSetting());
+        tradersServer.MGmodTraders(GetTradersSetting());
+    }
+
+    public MGModConfig_Bot? GetBotSetting()
+    { 
+        if(configJson != null)
+        {
+            return configJson.Bot;
+        }
+        else
+        {
+            return null;
+        }
+    }
+
+    public MGModConfig_Config? GetConfigSetting()
+    {
+        if (configJson != null)
+        {
+            return configJson.Config;
+        }
+        else
+        {
+            return null;
+        }
+    }
+    public MGModConfig_Globals? GetGlobalsSetting()
+    {
+        if (configJson != null)
+        {
+            return configJson.Globals;
+        }
+        else
+        {
+            return null;
+        }
+    }
+    public MGModConfig_Hideout? GetHideoutSetting()
+    {
+        if (configJson != null)
+        {
+            return configJson.Hideout;
+        }
+        else
+        {
+            return null;
+        }
+    }
+    public MGModConfig_Locations? GetLocationsSetting()
+    {
+        if (configJson != null)
+        {
+            return configJson.Locations;
+        }
+        else
+        {
+            return null;
+        }
+    }
+    public MGModConfig_Templates? GetTemplatesSetting()
+    {
+        if (configJson != null)
+        {
+            return configJson.Templates;
+        }
+        else
+        {
+            return null;
+        }
+    }
+    public MGModConfig_Traders? GetTradersSetting()
+    {
+        if (configJson != null)
+        {
+            return configJson.Traders;
+        }
+        else
+        {
+            return null;
+        }
+    }
+    public MGModConfig_MGCustom? GetMGCustomSetting()
+    {
+        if (configJson != null)
+        {
+            return configJson.MGCustom;
+        }
+        else
+        {
+            return null;
+        }
+    }
+}

@@ -1,0 +1,50 @@
+{
+  "newId": "4d337cb683ae7c1b9e184c3c",
+  "itemTplToClone": "5b7c710788a4506dec015957",
+  "overrideProperties": {
+    "Height": 3,
+    "Width": 3,
+    "Grids": [
+      {
+        "_id": "5b6d9ce188a4501afc1b2b27",
+        "_name": "main",
+        "_parent": "5b6d9ce188a4501afc1b2b25",
+        "_props": {
+          "cellsH": 15,
+          "cellsV": 15,
+          "filters": [
+            {
+              "ExcludedFilter": [],
+                "Filter": [
+                    "5447b5cf4bdc2d65278b4567",
+                    "5447b6254bdc2dc3278b4568",
+                    "5447bee84bdc2dc3278b4569",
+                    "5447b5fc4bdc2d87278b4567",
+                    "5447b6094bdc2dc3278b4567",
+					"5447b5f14bdc2d61278b4567",
+					"5447bedf4bdc2d87278b4568",
+					"5447b5e04bdc2d62278b4567",
+					"5447bed64bdc2d97278b4568",
+					"5447b6194bdc2d67278b4567"
+                ]
+            }
+          ],
+          "isSortingTable": false,
+          "maxCount": 0,
+          "maxWeight": 0,
+          "minCount": 0
+        },
+        "_proto": "55d329c24bdc2d892f8b4567"
+      }
+    ],
+    "ExaminedByDefault": true
+  },
+  "fleaPriceRoubles": 1000,
+  "locales": {
+    "ch": {
+        "name": "武器箱",
+        "shortName": "武器箱",
+        "description": "一款来自*****的超大武器箱"
+    }
+  }
+}

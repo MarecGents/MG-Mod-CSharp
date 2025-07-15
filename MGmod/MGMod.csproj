@@ -1,0 +1,32 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+	<PropertyGroup>
+		<TargetFramework>net9.0</TargetFramework>
+		<RootNamespace>_MGMod</RootNamespace>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+		<OutputType>Library</OutputType>
+		<Version>8.0.0</Version>
+		<!-- The two lines below will set the output path for the binaries -->
+		<OutputPath>bin\$(Configuration)\$(ProjectName)\$(AssemblyName)-$(Version)\</OutputPath>
+		<AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+	</PropertyGroup>
+
+	<ItemGroup>
+	  <Compile Remove="db\新文件夹\**" />
+	  <Content Remove="db\新文件夹\**" />
+	  <EmbeddedResource Remove="db\新文件夹\**" />
+	  <None Remove="db\新文件夹\**" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="SPTarkov.Common" Version="4.0.0-prerelease14" />
+		<PackageReference Include="SPTarkov.DI" Version="4.0.0-prerelease14" />
+		<PackageReference Include="SPTarkov.Server.Core" Version="4.0.0-prerelease14" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="bundles\" />
+	</ItemGroup>
+
+</Project>

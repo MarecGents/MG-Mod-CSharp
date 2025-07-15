@@ -1,0 +1,436 @@
+{
+    "Bot": {
+        "AIHealth": 1
+    },
+    "Config": {
+        "AirdropType": "default",
+        "AISpawnNumber": -4,
+        "RaidDefault": {
+            "enable": true,
+            "aiAmount": "AsOnline",
+            "aiDifficulty": "AsOnline",
+            "bossEnabled": true,
+            "scavWars": false,
+            "taggedAndCursed": false,
+            "enablePve": true,
+            "randomWeather": false,
+            "randomTime": false
+        },
+        "ReturnChance": {
+            "enable": false,
+            "value": 100
+        },
+        "BuyFoundInRaid": true,
+        "LootMultiple": {
+            "Container": 4,
+            "Ground": 4
+        },
+        "RandomContainer": false,
+        "USECRate": {
+            "enable": false,
+            "value": 80
+        },
+        "Sell100": true,
+        "SellFast": true,
+        "SellOptimize": true,
+        "SellNew": false,
+        "NoBlackList": false,
+        "Buffs": {
+            "BuffsWeapon": true,
+            "BuffsArmor": true
+        },
+        "UpdateTime": {
+            "enable": false,
+            "value": 600
+        },
+        "WeatherSettings": {
+            "mode": "mode1",
+            "clouds": {
+                "type": "mode1",
+                "values": [
+                    -1,
+                    -0.8,
+                    -0.5,
+                    0.1,
+                    0,
+                    0.15,
+                    0.4,
+                    1
+                ],
+                "weights": [
+                    100,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                ]
+            },
+            "windSpeed": {
+                "type": "mode1",
+                "values": [
+                    0,
+                    1,
+                    2,
+                    3,
+                    4
+                ],
+                "weights": [
+                    10,
+                    0,
+                    0,
+                    0,
+                    0
+                ]
+            },
+            "rain": {
+                "type": "mode1",
+                "values": [
+                    1,
+                    2,
+                    3,
+                    4,
+                    5
+                ],
+                "weights": [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                ]
+            },
+            "rainIntensity": {
+                "min": 0,
+                "max": 0
+            },
+            "fog": {
+                "type": "mode1",
+                "values": [
+                    0.0013,
+                    0.0018,
+                    0.002,
+                    0.004,
+                    0.006
+                ],
+                "weights": [
+                    35,
+                    0,
+                    0,
+                    0,
+                    0
+                ]
+            }
+        }
+    },
+    "Globals": {
+        "EscapeNoTimeLimit": true,
+        "FleaMarketOpenLevel": true,
+        "TakeLimit": true,
+        "ScavOptimize": true,
+        "LowTaxRate": true,
+        "SellNumber": 5,
+        "LoadSpeed": {
+            "mode": "mode1",
+            "BaseLoadTime": 0.4,
+            "BaseUnloadTime": 0.2
+        },
+        "SuperHero": false,
+        "LootMultiplier": {
+            "Value": 20,
+            "Global": 4
+        },
+        "ArmorRepairPerfect": true,
+        "Buffs": {
+            "BuffsWeapon": true,
+            "BuffsArmor": true
+        },
+        "ExpOptimize": true
+    },
+    "Hideout": {
+        "BuildTime": {
+            "enable": false,
+            "value": 30
+        },
+        "ProductTime": {
+            "enable": false,
+            "value": 30
+        },
+        "ScavCaseTime": {
+            "enable": false,
+            "value": 30
+        }
+    },
+    "Locations": {
+        "RaidTime": {
+            "enable": false,
+            "value": 90
+        },
+        "BOSSSpwanChance": {
+            "enable": false,
+            "value": 50
+        },
+        "Pass100": true,
+        "Escape100": true,
+        "MapInsurance": {
+            "Bigmap": true,
+            "Factory4Day": true,
+            "Factory4Night": true,
+            "Interchange": true,
+            "Laboratory": true,
+            "Lighthouse": true,
+            "RezervBase": true,
+            "Sandbox": true,
+            "SandboxHigh": true,
+            "Shoreline": true,
+            "TarkovStreets": true,
+            "Woods": true
+        }
+    },
+    "Templates": {
+        "Examined": true,
+        "WeaponFilter": true,
+        "AmmoStack": 2,
+        "AmmoInfo": false,
+        "ContainerExpand": {
+            "67600929bd0a0549d70993f6": {
+                "enable": false,
+                "Name": "Ballistic plate case",
+                "cellsH": 10,
+                "cellsV": 10,
+                "Weight": false,
+                "Filter": false
+            },
+            "62a09d3bcf4a99369e262447": {
+                "enable": false,
+                "Name": "Gingy钥匙串",
+                "cellsH": 10,
+                "cellsV": 9,
+                "Weight": false,
+                "Filter": false
+            },
+            "5c093db286f7740a1b2617e3": {
+                "enable": false,
+                "Name": "Mr. Holodilnick保温箱",
+                "cellsH": 10,
+                "cellsV": 10,
+                "Weight": false,
+                "Filter": false
+            },
+            "5b6d9ce188a4501afc1b2b25": {
+                "enable": false,
+                "Name": "THICC武器箱",
+                "cellsH": 10,
+                "cellsV": 10,
+                "Weight": false,
+                "Filter": false
+            },
+            "5c0a840b86f7742ffa4f2482": {
+                "enable": false,
+                "Name": "THICC物品箱",
+                "cellsH": 10,
+                "cellsV": 10,
+                "Weight": false,
+                "Filter": false
+            },
+            "60b0f6c058e0b0481a09ad11": {
+                "enable": false,
+                "Name": "WZ钱包",
+                "cellsH": 10,
+                "cellsV": 10,
+                "Weight": false,
+                "Filter": false
+            },
+            "66bc98a01a47be227a5e956e": {
+                "enable": false,
+                "Name": "主播物品箱",
+                "cellsH": 10,
+                "cellsV": 10,
+                "Weight": false,
+                "Filter": false
+            },
+            "5aafbcd986f7745e590fff23": {
+                "enable": false,
+                "Name": "医疗物品箱",
+                "cellsH": 10,
+                "cellsV": 10,
+                "Weight": false,
+                "Filter": false
+            },
+            "5d235bb686f77443f4331278": {
+                "enable": false,
+                "Name": "小型SICC包",
+                "cellsH": 10,
+                "cellsV": 10,
+                "Weight": false,
+                "Filter": false
+            },
+            "5b7c710788a4506dec015957": {
+                "enable": false,
+                "Name": "幸运Scav垃圾箱",
+                "cellsH": 10,
+                "cellsV": 10,
+                "Weight": false,
+                "Filter": false
+            },
+            "5c127c4486f7745625356c13": {
+                "enable": false,
+                "Name": "弹匣箱",
+                "cellsH": 10,
+                "cellsV": 10,
+                "Weight": false,
+                "Filter": false
+            },
+            "5aafbde786f774389d0cbc0f": {
+                "enable": false,
+                "Name": "弹药箱",
+                "cellsH": 10,
+                "cellsV": 10,
+                "Weight": false,
+                "Filter": false
+            },
+            "567143bf4bdc2d1a0f8b4567": {
+                "enable": false,
+                "Name": "手枪收纳箱",
+                "cellsH": 10,
+                "cellsV": 10,
+                "Weight": false,
+                "Filter": false
+            },
+            "5e2af55f86f7746d4159f07c": {
+                "enable": false,
+                "Name": "手榴弹箱",
+                "cellsH": 14,
+                "cellsV": 1,
+                "Weight": false,
+                "Filter": false
+            },
+            "590c60fc86f77412b13fddcf": {
+                "enable": false,
+                "Name": "文件包",
+                "cellsH": 10,
+                "cellsV": 10,
+                "Weight": false,
+                "Filter": false
+            },
+            "59fb023c86f7746d0d4b423c": {
+                "enable": false,
+                "Name": "武器箱",
+                "cellsH": 10,
+                "cellsV": 10,
+                "Weight": false,
+                "Filter": false
+            },
+            "619cbf7d23893217ec30b689": {
+                "enable": false,
+                "Name": "注射器收纳盒",
+                "cellsH": 10,
+                "cellsV": 10,
+                "Weight": false,
+                "Filter": false
+            },
+            "59fb042886f7746c5005a7b2": {
+                "enable": false,
+                "Name": "物品箱",
+                "cellsH": 10,
+                "cellsV": 10,
+                "Weight": false,
+                "Filter": false
+            },
+            "5c093e3486f77430cb02e593": {
+                "enable": false,
+                "Name": "狗牌包",
+                "cellsH": 10,
+                "cellsV": 10,
+                "Weight": false,
+                "Filter": false
+            },
+            "5783c43d2459774bbe137486": {
+                "enable": false,
+                "Name": "简易钱包",
+                "cellsH": 10,
+                "cellsV": 10,
+                "Weight": false,
+                "Filter": false
+            },
+            "619cbf9e0a7c3a1a2731940a": {
+                "enable": false,
+                "Name": "钥匙卡收纳盒",
+                "cellsH": 10,
+                "cellsV": 10,
+                "Weight": false,
+                "Filter": false
+            },
+            "59fafd4b86f7745ca07e1232": {
+                "enable": false,
+                "Name": "钥匙收纳器",
+                "cellsH": 10,
+                "cellsV": 10,
+                "Weight": false,
+                "Filter": false
+            },
+            "59fb016586f7746d0d4b423a": {
+                "enable": false,
+                "Name": "钱箱",
+                "cellsH": 10,
+                "cellsV": 10,
+                "Weight": false,
+                "Filter": false
+            }
+        },
+        "Safes": {
+            "SizeExpand": false,
+            "Filter": false,
+            "NoWeight": false
+        },
+        "MoneyStack": 10,
+        "Backpack": {
+            "Filter": true,
+            "SmallSize": false,
+            "NoBuff": false,
+            "NoWeight": false
+        },
+        "Armor": {
+            "Durability": 1,
+            "Filter": false,
+            "NoBuff": false,
+            "NoWeight": false
+        },
+        "Helmet": {
+            "Durability": 1,
+            "Filter": false,
+            "NoBuff": false,
+            "NoWeight": false
+        },
+        "KeysDurability": false,
+        "MedcDurability": 1,
+        "WeaponNoLost": true,
+        "WeaponRepairPerfect": true,
+        "MagazineCapacity": 1,
+        "T7ThermalImaging": true,
+        "ResetFree": true,
+        "QuestOptimize": false
+    },
+    "Traders": {
+        "InsuranceTime": {
+            "enable": true,
+            "value": 0
+        },
+        "InsuranceCost": {
+            "enable": true,
+            "value": 0.01
+        }
+    },
+    "MGCustom": {
+        "CustomTrader": true,
+        "CustomItem": true,
+        "CustomAssort": true,
+        "CustomProfile": true,
+        "AmmoInfo": true,
+        "KeyClassfy": true,
+        "SyncFlea": true
+    },
+    "saveTime": "2025-04-24 12:40:11"
+}
