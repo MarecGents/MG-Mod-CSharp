@@ -4,6 +4,7 @@ using _MGMod.types.server;
 using _MGMod.types.utils;
 using SPTarkov.DI.Annotations;
 using SPTarkov.Server.Core.DI;
+using SPTarkov.Server.Core.Models.Eft.Common;
 using SPTarkov.Server.Core.Models.Utils;
 using SPTarkov.Server.Core.Services.Mod;
 
@@ -59,7 +60,9 @@ public class ConfigSettingServices
 
     public void ModSetting()
     {
-        customItemServices.start();
+        var CustomSetting = GetMGCustomSetting();
+        if (CustomSetting.CustomTrader) { }
+        if (CustomSetting.CustomItem) customItemServices.start();
         botsServer.MGmodBots(GetBotSetting());
         configsServer.MGmodConfigs(GetConfigSetting());
         globalsServer.MGmodGlobals(GetGlobalsSetting());

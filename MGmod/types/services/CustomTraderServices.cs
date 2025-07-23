@@ -5,4 +5,10 @@ namespace _MGMod.types.services;
 [Injectable(TypePriority = OnLoadOrder.PostDBModLoader + 1)]
 public class CustomTraderServices
 {
+    public void start()
+    {
+
+    }
+
+
 }

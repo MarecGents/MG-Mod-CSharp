@@ -57,5 +57,5 @@ public class CustomTraderItems
 {
     public TemplateItem item { get; set; }
     public string origin;
-    public string[]? Type { get; set; }
+    public List<string>? Type { get; set; }
 }

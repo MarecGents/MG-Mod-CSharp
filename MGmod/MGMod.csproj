@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
 	<PropertyGroup>
 		<TargetFramework>net9.0</TargetFramework>
@@ -13,20 +13,23 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-	  <Compile Remove="db\新文件夹\**" />
-	  <Content Remove="db\新文件夹\**" />
-	  <EmbeddedResource Remove="db\新文件夹\**" />
-	  <None Remove="db\新文件夹\**" />
+	  <Content Include="images\**">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </Content>
 	</ItemGroup>
-
+	
 	<ItemGroup>
 		<PackageReference Include="SPTarkov.Common" Version="4.0.0-prerelease14" />
 		<PackageReference Include="SPTarkov.DI" Version="4.0.0-prerelease14" />
 		<PackageReference Include="SPTarkov.Server.Core" Version="4.0.0-prerelease14" />
 	</ItemGroup>
 
+
+
 	<ItemGroup>
 	  <Folder Include="bundles\" />
 	</ItemGroup>
-
+	
+	
+	
 </Project>

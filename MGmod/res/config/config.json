@@ -17,7 +17,7 @@
             "randomTime": false
         },
         "ReturnChance": {
-            "enable": false,
+            "enable": true,
             "value": 100
         },
         "BuyFoundInRaid": true,
@@ -34,14 +34,14 @@
         "SellFast": true,
         "SellOptimize": true,
         "SellNew": false,
-        "NoBlackList": false,
+        "NoBlackList": true,
         "Buffs": {
             "BuffsWeapon": true,
             "BuffsArmor": true
         },
         "UpdateTime": {
-            "enable": false,
-            "value": 600
+            "enable": true,
+            "value": 300
         },
         "WeatherSettings": {
             "mode": "mode1",
@@ -151,15 +151,15 @@
     },
     "Hideout": {
         "BuildTime": {
-            "enable": false,
+            "enable": true,
             "value": 30
         },
         "ProductTime": {
-            "enable": false,
+            "enable": true,
             "value": 30
         },
         "ScavCaseTime": {
-            "enable": false,
+            "enable": true,
             "value": 30
         }
     },
@@ -169,8 +169,8 @@
             "value": 90
         },
         "BOSSSpwanChance": {
-            "enable": false,
-            "value": 50
+            "enable": true,
+            "value": 100
         },
         "Pass100": true,
         "Escape100": true,
@@ -193,7 +193,7 @@
         "Examined": true,
         "WeaponFilter": true,
         "AmmoStack": 2,
-        "AmmoInfo": false,
+        "AmmoInfo": true,
         "ContainerExpand": {
             "67600929bd0a0549d70993f6": {
                 "enable": false,
@@ -393,13 +393,13 @@
             "NoWeight": false
         },
         "Armor": {
-            "Durability": 1,
+            "Durability": 2,
             "Filter": false,
             "NoBuff": false,
             "NoWeight": false
         },
         "Helmet": {
-            "Durability": 1,
+            "Durability": 2,
             "Filter": false,
             "NoBuff": false,
             "NoWeight": false
@@ -432,5 +432,5 @@
         "KeyClassfy": true,
         "SyncFlea": true
     },
-    "saveTime": "2025-04-24 12:40:11"
+    "saveTime": "2025-07-15 12:15:02"
 }
