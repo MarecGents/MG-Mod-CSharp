@@ -74,6 +74,8 @@ public static class Paths
 
     public static readonly string AssortItemPath = "./db/assort/";
 
+    public static readonly string Traders = "./traders";
+
 }
 
 public class PathType

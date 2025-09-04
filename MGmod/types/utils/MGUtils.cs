@@ -132,6 +132,17 @@ public class MGUtils(
         }
         return new List<string>();
     }
+
+    public string[] GetDirectories(string relativePath = "")
+    {
+        var fullPath = System.IO.Path.Combine(modPath, relativePath);
+        if (Directory.Exists(fullPath))
+        {
+            var directories = fileUtil.GetDirectories(fullPath);
+            return directories;
+        }
+        return Array.Empty<string>();
+    }
     public bool FileExists(string relativeFilePath)
     {
         return fileUtil.FileExists(System.IO.Path.Combine(modPath, relativeFilePath));
