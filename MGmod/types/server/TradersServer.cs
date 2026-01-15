@@ -2,6 +2,7 @@
 using _MGMod.types.models.EFT.traders;
 using SPTarkov.DI.Annotations;
 using SPTarkov.Server.Core.DI;
+using SPTarkov.Server.Core.Models.Common;
 using SPTarkov.Server.Core.Models.Eft.Common.Tables;
 using SPTarkov.Server.Core.Services;
 
@@ -12,13 +13,13 @@ public class TradersServer(
     DatabaseService databaseService
     )
 {
-    private Dictionary<string, Trader> Traders => databaseService.GetTraders();
+    private Dictionary<MongoId, Trader> Traders => databaseService.GetTraders();
     public void AddAssortsToTrader(CustomItemAssorts assorts)
     {
         if (!Traders.ContainsKey(assorts.traderId))
         {
-            assorts.traderId = SPTarkov.Server.Core.Models.Enums.Traders.THERAPIST; // 默认是Prapor
-        }
+            assorts.traderId = SPTarkov.Server.Core.Models.Enums.Traders.THERAPIST; // 默认是Therapist
+		}
         var TraderAssort = Traders[assorts.traderId].Assort;
         TraderAssort.Items.AddRange(assorts.assort);
         var mainAssort = assorts.assort.Find(x => (x.ParentId == "hideout" && x.SlotId == "hideout"));

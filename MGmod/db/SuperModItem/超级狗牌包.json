@@ -94,11 +94,9 @@
         "_type": "Item"
     },
     "handbook": {
-        "Id": "狗牌包",
-        "ParentId": "5795f317245977243854e041",
+        "Id": "8ef5e317245977243854e041",
+        "ParentId": "5b5f6fa186f77409407a7eb7",
         "Price": 1
     },
-    "assort": [
-
-    ]
+    "assort": []
 }

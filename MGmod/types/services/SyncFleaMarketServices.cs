@@ -114,8 +114,9 @@ public class SyncFleaMarketServices
     private void LoadPrice()
     { 
         if (priceJson == null) return;
-        databaseService.GetTemplates().Prices = priceJson.prices;
-        Log($"已同步至日期[{priceJson.date[0]}年{priceJson.date[1]}月{priceJson.date[2]}日]", LogTextColor.Cyan);
+        var Prices = databaseService.GetTemplates().Prices;
+        Prices = priceJson.prices;
+		Log($"已同步至日期[{priceJson.date[0]}年{priceJson.date[1]}月{priceJson.date[2]}日]", LogTextColor.Cyan);
     }
 
     private void Log(string data, LogTextColor textColor)

@@ -26,8 +26,8 @@ public class BotsServer(
         {
             if( string.IsNullOrEmpty(botType) || key == botType)
             {
-                var bodyPart = Bots.Types[key].BotHealth.BodyParts[0];
-                bodyPart.Chest.Max *= rate;
+                var bodyPart = Bots.Types[key].BotHealth.BodyParts.ElementAtOrDefault(0);
+				bodyPart.Chest.Max *= rate;
                 bodyPart.Chest.Min *= rate;
                 bodyPart.Head.Max *= rate;
                 bodyPart.Head.Min *= rate;

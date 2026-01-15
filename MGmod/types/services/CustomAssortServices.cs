@@ -3,7 +3,9 @@ using _MGMod.types.models.EFT.traders;
 using _MGMod.types.utils;
 using SPTarkov.DI.Annotations;
 using SPTarkov.Server.Core.DI;
+using SPTarkov.Server.Core.Models.Common;
 using SPTarkov.Server.Core.Models.Eft.Common.Tables;
+using SPTarkov.Server.Core.Models.Enums;
 using SPTarkov.Server.Core.Models.Utils;
 
 namespace _MGMod.types.services;
@@ -18,10 +20,10 @@ public class CustomAssortServices(
         var customAssorts = new CustomItemAssorts()
         {
             assort = new List<Item>(),
-            currency = item.currency,
+            currency = item.currency?? new MongoId(Money.ROUBLES),
             loyal_level_items = item.loyal_level??1,
             price = item.price,
-            traderId = item.toTraderId ?? "8ef5b2eff000000000000000"
+            traderId = item.toTraderId ?? new MongoId("8ef5b2eff000000000000000")
 
         };
         if (item.assort.Count > 0)
@@ -30,11 +32,10 @@ public class CustomAssortServices(
         }
         else
         {
-            var assort = new List<Item>()
+            customAssorts.assort = new List<Item>()
             {
-                new Item()
-                {
-                    Id = "uniqueId",
+                new Item {
+                    Id = new MongoId(),
                     Template = item.items.newId,
                     ParentId = "hideout",
                     SlotId = "hideout",
@@ -45,7 +46,6 @@ public class CustomAssortServices(
                     },
                 },
             };
-            customAssorts.assort = FixAssort(assort);
         }
         return customAssorts;
     }

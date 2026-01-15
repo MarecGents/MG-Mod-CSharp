@@ -12,6 +12,7 @@ using SPTarkov.Server.Core.Models.Utils;
 using SPTarkov.Server.Core.Services;
 using SPTarkov.Server.Core.Utils;
 using SPTarkov.Server.Core.Models.Spt.Mod;
+using Path = System.IO.Path;
 
 namespace _MGMod.types.services;
 [Injectable(TypePriority = OnLoadOrder.PostDBModLoader + 1)]
@@ -41,15 +42,14 @@ public class CustomItemServices(
     {
         var files = mgUtils.GetFiles(Paths.MGItemDB);
         var ItemList = new Dictionary<string, MGItem>();
+        var num = 1;
         foreach (var file in files)
         {
-            //logger.Debug(file);
             if (!fileUtil.FileExists(file)) continue;
             var fileName = fileUtil.StripExtension(file);
             var item = jsonUtil.DeserializeFromFile<MGItem>(file);
             ItemList[fileName] = item ?? new MGItem();
         }
-        //logger.Debug($"{ItemList.Keys.Count()}个");
         return ItemList;
     }
 
@@ -59,11 +59,11 @@ public class CustomItemServices(
         var files = mgUtils.GetFiles(Paths.SuperItemPath);
         foreach(var file in files)
         {
+            
             if (!fileUtil.FileExists(file)) continue;
             var fileName = fileUtil.StripExtension(file);
-            //logger.Error(fileName);
+            logger.Error(file);
             var item = jsonUtil.DeserializeFromFile<SuperItem>(file);
-            
             List<string> errKey = new();
             foreach(var err in superItemProp)
             {
@@ -101,6 +101,15 @@ public class CustomItemServices(
                 currency = Money.ROUBLES,
                 Buffs = item.Buffs ?? new Dictionary<string, List<Buff>>()
             };
+            var handbookItemParentId = item.handbook.ParentId;
+            if ( handbookItemParentId != String.Empty || handbookItemParentId != null)
+            {
+                mgItem.HandbookId = handbookItemParentId;
+            }
+            else
+            {
+                mgItem.HandbookId = "5b47574386f77428ca22b2f4";
+            }
             string Data = mgUtils.Serialize(mgItem);
             mgUtils.WriteFile(System.IO.Path.Combine(Paths.MGItemDB, $"{fileName}-Super.json"), Data);
             fileUtil.DeleteFile(file);
@@ -149,6 +158,15 @@ public class CustomItemServices(
                 currency = Money.ROUBLES,
                 Buffs = item.Buffs ?? new Dictionary<string, List<Buff>>()
             };
+            var handbookItemParentId = templatesServer.FindHBItemParentId(item.itemTplToClone);
+            if ( handbookItemParentId != "null")
+            {
+                mgItem.HandbookId = handbookItemParentId;
+            }
+            else
+            {
+                mgItem.HandbookId = "5b47574386f77428ca22b2f4";
+            }
             string Data = mgUtils.Serialize(mgItem);
             mgUtils.WriteFile(System.IO.Path.Combine(Paths.MGItemDB, $"{fileName}-Bro.json"), Data);
             fileUtil.DeleteFile(file);
@@ -159,8 +177,10 @@ public class CustomItemServices(
     {
         foreach(var it in ItemList.Keys)
         {
+            
             var item = ItemList[it];
             var resp = DectectMGItemKey(item);
+            
             if (resp.A)
             {
                 logger.LogWithColor($"MG独立物品：{it}.json缺少关键属性：{string.Join(", ", resp.B)}", LogTextColor.Yellow);
@@ -174,7 +194,8 @@ public class CustomItemServices(
             templatesServer.AddMGItemsToDB(item);
             if (item.isSold ?? false)
             {
-                tradersServer.AddAssortsToTrader(customAssortServices.CreateCustomItemAssorts(item));
+                var newAssorts = customAssortServices.CreateCustomItemAssorts(item);
+                tradersServer.AddAssortsToTrader(newAssorts);
             }
             if(item.Buffs?.Keys.Count>0)
             {
@@ -185,8 +206,8 @@ public class CustomItemServices(
 
     public void TransferMGItemsStruct(Dictionary<string, MGItem> ItemList)
     {
-        List<string> keyName = new() { "Buffs", "toTraderId", "isSold", "loyal_level", "assort", "currency" };
-        List<object?> value = new() { new Dictionary<string, Buff> { }, "8ef5b2eff000000000000000", true, 1, new List<Item> { }, Money.ROUBLES };
+        List<string> keyName = new() { "Buffs", "toTraderId", "isSold", "loyal_level", "assort", "currency", "HandbookId" };
+        List<object?> value = new() { new Dictionary<string, Buff> { }, "8ef5b2eff000000000000000", true, 1, new List<Item> { }, Money.ROUBLES, "5b47574386f77428ca22b2f4" };
         foreach ( var it in ItemList.Keys )
         {
             var item = ItemList[it];

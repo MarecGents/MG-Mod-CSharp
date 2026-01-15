@@ -27,6 +27,7 @@ public class ConfigSettingServices
 
     private CustomItemServices customItemServices;
 
+    private TestServices testServices;
     public ConfigSettingServices(
         ISptLogger<ConfigSettingServices> _logger,
         MGUtils _mgUtils,
@@ -39,7 +40,9 @@ public class ConfigSettingServices
         TemplatesServer _templatesServer,
         TradersServer _tradersServer,
 
-        CustomItemServices _customItemServices
+        CustomItemServices _customItemServices,
+        
+        TestServices _testServices
         )
     {
         logger = _logger;
@@ -55,21 +58,24 @@ public class ConfigSettingServices
 
         customItemServices = _customItemServices;
 
+        testServices = _testServices;
+        
         configJson = mgUtils.GetJsonDataFromFile<ConfigSettingType>(Paths.ConfigJson);
     }
 
     public void ModSetting()
     {
         var CustomSetting = GetMGCustomSetting();
-        if (CustomSetting.CustomTrader) { }
+        // testServices.Initialize();
+        //if (CustomSetting.CustomTrader) { }
         if (CustomSetting.CustomItem) customItemServices.start();
-        botsServer.MGmodBots(GetBotSetting());
-        configsServer.MGmodConfigs(GetConfigSetting());
-        globalsServer.MGmodGlobals(GetGlobalsSetting());
-        hideoutServer.MGmodHideout(GetHideoutSetting());
-        locationsServer.MGmodLocations(GetLocationsSetting());
-        templatesServer.MGmodTemplates(GetTemplatesSetting());
-        tradersServer.MGmodTraders(GetTradersSetting());
+         botsServer.MGmodBots(GetBotSetting());
+         configsServer.MGmodConfigs(GetConfigSetting());
+         globalsServer.MGmodGlobals(GetGlobalsSetting());
+         hideoutServer.MGmodHideout(GetHideoutSetting());
+         locationsServer.MGmodLocations(GetLocationsSetting());
+         templatesServer.MGmodTemplates(GetTemplatesSetting());
+         tradersServer.MGmodTraders(GetTradersSetting());
     }
 
     public MGModConfig_Bot? GetBotSetting()

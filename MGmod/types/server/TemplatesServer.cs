@@ -12,7 +12,6 @@ using SPTarkov.Server.Core.Models.Utils;
 using SPTarkov.Server.Core.Services;
 using SPTarkov.Server.Core.Services.Mod;
 using SPTarkov.Server.Core.Models.Logging;
-using SPTarkov.Server.Core.Models.Eft.Player;
 using SPTarkov.Server.Core.Constants;
 
 namespace _MGMod.types.server;
@@ -42,11 +41,14 @@ public class TemplatesServer(
     }
     public List<string> FindItemParentsIdById(string ItemId)
     {
-        List<string> ParentList = new();
+        List<string> ParentList = new(){};
         string NowId = ItemId;
+        logger.LogWithColor($"Id {NowId}", LogTextColor.Red, LogBackgroundColor.White);
         while (Templates_.Items.Keys.Contains(NowId) && Templates_.Items[NowId].Parent != "null")
         {
+            logger.LogWithColor($"Id {NowId}", LogTextColor.Red, LogBackgroundColor.White);
             string Temp = FindItemParentIdById(NowId);
+            logger.LogWithColor($"Id {Temp}", LogTextColor.Red, LogBackgroundColor.White);
             if (Temp == "null") { break; }
             ParentList.Add(Temp);
             NowId = Temp;
@@ -77,13 +79,13 @@ public class TemplatesServer(
             var Chambers = itemProp.Chambers ?? null;
             var Cartridges = itemProp.Cartridges ?? null;
             var Grids = itemProp.Grids ?? null;
-            if (StackSlots != null && StackSlots.Count > 0)
+            if (StackSlots != null && StackSlots.Count() > 0)
             {
                 foreach (var slot in StackSlots)
                 {
-                    if (slot.Props == null || slot.Props.Filters == null || slot.Props.Filters.Count == 0)
+                    if (slot.Properties == null || slot.Properties.Filters == null || slot.Properties.Filters.Count() == 0)
                         continue;
-                    var filterListObj = slot.Props.Filters[0];
+                    var filterListObj = slot.Properties.Filters.ElementAtOrDefault(0);
                     if (filterListObj == null || filterListObj.Filter == null)
                         continue;
                     var filter = filterListObj.Filter;
@@ -95,13 +97,13 @@ public class TemplatesServer(
                 }
             }
             
-            if (Slots != null && Slots.Count > 0)
+            if (Slots != null && Slots.Count() > 0)
             {
                 foreach (var slot in Slots)
                 {
-                    if (slot.Props == null || slot.Props.Filters == null || slot.Props.Filters.Count == 0)
+                    if (slot.Properties == null || slot.Properties.Filters == null || slot.Properties.Filters.Count() == 0)
                         continue;
-                    var filterListObj = slot.Props.Filters[0];
+                    var filterListObj = slot.Properties.Filters.ElementAtOrDefault(0);
                     if (filterListObj == null || filterListObj.Filter == null)
                         continue;
                     var filter = filterListObj.Filter;
@@ -113,13 +115,13 @@ public class TemplatesServer(
                 }
             }
             
-            if (Chambers != null && Chambers.Count > 0)
+            if (Chambers != null && Chambers.Count() > 0)
             {
                 foreach (var chamber in Chambers)
                 {
-                    if (chamber.Props == null || chamber.Props.Filters == null || chamber.Props.Filters.Count == 0)
+                    if (chamber.Properties == null || chamber.Properties.Filters == null || chamber.Properties.Filters.Count() == 0)
                         continue;
-                    var filterListObj = chamber.Props.Filters[0];   
+                    var filterListObj = chamber.Properties.Filters.ElementAtOrDefault(0);   
                     if (filterListObj == null || filterListObj.Filter == null)
                         continue;
                     var filter = filterListObj.Filter;
@@ -131,13 +133,13 @@ public class TemplatesServer(
                 }
             }
 
-            if (Cartridges != null && Cartridges.Count > 0)
+            if (Cartridges != null && Cartridges.Count() > 0)
             {
                 foreach (var cartridge in Cartridges)
                 {
-                    if (cartridge.Props == null || cartridge.Props.Filters == null || cartridge.Props.Filters.Count == 0)
+                    if (cartridge.Properties == null || cartridge.Properties.Filters == null || cartridge.Properties.Filters.Count() == 0)
                         continue;
-                    var filterListObj = cartridge.Props.Filters[0];
+                    var filterListObj = cartridge.Properties.Filters.ElementAtOrDefault(0);
                     if (filterListObj == null || filterListObj.Filter == null)
                         continue;
                     var filter = filterListObj.Filter;
@@ -149,13 +151,13 @@ public class TemplatesServer(
                 }
             }
 
-            if (Grids != null && Grids.Count > 0)
+            if (Grids != null && Grids.Count() > 0)
             {
                 foreach (var grid in Grids)
                 {
-                    if (grid.Props == null || grid.Props.Filters == null || grid.Props.Filters.Count == 0)
+                    if (grid.Properties == null || grid.Properties.Filters == null || grid.Properties.Filters.Count() == 0)
                         continue;
-                    var filterListObj = grid.Props.Filters[0];
+                    var filterListObj = grid.Properties.Filters.ElementAtOrDefault(0);
                     if (filterListObj == null || filterListObj.Filter == null)
                         continue;
                     var filter = filterListObj.Filter;
@@ -187,6 +189,7 @@ public class TemplatesServer(
             logger.LogWithColor($"MG独立物品id为{item.items.newId}的\"cloneId\"未能在items.json找到，无法添加到游戏中，请检查\"cloneId\"是否正确！", LogTextColor.Yellow);
             return;
         }
+        
         /*
         if (FindHBItemParentId(item.items.cloneId) == "null")
         {
@@ -201,7 +204,7 @@ public class TemplatesServer(
         var newItemDetails = new NewItemFromCloneDetails()
         {
             FleaPriceRoubles = item.price,
-            HandbookParentId = FindHBItemParentId(item.items.cloneId),
+            HandbookParentId = item.HandbookId,
             HandbookPriceRoubles = item.price,
             ItemTplToClone = item.items.cloneId,
             Locales = new Dictionary<string, LocaleDetails>()
@@ -212,11 +215,16 @@ public class TemplatesServer(
             OverrideProperties = item.items._props,
             ParentId = FindItemParentIdById(item.items.cloneId),
         };
-        AddCustomItem(newItemDetails);
+        AddCustomItem(newItemDetails);  //!!!!!
         var filterList = new Dictionary<string, string>()
         { { item.items.newId, item.items.cloneId} };
         AddFilters(filterList);
     }
+    public void AddProfile()
+    {
+
+    }
+
     public void MGmodTemplates(MGModConfig_Templates TemplatesSetting)
     {
         MGmodItems(TemplatesSetting);
@@ -259,11 +267,11 @@ public class TemplatesServer(
                 {
                     if (WeaponFilter.Contains(item.Name))
                     {
-                        item.Props.Filters[0].Filter = ["5422acb9af1c889c16000029"];
+                        item.Properties.Filters.ElementAtOrDefault(0).Filter = ["5422acb9af1c889c16000029"];
                     }
                     else if (item.Name == "Scabbard")
                     {
-                        item.Props.Filters[0].Filter = ["5422acb9af1c889c16000029", "5447e1d04bdc2dff2f8b4567"];
+                        item.Properties.Filters.ElementAtOrDefault(0).Filter = ["5422acb9af1c889c16000029", "5447e1d04bdc2dff2f8b4567"];
                     }
                 }
             }
@@ -314,13 +322,13 @@ public class TemplatesServer(
                 // 容器扩容
                 if (ContainerExpand[ItemId].enable)
                 {
-                    ItemProps.Grids[0].Props.CellsH = ContainerExpand[ItemId].cellsH;
-                    ItemProps.Grids[0].Props.CellsV = ContainerExpand[ItemId].cellsV;
+                    ItemProps.Grids.ElementAtOrDefault(0).Properties.CellsH = ContainerExpand[ItemId].cellsH;
+                    ItemProps.Grids.ElementAtOrDefault(0).Properties.CellsV = ContainerExpand[ItemId].cellsV;
                 }
                 // 容器兼容
                 if (ContainerExpand[ItemId].Filter)
                 {
-                    ItemProps.Grids[0].Props.Filters = [
+                    ItemProps.Grids.ElementAtOrDefault(0).Properties.Filters = [
                         new GridFilter{
                             Filter = ["54009119af1c881c07000029"],
                             ExcludedFilter = []
@@ -339,13 +347,13 @@ public class TemplatesServer(
                 // 容量格子调整为：宽6高8
                 if (TemplatesSetting.Safes.SizeExpand)
                 {
-                    ItemProps.Grids[0].Props.CellsH = 6;
-                    ItemProps.Grids[0].Props.CellsV = 8;
+                    ItemProps.Grids.ElementAtOrDefault(0).Properties.CellsH = 6;
+                    ItemProps.Grids.ElementAtOrDefault(0).Properties.CellsV = 8;
                 }
                 // 去除安全箱物品存放限制
                 if (TemplatesSetting.Safes.Filter)
                 {
-                    ItemProps.Grids[0].Props.Filters = [
+                    ItemProps.Grids.ElementAtOrDefault(0).Properties.Filters = [
                         new GridFilter{ 
                             Filter = ["54009119af1c881c07000029"], 
                             ExcludedFilter = []
@@ -391,7 +399,7 @@ public class TemplatesServer(
                 // 去除物品限制
                 if (TemplatesSetting.Backpack.Filter)
                 {
-                    ItemProps.Grids[0].Props.Filters = [
+                    ItemProps.Grids.ElementAtOrDefault(0).Properties.Filters = [
                         new GridFilter{ 
                             Filter=["54009119af1c881c07000029"], 
                             ExcludedFilter=[]

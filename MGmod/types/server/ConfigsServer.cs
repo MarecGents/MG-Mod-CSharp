@@ -66,14 +66,26 @@ public class ConfigsServer(
     // weather.json
     public void SetWeatherConfig(MGModConfig_Config_WeatherSettings value, string type = "default")
     {
-        var weather = Weather.Weather?.SeasonValues;
-        weather[type].Clouds.Weights = value.clouds.weights;
-        weather[type].WindSpeed.Weights = value.windSpeed.weights;
-        weather[type].Rain.Weights = value.rain.weights;
+        var weather = Weather.Weather?.PresetWeights;
+        SetWeatherTypeWeights(weather[type].Clouds, value.clouds);
+        SetWeatherTypeWeights(weather[type].WindSpeed, value.windSpeed);
+        SetWeatherTypeWeights(weather[type].Rain, value.rain);
+        SetWeatherTypeWeights(weather[type].Fog, value.fog);
+		//weather[type].Clouds.Weights = value.clouds.weights;
+        //weather[type].WindSpeed.Weights = value.windSpeed.weights;
+        //weather[type].Rain.Weights = value.rain.weights;
         weather[type].RainIntensity = value.rainIntensity;
-        weather[type].Fog.Weights = value.fog.weights;
+        //weather[type].Fog.Weights = value.fog.weights;
 
     }
+
+    public void SetWeatherTypeWeights(Dictionary<string, double> presetWeights, MGModConfig_Config_Weather weatherType)
+    {
+		for (int ind = 0; ind < weatherType.values.Count; ind++)
+		{
+			presetWeights[weatherType.values[ind].ToString()] = weatherType.weights[ind];
+		}
+	}
 
     public void MGmodConfigs(MGModConfig_Config ConfigSetting)
     {
@@ -145,10 +157,12 @@ public class ConfigsServer(
 
         // inventory.json
         // 功能：购买物品带钩 BuyFoundInRaid
+        /*
         if (ConfigSetting.BuyFoundInRaid)
         {
             Inventory.NewItemsMarkedFound = ConfigSetting.BuyFoundInRaid;
         }
+        */
 
         // item.json
         // locale.json
@@ -236,7 +250,7 @@ public class ConfigsServer(
                 Min = 500
             };
             // // 跳蚤显示为单个物品的
-            RagfairDynamic.ShowAsSingleStack = new HashSet<string> { };
+            RagfairDynamic.ShowAsSingleStack = new HashSet<MongoId> { };
             // 护甲没有插板概率
             RagfairDynamic.Armor.RemoveRemovablePlateChance = 0;
         }
@@ -280,7 +294,7 @@ public class ConfigsServer(
                 { "Rare", 100}
             };
             RepairKit.Weapon.RarityWeight = RarityWeight;
-            Repair.WeaponSkillRepairGain *= 100;
+            //Repair.WeaponSkillRepairGain *= 100;
         }
         // 功能：附魔
         if (ConfigSetting.Buffs.BuffsWeapon || ConfigSetting.Buffs.BuffsArmor)
@@ -312,7 +326,9 @@ public class ConfigsServer(
         // 功能：天气修改
         if (ConfigSetting.WeatherSettings.mode != "default")
         {
-            SetWeatherConfig(ConfigSetting.WeatherSettings);
+            SetWeatherConfig(ConfigSetting.WeatherSettings, "SUNNY");
+            SetWeatherConfig(ConfigSetting.WeatherSettings, "RAINY");
+            SetWeatherConfig(ConfigSetting.WeatherSettings, "CLOUDY");
             SetWeatherConfig(ConfigSetting.WeatherSettings, "WINTER");
         }
     }

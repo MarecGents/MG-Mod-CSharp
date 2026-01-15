@@ -73,6 +73,8 @@ public static class Paths
     public static readonly string SuperItemPath = "./db/SuperModItem/";
 
     public static readonly string AssortItemPath = "./db/assort/";
+    
+    public static readonly string TestPath = "./db/test/";
 
     public static readonly string Traders = "./traders";
 
@@ -83,4 +85,13 @@ public class PathType
     public required string FileName { get; set; }
     public required string Path { get; set; }
 
+    public PathType()
+    {
+        
+    }
+    public PathType(string fileName, string path)
+    {
+        FileName = fileName;
+        Path = path;
+    }
 }

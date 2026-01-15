@@ -1,13 +1,16 @@
-﻿using System.Reflection;
-using System.Text.Json;
-using System.Text.RegularExpressions;
-using _MGMod.types.models.Paths;
+﻿using _MGMod.types.models.Paths;
 using SPTarkov.DI.Annotations;
 using SPTarkov.Server.Core.DI;
+using SPTarkov.Server.Core.Extensions;
 using SPTarkov.Server.Core.Helpers;
+using SPTarkov.Server.Core.Models.Common;
 using SPTarkov.Server.Core.Models.Eft.Common.Tables;
 using SPTarkov.Server.Core.Models.Utils;
 using SPTarkov.Server.Core.Utils;
+using System.Reflection;
+using System.Text.Json;
+using System.Text.RegularExpressions;
+using SPTarkov.Server.Core.Models.Logging;
 
 namespace _MGMod.types.utils;
 [Injectable(TypePriority = OnLoadOrder.PreSptModLoader + 1)]
@@ -18,7 +21,6 @@ public class MGUtils(
     FileUtil fileUtil,
     ISptLogger<MGUtils> logger,
     HashUtil hashUtil
-    
     )
 {
     private string? modPath => modHelper.GetAbsolutePathToModFolder(Assembly.GetExecutingAssembly());
@@ -39,11 +41,11 @@ public class MGUtils(
     /// <summary>
     /// 将 source 中非 null 的属性值复制到 target，保留 target 原有的其他属性。
     /// </summary>
-    public Props AssignNonNullProps(Props source, Props target)
+    public TemplateItemProperties AssignNonNullProps(TemplateItemProperties source, TemplateItemProperties target)
     {
         if (source == null || target == null) return null;
 
-        foreach (var prop in typeof(Props).GetProperties(BindingFlags.Public | BindingFlags.Instance))
+        foreach (var prop in typeof(TemplateItemProperties).GetProperties(BindingFlags.Public | BindingFlags.Instance))
         {
             if (prop.CanRead && prop.CanWrite)
             {
@@ -155,21 +157,25 @@ public class MGUtils(
     {
         fileUtil.WriteFile(System.IO.Path.Combine(modPath, relativeFilePath), Data);
     }
-    public string Generate()
+    public MongoId Generate()
     {
-        return hashUtil.Generate();
+        //return hashUtil.Generate();
+        return new MongoId();
     }
     public bool IsMongoId(string id)
     {
-        return hashUtil.IsValidMongoId(id);
+        //return hashUtil.IsValidMongoId(id);
+        return MongoId.IsValidMongoId(id);
     }
 
     /// <summary>
     /// 替换对象 JSON 中的指定 key，并反序列化为目标类型 T
     /// </summary>
-    public T ReplaceKey<T>(object data, string oldKey, string newKey)
+    public T ReplaceKey<T>(T data, MongoId oldKey, MongoId newKey)
     {
-        return jsonUtil.Deserialize<T>(ReplaceAll(jsonUtil.Serialize(data, true), oldKey, newKey)) ?? throw new Exception("Deserialization failed");
+        string dataToString = jsonUtil.Serialize(data, true);
+        string replacedData = ReplaceAll(dataToString, oldKey.ToString(), newKey.ToString());
+        return jsonUtil.Deserialize<T>(replacedData) ?? throw new Exception("Deserialization failed");
     }
 
     /// <summary>
@@ -187,5 +193,10 @@ public class MGUtils(
     private string EscapeRegex(string input)
     {
         return Regex.Escape(input);
+    }
+
+    public void Log(object data)
+    {
+        fileUtil.WriteFile(System.IO.Path.Combine(modPath, $"./Log/{new MongoId()}.log"),jsonUtil.Serialize(data));
     }
 }

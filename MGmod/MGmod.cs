@@ -14,18 +14,17 @@ namespace _MGMod;
 
 public record ModMetadata : AbstractModMetadata
 {
-    public override string Name { get; set; } = "MGMod";
-    public override string Author { get; set; } = "MarecGents";
-    public override List<string>? Contributors { get; set; }
-    public override string Version { get; set; } = "0.8.0";
-    public override string SptVersion { get; set; } = "4.0.0";
-    public override List<string>? LoadBefore { get; set; }
-    public override List<string>? LoadAfter { get; set; }
-    public override List<string>? Incompatibilities { get; set; }
-    public override Dictionary<string, string>? ModDependencies { get; set; }
-    public override string? Url { get; set; }
-    public override bool? IsBundleMod { get; set; } = true;
-    public override string? Licence { get; set; } = "MIT license";
+	public override string ModGuid { get; init; } = "com.marecgents.tarkovmod.mgmod";
+	public override string Name { get; init; } = "MGMod";
+	public override string Author { get; init; } = "MarecGents";
+	public override List<string>? Contributors { get; init; }
+	public override SemanticVersioning.Version Version { get; init; } = new("9.0.0");
+	public override SemanticVersioning.Range SptVersion { get; init; } = new("~4.0.0");
+	public override List<string>? Incompatibilities { get; init; }
+	public override Dictionary<string, SemanticVersioning.Range>? ModDependencies { get; init; }
+	public override string? Url { get; init; }
+	public override bool? IsBundleMod { get; init; }
+	public override string? License { get; init; } = "MIT";
 }
 
 [Injectable(TypePriority = OnLoadOrder.PostDBModLoader + 1)]
@@ -37,7 +36,7 @@ public class MGmod(
 {
     public Task OnLoad()
     {
-        var modPath = modHelper.GetAbsolutePathToModFolder(Assembly.GetExecutingAssembly());
+        // var modPath = modHelper.GetAbsolutePathToModFolder(Assembly.GetExecutingAssembly());
         logger.LogWithColor("This is MGmod", LogTextColor.Red);
         configSettingServices.ModSetting();
         return Task.CompletedTask;
