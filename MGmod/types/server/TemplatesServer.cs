@@ -43,13 +43,13 @@ public class TemplatesServer(
     {
         List<string> ParentList = new(){};
         string NowId = ItemId;
-        logger.LogWithColor($"Id {NowId}", LogTextColor.Red, LogBackgroundColor.White);
-        while (Templates_.Items.Keys.Contains(NowId) && Templates_.Items[NowId].Parent != "null")
+        // logger.LogWithColor($"Id {NowId}", LogTextColor.Red, LogBackgroundColor.White);
+        while (Templates_.Items.Keys.Contains(NowId) && Templates_.Items[NowId].Parent != "")
         {
-            logger.LogWithColor($"Id {NowId}", LogTextColor.Red, LogBackgroundColor.White);
+            // logger.LogWithColor($"Id {NowId}", LogTextColor.Red, LogBackgroundColor.White);
             string Temp = FindItemParentIdById(NowId);
-            logger.LogWithColor($"Id {Temp}", LogTextColor.Red, LogBackgroundColor.White);
-            if (Temp == "null") { break; }
+            // logger.LogWithColor($"Id {Temp}", LogTextColor.Red, LogBackgroundColor.White);
+            if (Temp == "") { break; }
             ParentList.Add(Temp);
             NowId = Temp;
         }

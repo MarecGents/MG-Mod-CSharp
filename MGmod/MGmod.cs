@@ -18,7 +18,7 @@ public record ModMetadata : AbstractModMetadata
 	public override string Name { get; init; } = "MGMod";
 	public override string Author { get; init; } = "MarecGents";
 	public override List<string>? Contributors { get; init; }
-	public override SemanticVersioning.Version Version { get; init; } = new("9.0.0");
+	public override SemanticVersioning.Version Version { get; init; } = new("0.8.0");
 	public override SemanticVersioning.Range SptVersion { get; init; } = new("~4.0.0");
 	public override List<string>? Incompatibilities { get; init; }
 	public override Dictionary<string, SemanticVersioning.Range>? ModDependencies { get; init; }
@@ -37,7 +37,7 @@ public class MGmod(
     public Task OnLoad()
     {
         // var modPath = modHelper.GetAbsolutePathToModFolder(Assembly.GetExecutingAssembly());
-        logger.LogWithColor("This is MGmod", LogTextColor.Red);
+        // logger.LogWithColor("This is MGmod", LogTextColor.Red);
         configSettingServices.ModSetting();
         return Task.CompletedTask;
     }
@@ -50,7 +50,7 @@ public class PreMGmodLoad(
 {
     public Task OnLoad()
     {
-        logger.LogWithColor("This is PreMGmodLoad", LogTextColor.Red, LogBackgroundColor.Cyan);
+        // logger.LogWithColor("This is PreMGmodLoad", LogTextColor.Red, LogBackgroundColor.Cyan);
         return Task.CompletedTask;
     }
 }

@@ -84,10 +84,7 @@ public class ConfigSettingServices
         {
             return configJson.Bot;
         }
-        else
-        {
-            return null;
-        }
+        return null;
     }
 
     public MGModConfig_Config? GetConfigSetting()
@@ -96,10 +93,7 @@ public class ConfigSettingServices
         {
             return configJson.Config;
         }
-        else
-        {
-            return null;
-        }
+        return null;
     }
     public MGModConfig_Globals? GetGlobalsSetting()
     {
@@ -107,10 +101,8 @@ public class ConfigSettingServices
         {
             return configJson.Globals;
         }
-        else
-        {
-            return null;
-        }
+        return null;
+
     }
     public MGModConfig_Hideout? GetHideoutSetting()
     {
@@ -118,10 +110,7 @@ public class ConfigSettingServices
         {
             return configJson.Hideout;
         }
-        else
-        {
-            return null;
-        }
+        return null;
     }
     public MGModConfig_Locations? GetLocationsSetting()
     {
@@ -129,10 +118,7 @@ public class ConfigSettingServices
         {
             return configJson.Locations;
         }
-        else
-        {
-            return null;
-        }
+        return null;
     }
     public MGModConfig_Templates? GetTemplatesSetting()
     {
@@ -140,10 +126,7 @@ public class ConfigSettingServices
         {
             return configJson.Templates;
         }
-        else
-        {
-            return null;
-        }
+        return null;
     }
     public MGModConfig_Traders? GetTradersSetting()
     {
@@ -151,10 +134,7 @@ public class ConfigSettingServices
         {
             return configJson.Traders;
         }
-        else
-        {
-            return null;
-        }
+        return null;
     }
     public MGModConfig_MGCustom? GetMGCustomSetting()
     {
@@ -162,9 +142,6 @@ public class ConfigSettingServices
         {
             return configJson.MGCustom;
         }
-        else
-        {
-            return null;
-        }
+        return null;
     }
 }

@@ -62,7 +62,6 @@ public class CustomItemServices(
             
             if (!fileUtil.FileExists(file)) continue;
             var fileName = fileUtil.StripExtension(file);
-            logger.Error(file);
             var item = jsonUtil.DeserializeFromFile<SuperItem>(file);
             List<string> errKey = new();
             foreach(var err in superItemProp)

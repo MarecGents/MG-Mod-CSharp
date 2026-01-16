@@ -34,7 +34,7 @@ public class TradersServer(
     {
         foreach(var trader in Traders.Keys)
         {
-            if (trader == "ragfair") continue;
+            // if (trader == "ragfair") continue;
             var traderBase = Traders[trader].Base;
             if (traderBase.Insurance.Availability != null && traderBase.Insurance.Availability == true) {
                 // 功能：回保速度 InsuranceTime
