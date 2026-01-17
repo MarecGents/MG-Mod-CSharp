@@ -62,12 +62,12 @@ public class HideoutServer(
         // 功能：藏身处生产时间 ProductTime
         if (HideoutSetting.ProductTime.enable)
         {
-            SetConstructionTime(HideoutSetting.ProductTime.value);
+            SetProductionTime(HideoutSetting.ProductTime.value);
         }
         // 功能：Scav宝箱
         if (HideoutSetting.ScavCaseTime.enable)
         {
-            SetConstructionTime(HideoutSetting.ScavCaseTime.value);
+            SetScavecaseTime(HideoutSetting.ScavCaseTime.value);
         }
     }
 }

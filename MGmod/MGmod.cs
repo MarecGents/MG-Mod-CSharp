@@ -9,6 +9,10 @@ using _MGMod.types.services;
 using SPTarkov.Server.Core.Utils;
 using _MGMod.types.models.Custom;
 using _MGMod.types.server;
+using _MGMod.types.utils;
+using SPTarkov.Server.Core.Models.Spt.Config;
+using SPTarkov.Server.Core.Servers;
+using SPTarkov.Server.Core.Services;
 
 namespace _MGMod;
 
@@ -31,7 +35,10 @@ public record ModMetadata : AbstractModMetadata
 public class MGmod(
     ISptLogger<MGmod> logger,
     ModHelper modHelper,
-    ConfigSettingServices configSettingServices
+    ConfigSettingServices configSettingServices,
+    MGUtils  mGUtils,
+    
+    ConfigServer configServer
     ) : IOnLoad
 {
     public Task OnLoad()
@@ -39,6 +46,7 @@ public class MGmod(
         // var modPath = modHelper.GetAbsolutePathToModFolder(Assembly.GetExecutingAssembly());
         // logger.LogWithColor("This is MGmod", LogTextColor.Red);
         configSettingServices.ModSetting();
+        
         return Task.CompletedTask;
     }
 }

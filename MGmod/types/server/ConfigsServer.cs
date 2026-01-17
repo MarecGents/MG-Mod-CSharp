@@ -1,11 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using _MGMod.types.models.Custom;
+﻿using _MGMod.types.models.Custom;
 using SPTarkov.DI.Annotations;
 using SPTarkov.Server.Core.DI;
 using SPTarkov.Server.Core.Models.Common;
 using SPTarkov.Server.Core.Models.Enums;
+using SPTarkov.Server.Core.Models.Logging;
 using SPTarkov.Server.Core.Models.Spt.Config;
+using SPTarkov.Server.Core.Models.Utils;
 using SPTarkov.Server.Core.Servers;
 
 namespace _MGMod.types.server;
@@ -13,7 +13,8 @@ namespace _MGMod.types.server;
 [Injectable(TypePriority = OnLoadOrder.PostDBModLoader + 1)]
 
 public class ConfigsServer(
-    ConfigServer configServer
+    ConfigServer configServer,
+    ISptLogger<ConfigsServer> logger
     )
 {
     private AirdropConfig Airdrop => configServer.GetConfig<AirdropConfig>();
@@ -66,21 +67,17 @@ public class ConfigsServer(
     // weather.json
     public void SetWeatherConfig(MGModConfig_Config_WeatherSettings value, string type = "default")
     {
-        var weather = Weather.Weather?.PresetWeights;
-        SetWeatherTypeWeights(weather[type].Clouds, value.clouds);
-        SetWeatherTypeWeights(weather[type].WindSpeed, value.windSpeed);
-        SetWeatherTypeWeights(weather[type].Rain, value.rain);
-        SetWeatherTypeWeights(weather[type].Fog, value.fog);
-		//weather[type].Clouds.Weights = value.clouds.weights;
-        //weather[type].WindSpeed.Weights = value.windSpeed.weights;
-        //weather[type].Rain.Weights = value.rain.weights;
-        weather[type].RainIntensity = value.rainIntensity;
-        //weather[type].Fog.Weights = value.fog.weights;
-
+        if (!Weather.Weather.PresetWeights.Keys.Contains(type)) return;
+        var weather = Weather.Weather.PresetWeights[type];
+        SetWeatherPresetWeightsType1(weather.Clouds, value.clouds);
+        if(weather.WindSpeed != null) SetWeatherPresetWeightsType1(weather.WindSpeed, value.windSpeed);
+        if(weather.Rain != null) SetWeatherPresetWeightsType1(weather.Rain, value.rain);
+        if(weather.Fog != null) SetWeatherPresetWeightsType1(weather.Fog, value.fog);
     }
 
-    public void SetWeatherTypeWeights(Dictionary<string, double> presetWeights, MGModConfig_Config_Weather weatherType)
+    public void SetWeatherPresetWeightsType1(Dictionary<string, double> presetWeights, MGModConfig_Config_Weather weatherType)
     {
+        presetWeights.Clear();
 		for (int ind = 0; ind < weatherType.values.Count; ind++)
 		{
 			presetWeights[weatherType.values[ind].ToString()] = weatherType.weights[ind];
@@ -326,10 +323,11 @@ public class ConfigsServer(
         // 功能：天气修改
         if (ConfigSetting.WeatherSettings.mode != "default")
         {
-            SetWeatherConfig(ConfigSetting.WeatherSettings, "SUNNY");
-            SetWeatherConfig(ConfigSetting.WeatherSettings, "RAINY");
-            SetWeatherConfig(ConfigSetting.WeatherSettings, "CLOUDY");
-            SetWeatherConfig(ConfigSetting.WeatherSettings, "WINTER");
+            HashSet<String> weatherType = ["SUNNY","RAINY","CLOUDY","WINTER"];
+            foreach (var weather in weatherType)
+            {
+                SetWeatherConfig(ConfigSetting.WeatherSettings, weather);
+            }
         }
     }
 }

@@ -199,4 +199,10 @@ public class MGUtils(
     {
         fileUtil.WriteFile(System.IO.Path.Combine(modPath, $"./Log/{new MongoId()}.log"),jsonUtil.Serialize(data));
     }
+
+    public void TestOutput<T>(T data)
+    {
+        string data2String = jsonUtil.Serialize<T>(data);
+        logger.LogWithColor(data2String,  LogTextColor.Gray, LogBackgroundColor.White);
+    }
 }
