@@ -392,14 +392,13 @@
             "NoBuff": false,
             "NoWeight": false
         },
+        "EquipmentDurability": 1,
         "Armor": {
-            "Durability": 2,
             "Filter": false,
             "NoBuff": false,
             "NoWeight": false
         },
         "Helmet": {
-            "Durability": 2,
             "Filter": false,
             "NoBuff": false,
             "NoWeight": false

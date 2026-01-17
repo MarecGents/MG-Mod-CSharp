@@ -276,7 +276,7 @@ public class TemplatesServer(
                 }
             }
             // 子弹
-            else if (ItemParent == "5485a8684bdc2da71d8b4567")
+            if (ItemParent == "5485a8684bdc2da71d8b4567")
             {
                 // 功能：子弹堆叠 AmmoStack
                 if (TemplatesSetting.AmmoStack != 1)
@@ -317,7 +317,7 @@ public class TemplatesServer(
                 }
             }
             // 容器扩容 ContainerExpand
-            else if (ContainerExpand.ContainsKey(ItemId))
+            if (ContainerExpand.ContainsKey(ItemId))
             {
                 // 容器扩容
                 if (ContainerExpand[ItemId].enable)
@@ -342,7 +342,7 @@ public class TemplatesServer(
                 }
             }
             // 保险箱 Safes
-            else if ( ItemParent == "5448bf274bdc2dfc2f8b456a")
+            if ( ItemParent == "5448bf274bdc2dfc2f8b456a")
             {
                 // 容量格子调整为：宽6高8
                 if (TemplatesSetting.Safes.SizeExpand)
@@ -371,7 +371,7 @@ public class TemplatesServer(
                 }
             }
             // 钱堆叠 MoneyStack
-            else if (ItemParent == "543be5dd4bdc2deb348b4569" && TemplatesSetting.MoneyStack != 1)
+            if (ItemParent == "543be5dd4bdc2deb348b4569" && TemplatesSetting.MoneyStack != 1)
             {
                 // 每个堆叠最大数量
                 ItemProps.StackMaxSize *= TemplatesSetting.MoneyStack;
@@ -394,7 +394,7 @@ public class TemplatesServer(
                 }
             }
             // 背包、盲盒 Backpack
-            else if (ItemParent == "5448e53e4bdc2d60728b4567")
+            if (ItemParent == "5448e53e4bdc2d60728b4567")
             {
                 // 去除物品限制
                 if (TemplatesSetting.Backpack.Filter)
@@ -429,7 +429,7 @@ public class TemplatesServer(
                 }
             }
             // 弹挂修改 护甲修改 Armor
-            else if (ItemParent == "5448e5284bdc2dcb718b4567"
+            if (ItemParent == "5448e5284bdc2dcb718b4567"
                 || ItemParent == "5448e54d4bdc2dcc718b4568"
                 || ItemParent == "57bef4c42459772e8d35a53b")
             {
@@ -455,25 +455,29 @@ public class TemplatesServer(
 
             }
             // 插板耐久
-            else if (ItemParent == "644120aa86ffbe10ee032b6f"
+            if (ItemParent == "644120aa86ffbe10ee032b6f"
                 || ItemParent == "65649eb40bf0ed77b8044453")
             {
                 if (ItemProps.Durability != 1)
                 {
-                    ItemProps.Durability *= TemplatesSetting.Armor.Durability;
+                    ItemProps.Durability *= TemplatesSetting.EquipmentDurability;
                 }
                 if (ItemProps.MaxDurability != 1)
                 {
-                    ItemProps.MaxDurability *= TemplatesSetting.Armor.Durability;
+                    ItemProps.MaxDurability *= TemplatesSetting.EquipmentDurability;
                 }
             }
             // 头盔修改 Helmet
-            else if (ItemParent == "5a341c4086f77401f2541505")
+            if (ItemParent == "5a341c4086f77401f2541505")
             {
                 if (TemplatesSetting.Helmet.Filter)
                 {
                     // 去除耳机佩戴冲突
                     ItemProps.BlocksEarpiece = false;
+                    // 去除眼睛佩戴冲突
+                    ItemProps.BlocksEyewear = false;
+                    // 去除面罩佩戴冲突
+                    ItemProps.BlocksFaceCover = false;
                 }
                 if (TemplatesSetting.Helmet.NoBuff)
                 {
@@ -491,7 +495,7 @@ public class TemplatesServer(
                 }
             }
             // 钥匙和卡无限使用次数 KeysDurability
-            else if (ItemParent == "5c164d2286f774194c5e69fa"
+            if (ItemParent == "5c164d2286f774194c5e69fa"
                 || ItemParent == "5c99f98d86f7745c314214b3")
             {
                 if (TemplatesSetting.KeysDurability)
@@ -500,7 +504,7 @@ public class TemplatesServer(
                 }
             }
             // 医疗物品耐久调整 MedcDurability
-            else if (MedcParent.Contains(ItemParent)
+            if (MedcParent.Contains(ItemParent)
                 && TemplatesSetting.MedcDurability != 1)
             {
                 if (ItemProps.MaxHpResource == 0)
@@ -511,7 +515,7 @@ public class TemplatesServer(
                 ItemProps.HpResourceRate *= TemplatesSetting.MedcDurability;
             }
             //武器无故障 WeaponNoLost
-            else if (FindItemParentsIdById(ItemId).Contains("5422acb9af1c889c16000029"))
+            if (FindItemParentsIdById(ItemId).Contains("5422acb9af1c889c16000029"))
             {
                 if (ItemProps.BaseMalfunctionChance > 0 && TemplatesSetting.WeaponNoLost)
                 {
@@ -536,23 +540,22 @@ public class TemplatesServer(
                 */
             }
             //弹匣容量 MagazineCapacity
-            else if (ItemParent == "5448bc234bdc2d3c308b4569"
+            if (ItemParent == "5448bc234bdc2d3c308b4569" && ItemProps.Cartridges != null
                 && TemplatesSetting.MagazineCapacity != 1)
             {
-                var Cartridges = ItemProps.Cartridges;
-                foreach (var Cartridge in Cartridges)
+                foreach (var Cartridge in ItemProps.Cartridges)
                 {
                     Cartridge.MaxCount *=  TemplatesSetting.MagazineCapacity;
                 }
             }
             // 优化 T7、夜视仪
-            else if (ItemParent == "5a2c3a9486f774688b05e574"
+            if (ItemParent == "5a2c3a9486f774688b05e574"
                 && TemplatesSetting.T7ThermalImaging)
             {
                 var T7Json = mgUtils.GetJsonDataFromFile<TemplateItem>(Paths.T7Json);
                 ItemProps = mgUtils.AssignNonNullProps(T7Json.Properties, ItemProps);
             }
-            else if (ItemParent == "5d21f59b6dbe99052b54ef83"
+            if (ItemParent == "5d21f59b6dbe99052b54ef83"
                 && TemplatesSetting.T7ThermalImaging)
             {
                 var GPNVGJson = mgUtils.GetJsonDataFromFile<TemplateItem>(Paths.GPNVGJson);
