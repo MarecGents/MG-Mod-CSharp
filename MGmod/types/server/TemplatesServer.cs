@@ -13,6 +13,7 @@ using SPTarkov.Server.Core.Services;
 using SPTarkov.Server.Core.Services.Mod;
 using SPTarkov.Server.Core.Models.Logging;
 using SPTarkov.Server.Core.Constants;
+using SPTarkov.Server.Core.Models.Common;
 
 namespace _MGMod.types.server;
 
@@ -250,11 +251,14 @@ public class TemplatesServer(
         var ContainerExpand = TemplatesSetting.ContainerExpand;
         string[] MedcParent = [ "5448f39d4bdc2d0a728b4568", "5448f3a14bdc2d27728b4569", "5448f3a64bdc2d60728b456a", "5448f3ac4bdc2dce718b4569" ];
         string[] WeaponFilter = [ "FirstPrimaryWeapon", "SecondPrimaryWeapon", "Holster" ];
+        HashSet<MongoId> ArmorVestList = new HashSet<MongoId> { "5448e5284bdc2dcb718b4567", "5448e54d4bdc2dcc718b4568", "57bef4c42459772e8d35a53b" };
         foreach (var Item in Templates_.Items)
         {
             string ItemId = Item.Value.Id;
             string ItemParent = Item.Value.Parent;
             var ItemProps = Item.Value.Properties;
+            if (ItemParent == "") continue;
+            if (ItemProps == null) continue;
             //武器栏可放全部武器 WeaponFilter
             if (TemplatesSetting.Examined)
             {
@@ -429,9 +433,7 @@ public class TemplatesServer(
                 }
             }
             // 弹挂修改 护甲修改 Armor
-            if (ItemParent == "5448e5284bdc2dcb718b4567"
-                || ItemParent == "5448e54d4bdc2dcc718b4568"
-                || ItemParent == "57bef4c42459772e8d35a53b")
+            if (ArmorVestList.Contains(ItemParent))
             {
                 if (TemplatesSetting.Armor.Filter)
                 {
@@ -454,7 +456,7 @@ public class TemplatesServer(
                 }
 
             }
-            // 插板耐久
+            // 防护装备耐久
             if (ItemParent == "644120aa86ffbe10ee032b6f"
                 || ItemParent == "65649eb40bf0ed77b8044453")
             {
@@ -478,6 +480,8 @@ public class TemplatesServer(
                     ItemProps.BlocksEyewear = false;
                     // 去除面罩佩戴冲突
                     ItemProps.BlocksFaceCover = false;
+                    // 去除所有冲突物品
+                    ItemProps.ConflictingItems = [];
                 }
                 if (TemplatesSetting.Helmet.NoBuff)
                 {
