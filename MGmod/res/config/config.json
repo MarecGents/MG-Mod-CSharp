@@ -388,7 +388,6 @@
             "NoBuff": false,
             "NoWeight": false
         },
-        "EquipmentDurability": 1,
         "Armor": {
             "Filter": false,
             "NoBuff": false,
@@ -396,6 +395,11 @@
         },
         "Helmet": {
             "Filter": false,
+            "NoBuff": false,
+            "NoWeight": false
+        },
+        "EquipmentPlate": {
+            "Durability": 1,
             "NoBuff": false,
             "NoWeight": false
         },

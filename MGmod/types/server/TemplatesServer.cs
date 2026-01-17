@@ -460,14 +460,27 @@ public class TemplatesServer(
             if (ItemParent == "644120aa86ffbe10ee032b6f"
                 || ItemParent == "65649eb40bf0ed77b8044453")
             {
-                if (ItemProps.Durability != 1)
+                if (TemplatesSetting.EquipmentPlate.Durability != 1)
                 {
-                    ItemProps.Durability *= TemplatesSetting.EquipmentDurability;
+                    ItemProps.Durability *= TemplatesSetting.EquipmentPlate.Durability;
+                    ItemProps.MaxDurability *= TemplatesSetting.EquipmentPlate.Durability;
                 }
-                if (ItemProps.MaxDurability != 1)
+
+                if (TemplatesSetting.EquipmentPlate.NoBuff)
                 {
-                    ItemProps.MaxDurability *= TemplatesSetting.EquipmentDurability;
+                    // 速度惩罚
+                    ItemProps.SpeedPenaltyPercent = 0;
+                    // 转向惩罚
+                    ItemProps.MousePenalty = 0;
+                    // 武器人机工效惩罚
+                    ItemProps.WeaponErgonomicPenalty = 0;
                 }
+                // 重量
+                if (TemplatesSetting.EquipmentPlate.NoWeight)
+                {
+                    ItemProps.Weight = 0;
+                }
+                
             }
             // 头盔修改 Helmet
             if (ItemParent == "5a341c4086f77401f2541505")
@@ -481,7 +494,7 @@ public class TemplatesServer(
                     // 去除面罩佩戴冲突
                     ItemProps.BlocksFaceCover = false;
                     // 去除所有冲突物品
-                    ItemProps.ConflictingItems = [];
+                    ItemProps.ConflictingItems.Clear();
                 }
                 if (TemplatesSetting.Helmet.NoBuff)
                 {

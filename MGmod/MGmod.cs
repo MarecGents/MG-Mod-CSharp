@@ -36,9 +36,7 @@ public class MGmod(
     ISptLogger<MGmod> logger,
     ModHelper modHelper,
     ConfigSettingServices configSettingServices,
-    MGUtils  mGUtils,
-    
-    ConfigServer configServer
+    MGUtils  mGUtils
     ) : IOnLoad
 {
     public Task OnLoad()
@@ -46,7 +44,6 @@ public class MGmod(
         // var modPath = modHelper.GetAbsolutePathToModFolder(Assembly.GetExecutingAssembly());
         // logger.LogWithColor("This is MGmod", LogTextColor.Red);
         configSettingServices.ModSetting();
-        
         return Task.CompletedTask;
     }
 }
