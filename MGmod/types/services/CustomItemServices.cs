@@ -29,13 +29,13 @@ public class CustomItemServices(
     CustomAssortServices customAssortServices
     )
 {
-    public void start()
+    public void Start()
     {
         SuperItemsToMG();
         BroItemsToMG();
         var ItemList = GetAllItems();
-        TransferMGItemsStruct(ItemList);
-        AddMGItemsToDB(ItemList);
+        var newItemList = TransferMGItemsStruct(ItemList);
+        AddMGItemsToDB(newItemList);
     }
 
     public Dictionary<string, MGItem> GetAllItems()
@@ -110,7 +110,7 @@ public class CustomItemServices(
                 mgItem.HandbookId = "5b47574386f77428ca22b2f4";
             }
             string Data = mgUtils.Serialize(mgItem);
-            mgUtils.WriteFile(System.IO.Path.Combine(Paths.MGItemDB, $"{fileName}-Super.json"), Data);
+            mgUtils.WriteFile(Path.Combine(Paths.MGItemDB, $"{fileName}-Super.json"), Data);
             fileUtil.DeleteFile(file);
         }
     }
@@ -167,7 +167,7 @@ public class CustomItemServices(
                 mgItem.HandbookId = "5b47574386f77428ca22b2f4";
             }
             string Data = mgUtils.Serialize(mgItem);
-            mgUtils.WriteFile(System.IO.Path.Combine(Paths.MGItemDB, $"{fileName}-Bro.json"), Data);
+            mgUtils.WriteFile(Path.Combine(Paths.MGItemDB, $"{fileName}-Bro.json"), Data);
             fileUtil.DeleteFile(file);
         }
     }
@@ -203,7 +203,7 @@ public class CustomItemServices(
         }
     }
 
-    public void TransferMGItemsStruct(Dictionary<string, MGItem> ItemList)
+    public Dictionary<string, MGItem> TransferMGItemsStruct(Dictionary<string, MGItem> ItemList)
     {
         List<string> keyName = new() { "Buffs", "toTraderId", "isSold", "loyal_level", "assort", "currency", "HandbookId" };
         List<object?> value = new() { new Dictionary<string, Buff> { }, "8ef5b2eff000000000000000", true, 1, new List<Item> { }, Money.ROUBLES, "5b47574386f77428ca22b2f4" };
@@ -216,26 +216,24 @@ public class CustomItemServices(
                 logger.LogWithColor($"MG独立物品：{it}.json缺少关键属性：{string.Join(", ", resp.B)}", LogTextColor.Yellow);
                 continue;
             }
-            int creatTimes = 0;
-            for(int keyId=0; keyId < keyName.Count; keyId++ )
+
+            if (item.Buffs == null) item.Buffs = new();
+            if (item.toTraderId == null) item.toTraderId = "8ef5b2eff000000000000000";
+            if (item.isSold == null) item.isSold = true;
+            if (item.loyal_level == null) item.loyal_level = 1;
+            if (item.assort == null) item.assort = new();
+            if (item.currency == null) item.currency = Money.ROUBLES;
+            if (item.HandbookId == null)
             {
-                bool ifCreat = false;
-                var ReturnCreat = CreatNewKey(item, keyName[keyId], value[keyId]);
-                item = ReturnCreat.Value.A;
-                ItemList[it] = item;
-                ifCreat = ReturnCreat.Value.B;
-                if (ifCreat)
-                {
-                    creatTimes++;
-                }
+                var HBItemParentId = templatesServer.FindHBItemParentId(item.items.cloneId);
+                if (HBItemParentId != "null") item.HandbookId = HBItemParentId;
+                else item.HandbookId = "5b47574386f77428ca22b2f4";
             }
-            if (creatTimes > 0)
-            {
-                string Data = mgUtils.Serialize(item);
-                mgUtils.DeleteFile(Paths.MGItemDB + $"{it}.json");
-                mgUtils.WriteFile(Paths.MGItemDB + $"{it}.json", Data);
-            }
+            string Data = mgUtils.Serialize<MGItem>(item);
+            mgUtils.DeleteFile(Path.Combine(Paths.MGItemDB, $"{it}.json"));
+            mgUtils.WriteFile(Path.Combine(Paths.MGItemDB, $"{it}.json"), Data);
         }
+        return ItemList;
     }
 
     public (MGItem A, bool B)? CreatNewKey(MGItem item, string key, object value)

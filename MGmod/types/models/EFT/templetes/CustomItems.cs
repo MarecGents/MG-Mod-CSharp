@@ -47,7 +47,6 @@ public class MGItem : ICustomItemBuffs
     public List<Item>? assort { get; set; }
     public MongoId? currency { get; set; }
     public Dictionary<string, List<Buff>>? Buffs { get; set; }
-    
     public MongoId? HandbookId { get; set; }
 }
 public class MGItems

@@ -26,6 +26,7 @@ public class ConfigSettingServices
     private TradersServer tradersServer;
 
     private CustomItemServices customItemServices;
+    private KeyClassfyServices keyClassfyServices;
 
     private TestServices testServices;
     public ConfigSettingServices(
@@ -41,6 +42,7 @@ public class ConfigSettingServices
         TradersServer _tradersServer,
 
         CustomItemServices _customItemServices,
+        KeyClassfyServices _keyClassfyServices,
         
         TestServices _testServices
         )
@@ -57,7 +59,8 @@ public class ConfigSettingServices
         tradersServer = _tradersServer;
 
         customItemServices = _customItemServices;
-
+        keyClassfyServices = _keyClassfyServices;
+        
         testServices = _testServices;
         
         configJson = mgUtils.GetJsonDataFromFile<ConfigSettingType>(Paths.ConfigJson);
@@ -68,7 +71,8 @@ public class ConfigSettingServices
         var CustomSetting = GetMGCustomSetting();
         // testServices.Initialize();
         //if (CustomSetting.CustomTrader) { }
-        if (CustomSetting.CustomItem) customItemServices.start();
+        if (CustomSetting.CustomItem) customItemServices.Start();
+        if (CustomSetting.KeyClassfy) keyClassfyServices.Start();
          botsServer.MGmodBots(GetBotSetting());
          configsServer.MGmodConfigs(GetConfigSetting());
          globalsServer.MGmodGlobals(GetGlobalsSetting());

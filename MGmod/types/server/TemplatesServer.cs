@@ -205,7 +205,7 @@ public class TemplatesServer(
         var newItemDetails = new NewItemFromCloneDetails()
         {
             FleaPriceRoubles = item.price,
-            HandbookParentId = item.HandbookId,
+            HandbookParentId = item.HandbookId??"5b47574386f77428ca22b2f4",
             HandbookPriceRoubles = item.price,
             ItemTplToClone = item.items.cloneId,
             Locales = new Dictionary<string, LocaleDetails>()
@@ -462,10 +462,9 @@ public class TemplatesServer(
             {
                 if (TemplatesSetting.EquipmentPlate.Durability != 1)
                 {
-                    ItemProps.Durability *= TemplatesSetting.EquipmentPlate.Durability;
-                    ItemProps.MaxDurability *= TemplatesSetting.EquipmentPlate.Durability;
+                    ItemProps.Durability = ItemProps.Durability * TemplatesSetting.EquipmentPlate.Durability;
+                    ItemProps.MaxDurability = ItemProps.MaxDurability * TemplatesSetting.EquipmentPlate.Durability;
                 }
-
                 if (TemplatesSetting.EquipmentPlate.NoBuff)
                 {
                     // 速度惩罚
