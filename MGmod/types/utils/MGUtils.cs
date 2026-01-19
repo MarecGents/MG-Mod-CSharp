@@ -19,8 +19,7 @@ public class MGUtils(
     ModHelper modHelper,
     JsonUtil jsonUtil,
     FileUtil fileUtil,
-    ISptLogger<MGUtils> logger,
-    HashUtil hashUtil
+    ISptLogger<MGUtils> logger
     )
 {
     private string? modPath => modHelper.GetAbsolutePathToModFolder(Assembly.GetExecutingAssembly());
@@ -32,10 +31,7 @@ public class MGUtils(
         {
             return modHelper.GetJsonDataFromFile<T>(fullPath, filePath.FileName);
         }
-        else
-        {
-            return default;
-        }
+        return default;
     }
 
     /// <summary>
@@ -62,6 +58,11 @@ public class MGUtils(
     public string? Serialize<T>(T? obj)
     {
         return jsonUtil.Serialize<T>(obj);
+    }
+
+    public T? Deserialize<T>(string? json)
+    {
+        return jsonUtil.Deserialize<T>(json);
     }
 
     public bool? HasProp(object obj, string propertyName)

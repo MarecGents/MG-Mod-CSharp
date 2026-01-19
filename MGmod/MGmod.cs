@@ -28,7 +28,7 @@ public record ModMetadata : AbstractModMetadata
 	public override List<string>? Incompatibilities { get; init; }
 	public override Dictionary<string, SemanticVersioning.Range>? ModDependencies { get; init; }
 	public override string? Url { get; init; }
-	public override bool? IsBundleMod { get; init; }
+    public override bool? IsBundleMod { get; init; } = true;
 	public override string? License { get; init; } = "MIT";
 }
 
@@ -40,13 +40,12 @@ public class MGmod(
     MGUtils  mGUtils
     ) : IOnLoad
 {
-    public Task OnLoad()
+    public async Task OnLoad()
     {
         // var modPath = modHelper.GetAbsolutePathToModFolder(Assembly.GetExecutingAssembly());
         // logger.LogWithColor("This is MGmod", LogTextColor.Red);
-        configSettingServices.ModSetting();
+        await configSettingServices.ModSetting();
  
-        return Task.CompletedTask;
     }
 }
 

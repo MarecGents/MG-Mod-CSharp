@@ -11,6 +11,7 @@ using SPTarkov.Server.Core.Utils;
 
 using _MGMod.types.models.Paths;
 using _MGMod.types.models.EFTofMG.templetes;
+using _MGMod.types.utils;
 using SPTarkov.Server.Core.Models.Utils;
 namespace _MGMod.types.services;
 
@@ -21,54 +22,53 @@ public class SyncFleaMarketServices
     private PriceType? priceJson;
     private GitHubTokenType? githubToken;
     private ISptLogger<SyncFleaMarketServices> logger;
-    private ModHelper modHelper;
+    private MGUtils mGUtils;
     private DatabaseService databaseService;
-    private JsonUtil jsonUtil;
-    private FileUtil fileUtil;
-    private string ModPath;
     public SyncFleaMarketServices(
         ISptLogger<SyncFleaMarketServices> _logger,
-        ModHelper _modHelper,
         DatabaseService _databaseService,
-        JsonUtil _jsonUtil,
-        FileUtil _fileUtil
+        MGUtils _mGUtils
         )
     {
         logger = _logger;
-        modHelper = _modHelper;
         databaseService = _databaseService;
-        jsonUtil = _jsonUtil;
-        fileUtil = _fileUtil;
-        ModPath = modHelper.GetAbsolutePathToModFolder(Assembly.GetExecutingAssembly());
-        Init();
+        mGUtils = _mGUtils;
     }
 
-    public async void Start()
+    public async Task Start()
     {
-        DateTime date = new DateTime(priceJson.date[0], priceJson.date[1], priceJson.date[2]);
-        TimeSpan diff = DateTime.Now - date;
-        if (diff.TotalDays < 3) return;
-        Log("同步数据与当前日期差距过大，正在重新同步。", LogTextColor.Blue);
-        await GetPrices();
-        LoadPrice();
+        await Init();
     }
-    private void Init()
-    {
 
-        if (fileUtil.FileExists(Path.Combine(Path.Combine(ModPath, Paths.PriceJson.Path), Paths.PriceJson.FileName)))
+    public async Task Init()
+    {
+        if (!mGUtils.FileExists(Path.Combine(Paths.PriceJson.Path, Paths.PriceJson.FileName)))
         {
-            priceJson = modHelper.GetJsonDataFromFile<PriceType>(Path.Combine(ModPath, Paths.PriceJson.Path), Paths.PriceJson.FileName);
-        }
-        else {
             DateTime date = (DateTime.Now).AddDays(-4);
-            priceJson = new() { date = [1970, 1, 1], prices = databaseService.GetPrices() };
+            priceJson = new() { date = [date.Year, date.Month, date.Day], prices = databaseService.GetPrices() };
+        }
+        else
+        {
+            priceJson = mGUtils.GetJsonDataFromFile<PriceType>(Paths.PriceJson);
         }
 
-        if (fileUtil.FileExists(Path.Combine(Path.Combine(ModPath, Paths.GithubToken.Path), Paths.GithubToken.FileName)))
+        if (!mGUtils.FileExists(Path.Combine(Paths.GithubToken.Path, Paths.GithubToken.FileName)))
         {
-            githubToken = modHelper.GetJsonDataFromFile<GitHubTokenType>(Path.Combine(ModPath, Paths.GithubToken.Path), Paths.GithubToken.FileName);
+            return;
+        }
+
+        githubToken = mGUtils.GetJsonDataFromFile<GitHubTokenType>(Paths.GithubToken);
+        
+        DateTime nowDate = new DateTime(priceJson.date[0], priceJson.date[1], priceJson.date[2]);
+        TimeSpan diff = DateTime.Now - nowDate;
+        if (diff.TotalDays < 3) LoadPrice();
+        else
+        {
+            Log("同步数据与当前日期差距过大，正在重新同步。", LogTextColor.Blue);
+            GetPrices();
         }
     }
+
     private async Task GetPrices()
     {
         if (githubToken == null) return;
@@ -94,8 +94,10 @@ public class SyncFleaMarketServices
             var decodedBytes = Convert.FromBase64String(encodedContent.Replace("\n", ""));
             string fileContent = Encoding.UTF8.GetString(decodedBytes);
 
-            priceJson = jsonUtil.Deserialize<PriceType>(fileContent);
-            await SavePrice();
+            priceJson = mGUtils.Deserialize<PriceType>(fileContent);
+            SavePrice();
+            
+            LoadPrice();
         }
         catch (Exception ex)
         {
@@ -103,19 +105,29 @@ public class SyncFleaMarketServices
         }
 
     }
-    private async Task SavePrice()
+    private void SavePrice()
     {
         if (priceJson == null) return;
-
-        await fileUtil.WriteFileAsync(Path.Combine(Path.Combine(ModPath, Paths.PriceJson.Path), Paths.PriceJson.FileName), jsonUtil.Serialize(priceJson));
-
+        mGUtils.WriteFile(Path.Combine(Paths.PriceJson.Path, Paths.PriceJson.FileName), mGUtils.Serialize(priceJson));
     }
 
     private void LoadPrice()
     { 
         if (priceJson == null) return;
         var Prices = databaseService.GetTemplates().Prices;
-        Prices = priceJson.prices;
+        foreach (var (id, price) in priceJson.prices)
+        {
+            Prices[id] = price;
+        }
+
+        var HbItem = databaseService.GetHandbook().Items;
+        foreach (var item in HbItem)
+        {
+            if (priceJson.prices.TryGetValue(item.Id, out var price))
+            {
+                item.Price = price;
+            }
+        }
 		Log($"已同步至日期[{priceJson.date[0]}年{priceJson.date[1]}月{priceJson.date[2]}日]", LogTextColor.Cyan);
     }
 

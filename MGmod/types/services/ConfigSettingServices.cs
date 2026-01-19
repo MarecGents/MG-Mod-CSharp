@@ -27,7 +27,7 @@ public class ConfigSettingServices
 
     private CustomItemServices customItemServices;
     private KeyClassfyServices keyClassfyServices;
-
+    private SyncFleaMarketServices syncFleaMarketServices;
     private TestServices testServices;
     public ConfigSettingServices(
         ISptLogger<ConfigSettingServices> _logger,
@@ -43,7 +43,8 @@ public class ConfigSettingServices
 
         CustomItemServices _customItemServices,
         KeyClassfyServices _keyClassfyServices,
-        
+        SyncFleaMarketServices _syncFleaMarketServices,
+            
         TestServices _testServices
         )
     {
@@ -60,16 +61,18 @@ public class ConfigSettingServices
 
         customItemServices = _customItemServices;
         keyClassfyServices = _keyClassfyServices;
+        syncFleaMarketServices = _syncFleaMarketServices;
         
         testServices = _testServices;
         
         configJson = mgUtils.GetJsonDataFromFile<ConfigSettingType>(Paths.ConfigJson);
     }
 
-    public void ModSetting()
+    public async Task ModSetting()
     {
         var CustomSetting = GetMGCustomSetting();
         // testServices.Initialize();
+        if (CustomSetting.SyncFlea) await syncFleaMarketServices.Start();
         //if (CustomSetting.CustomTrader) { }
         if (CustomSetting.CustomItem) customItemServices.Start();
         if (CustomSetting.KeyClassfy) keyClassfyServices.Start();
