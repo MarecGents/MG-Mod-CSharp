@@ -39,25 +39,62 @@ public class LocalesServer(
         return locale;
     }
 
-    public string GetLocale(string key, string lang)
+    public string GetLocale(string lang)
     {
         var global = Locale.Global[lang].Value;
 
+        if (global != null) return global[lang];
+        
+        return "null";
+    }
+    
+    public string GetInfoByKey(string key, string lang = "ch")
+    {
+        var global = Locale.Global[lang].Value;
         if (global.ContainsKey(key))
         {
             return global[key];
         }
-        return "null";
+        return "";
     }
-        
-    public void SetLocale(string id, string desc)
+    
+    public ItemsDesc GetItemInfoByLang(string id, string lang = "ch")
     {
-        var global = Locale.Global;
+        var global = Locale.Global[lang].Value;
         
-        foreach (var lang in global.Keys)
+        ItemsDesc itemsDesc = new()
         {
-            global[lang].Value[id] = desc;
+            Name = "",
+            ShortName = "",
+            Description = "",
+        };
+
+        foreach (var key in _itemDescList)
+        {
+            string keyDesc = $"{id} {key}";
+            if(!global.ContainsKey(keyDesc)) continue;
+            //itemsDesc[key] = global[keyDesc];
+            // 通过反射给 itemsDesc 对应属性赋值
+            var prop = typeof(ItemsDesc).GetProperty(key);
+            if (prop != null && prop.CanWrite)
+            {
+                prop.SetValue(itemsDesc, global[keyDesc]);
+            }
         }
+        
+        return itemsDesc;
+    }
+
+    public string GetTraderNicknameByLang(string id, string lang="ch")
+    {
+        var global = Locale.Global[lang].Value;
+
+        if (global.ContainsKey($"{id} Nickname"))
+        {
+            return global[$"{id} Nickname"];
+        }
+        
+        return "";                                 
     }
 
     public void SetInfo(GeneralInfo info)
@@ -66,6 +103,7 @@ public class LocalesServer(
 
         foreach (var lang in global.Keys)
         {
+            
             if (global.TryGetValue(lang, out var lazyLoad))
             {
                 lazyLoad.AddTransformer(localeData =>
@@ -95,7 +133,7 @@ public class LocalesServer(
             }
         }
     }
-
+    
     public void AddItemInfo(ItemsInfo info)
     {
         var global = Locale.Global;
@@ -197,55 +235,5 @@ public class LocalesServer(
         var global = Locale.Global;
         
     }
-
-    public ItemsDesc GetItemInfoByLang(string id, string lang)
-    {
-        var global = Locale.Global[lang].Value;
-        
-        ItemsDesc itemsDesc = new()
-        {
-            Name = "",
-            ShortName = "",
-            Description = "",
-        };
-
-        foreach (var key in _itemDescList)
-        {
-            string keyDesc = $"{id} {key}";
-            if(!global.ContainsKey(keyDesc)) continue;
-            //itemsDesc[key] = global[keyDesc];
-            // 通过反射给 itemsDesc 对应属性赋值
-            var prop = typeof(ItemsDesc).GetProperty(key);
-            if (prop != null && prop.CanWrite)
-            {
-                prop.SetValue(itemsDesc, global[keyDesc]);
-            }
-        }
-        
-        return itemsDesc;
-    }
-
-    public string GetTraderNicknameByLang(string id, string lang="ch")
-    {
-        var global = Locale.Global[lang].Value;
-
-        if (global.ContainsKey($"{id} Nickname"))
-        {
-            return global[$"{id} Nickname"];
-        }
-        
-        return "";                                 
-    }
     
-    public string GetInfoByKey(string key, string lang = "ch")
-    {
-        var global = Locale.Global[lang].Value;
-        if (global.ContainsKey(key))
-        {
-            return global[key];
-        }
-        return "";
-    }
-    
-
 }

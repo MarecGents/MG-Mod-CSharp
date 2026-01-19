@@ -27,7 +27,11 @@ public class TemplatesServer(
     )
 {
     private Templates Templates_ => databaseService.GetTemplates();
-
+    // Item.json
+    public Dictionary<MongoId, TemplateItem> GetItems()
+    {
+        return Templates_.Items;
+    }
     public bool IsItemExists(string ItemId)
     {
         return Templates_.Items.ContainsKey(ItemId);
@@ -55,17 +59,6 @@ public class TemplatesServer(
             NowId = Temp;
         }
         return ParentList;
-    }
-    public string FindHBItemParentId(string ItemId)
-    {
-        foreach (var item in Templates_.Handbook.Items)
-        {
-            if (item.Id == ItemId)
-            {
-                return item.ParentId;
-            }
-        }
-        return "null";
     }
     public void AddFilters(Dictionary<string,string> _filterList)
     {
@@ -171,6 +164,44 @@ public class TemplatesServer(
             }
         }
     }
+    // handbook.json
+    public HandbookBase GetHandbook()
+    {
+        return Templates_.Handbook;
+    }
+    public string FindHBItemParentId(string ItemId)
+    {
+        foreach (var item in Templates_.Handbook.Items)
+        {
+            if (item.Id == ItemId)
+            {
+                return item.ParentId;
+            }
+        }
+        return "null";
+    }
+    public void AddHbCategory(HandbookCategory HbCategory)
+    {
+        if (!MongoId.IsValidMongoId(HbCategory.Id)) return;
+        
+        if (HbCategory.ParentId == null)
+        {
+            Templates_.Handbook.Categories.Add(HbCategory);
+            return;
+        }
+        int v = 0;
+        foreach (var Categories in Templates_.Handbook.Categories)
+        {
+            if (Categories.Id == HbCategory.ParentId)
+            {
+                v = 1;
+                break;
+            }
+        }
+        if (v == 0) return;
+        Templates_.Handbook.Categories.Add(HbCategory);
+    }
+    
     public void AddCustomItem(NewItemFromCloneDetails item)
     {
         customItemService.CreateItemFromClone(item);

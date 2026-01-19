@@ -8,6 +8,7 @@ using System.Reflection;
 using _MGMod.types.services;
 using SPTarkov.Server.Core.Utils;
 using _MGMod.types.models.Custom;
+using _MGMod.types.models.Paths;
 using _MGMod.types.server;
 using _MGMod.types.utils;
 using SPTarkov.Server.Core.Models.Spt.Config;
@@ -44,6 +45,7 @@ public class MGmod(
         // var modPath = modHelper.GetAbsolutePathToModFolder(Assembly.GetExecutingAssembly());
         // logger.LogWithColor("This is MGmod", LogTextColor.Red);
         configSettingServices.ModSetting();
+ 
         return Task.CompletedTask;
     }
 }
