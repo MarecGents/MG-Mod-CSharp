@@ -12,7 +12,7 @@ namespace _MGMod.types.services;
 [Injectable(TypePriority = OnLoadOrder.PostDBModLoader + 1)]
 public class CustomAssortServices(
     ISptLogger<CustomAssortServices> logger,
-    MGUtils mgUtils
+    MGUtils mGUtils
     )
 {
    public CustomItemAssorts CreateCustomItemAssorts(MGItem item)
@@ -55,8 +55,8 @@ public class CustomAssortServices(
         foreach(var item in newAssorts)
         {
             var oldId = item.Id;
-            item.Id = mgUtils.Generate();
-            newAssorts = mgUtils.ReplaceKey<List<Item>>(newAssorts, oldId, item.Id);
+            item.Id = mGUtils.Generate();
+            newAssorts = mGUtils.ReplaceKey<List<Item>>(newAssorts, oldId, item.Id);
         }
         return newAssorts;
     }

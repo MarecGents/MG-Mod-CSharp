@@ -13,27 +13,27 @@ namespace _MGMod.types.services;
 public class TestServices
 {
     private ISptLogger<TestServices> logger;
-    private MGUtils mgUtils;
+    private MGUtils mGUtils;
     
     public TestServices(
         ISptLogger<TestServices> _logger,
-        MGUtils _mgUtils
+        MGUtils _mGUtils
     )
     {
         logger = _logger;
-        mgUtils = _mgUtils;
+        mGUtils = _mGUtils;
     }
 
     public void Initialize()
     {
         logger.Error(MongoId.IsValidMongoId("8ef5f317245977243854e041").ToString());
-        var test1json = mgUtils.GetJsonDataFromFile<SuperItem>(
+        var test1json = mGUtils.GetJsonDataFromFile<SuperItem>(
             new PathType
             {
                 Path = Paths.SuperItemPath,
                 FileName = "超级狗牌包.json"
             });
-        logger.Error(mgUtils.Serialize(test1json));
+        logger.Error(mGUtils.Serialize(test1json));
         
     }
 }

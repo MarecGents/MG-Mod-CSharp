@@ -2,6 +2,7 @@
 using _MGMod.types.models.EFT.locations;
 using _MGMod.types.models.EFT.templetes;
 using SPTarkov.Server.Core.Loaders;
+using SPTarkov.Server.Core.Models.Common;
 using SPTarkov.Server.Core.Models.Eft.Common.Tables;
 
 namespace _MGMod.types.models.EFT.traders;
@@ -15,6 +16,7 @@ public class CustomTraders
     public Trader? traderData { get; set; }
     public BundleManifest? bundles { get; set; }
     public CustomGlobals? globals { get; set; }
+    public CustomTraderInfo traderInfo { get; set; }
 }
 
 public class CustomTraderLocales
@@ -39,6 +41,13 @@ public class CustomTraderInfo
     public string _id { get; set; }
     public string name { get; set; }
     public TraderDesc locales {  get; set; }
+    public CustomTraderInsurance? insurance { get; set; }
+    public CustomTraderRepair? repair { get; set; }
+    public CustomTraderLoyaltyLevels? loyaltyLevels { get; set; }
+    public int? discount { get; set; }
+    public bool? medic { get; set; }
+    public MinMax<int>? updateTime { get; set; }
+    public bool? unlockedDefault { get; set; }
     
 }
 
@@ -51,8 +60,6 @@ public class CustomTraderInsurance
     public int chance { get; set; }
     public int storageTime { get; set; }
     public CustomTraderInsuranceMessage? Message { get; set; }
-    public CustomTraderRepair? reapir { get; set; }
-
 }
 
 public class CustomTraderInsuranceMessage
@@ -74,7 +81,19 @@ public class CustomTraderRepair
 
 public class CustomTraderLoyaltyLevels
 {
-    public Dictionary<string,string>? description { get; set; }
-
+    public CustomTraderLoyaltyLevelsDesc? description { get; set; }
+    public HashSet<TraderLoyaltyLevel>? range { get; set; }
 }
 
+public class CustomTraderLoyaltyLevelsDesc
+{
+    public string main { get; set; }
+    public string minLevel {get;set;}
+    public string minSalesSum {get;set;}
+    public string minStanding {get;set;}
+    public string buy_price_coef {get;set;}
+    public string repair_price_coef {get;set;}
+    public string insurance_price_coef {get;set;}
+    public string exchange_price_coef {get;set;}
+    public string heal_price_coef {get;set;}
+}

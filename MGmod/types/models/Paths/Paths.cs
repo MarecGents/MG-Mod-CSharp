@@ -77,7 +77,20 @@ public static class Paths
     public static readonly string TestPath = "./db/test/";
 
     public static readonly string Traders = "./traders";
+    
+    public static readonly TraderPathsType TraderPaths = new();
+}
 
+public class TraderPathsType
+{
+    public static readonly string TraderItemsPath = "./items";
+    public static readonly string TraderLocalesPath = "./locales";
+    public static readonly string TraderLocationPath = "./location";
+    public static readonly string TraderTemplatesPath = "./templates";
+    public static readonly string TraderDataPath = "./traderData";
+    public static readonly string TraderBundles = "bundles.json";
+    public static readonly string TraderGlobals = "globals.json";
+    public static readonly string TraderInfo = "traderInfo.json";
 }
 
 public class PathType

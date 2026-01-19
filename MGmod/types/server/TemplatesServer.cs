@@ -23,7 +23,7 @@ public class TemplatesServer(
     DatabaseService databaseService,
     LocalesServer localesServer,
     CustomItemService customItemService,
-    MGUtils mgUtils
+    MGUtils mGUtils
     )
 {
     private Templates Templates_ => databaseService.GetTemplates();
@@ -229,7 +229,7 @@ public class TemplatesServer(
             return;
         }
         */
-        if (!mgUtils.IsMongoId(item.items.newId))
+        if (!mGUtils.IsMongoId(item.items.newId))
         {
             logger.Warning($"MG独立物品id为{item.items.newId}的\"newId\"不符合MongoId格式，建议修改newId，否则游戏内会报错。如果你安装了解除MongoId限制的mod，请忽视此警告消息。");
         }
@@ -599,14 +599,14 @@ public class TemplatesServer(
             if (ItemParent == "5a2c3a9486f774688b05e574"
                 && TemplatesSetting.T7ThermalImaging)
             {
-                var T7Json = mgUtils.GetJsonDataFromFile<TemplateItem>(Paths.T7Json);
-                ItemProps = mgUtils.AssignNonNullProps(T7Json.Properties, ItemProps);
+                var T7Json = mGUtils.GetJsonDataFromFile<TemplateItem>(Paths.T7Json);
+                ItemProps = mGUtils.AssignNonNullProps(T7Json.Properties, ItemProps);
             }
             if (ItemParent == "5d21f59b6dbe99052b54ef83"
                 && TemplatesSetting.T7ThermalImaging)
             {
-                var GPNVGJson = mgUtils.GetJsonDataFromFile<TemplateItem>(Paths.GPNVGJson);
-                ItemProps = mgUtils.AssignNonNullProps(GPNVGJson.Properties, ItemProps);
+                var GPNVGJson = mGUtils.GetJsonDataFromFile<TemplateItem>(Paths.GPNVGJson);
+                ItemProps = mGUtils.AssignNonNullProps(GPNVGJson.Properties, ItemProps);
             }
         }
     }

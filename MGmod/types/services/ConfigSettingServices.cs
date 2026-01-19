@@ -15,7 +15,7 @@ public class ConfigSettingServices
 {
     private ISptLogger<ConfigSettingServices> logger;
     private ConfigSettingType? configJson;
-    private MGUtils mgUtils;
+    private MGUtils mGUtils;
 
     private BotsServer botsServer;
     private ConfigsServer configsServer;
@@ -28,10 +28,11 @@ public class ConfigSettingServices
     private CustomItemServices customItemServices;
     private KeyClassfyServices keyClassfyServices;
     private SyncFleaMarketServices syncFleaMarketServices;
+    private CustomTraderServices  customTraderServices;
     private TestServices testServices;
     public ConfigSettingServices(
         ISptLogger<ConfigSettingServices> _logger,
-        MGUtils _mgUtils,
+        MGUtils _mGUtils,
 
         BotsServer _botsServer,
         ConfigsServer _configsServer,
@@ -40,7 +41,8 @@ public class ConfigSettingServices
         LocationsServer _locationsServer,
         TemplatesServer _templatesServer,
         TradersServer _tradersServer,
-
+        
+        CustomTraderServices _customTraderServices,
         CustomItemServices _customItemServices,
         KeyClassfyServices _keyClassfyServices,
         SyncFleaMarketServices _syncFleaMarketServices,
@@ -49,7 +51,7 @@ public class ConfigSettingServices
         )
     {
         logger = _logger;
-        mgUtils = _mgUtils;
+        mGUtils = _mGUtils;
 
         botsServer = _botsServer;
         configsServer = _configsServer;
@@ -59,13 +61,14 @@ public class ConfigSettingServices
         templatesServer = _templatesServer;
         tradersServer = _tradersServer;
 
+        customTraderServices = _customTraderServices;
         customItemServices = _customItemServices;
         keyClassfyServices = _keyClassfyServices;
         syncFleaMarketServices = _syncFleaMarketServices;
         
         testServices = _testServices;
         
-        configJson = mgUtils.GetJsonDataFromFile<ConfigSettingType>(Paths.ConfigJson);
+        configJson = mGUtils.GetJsonDataFromFile<ConfigSettingType>(Paths.ConfigJson);
     }
 
     public async Task ModSetting()
@@ -73,7 +76,7 @@ public class ConfigSettingServices
         var CustomSetting = GetMGCustomSetting();
         // testServices.Initialize();
         if (CustomSetting.SyncFlea) await syncFleaMarketServices.Start();
-        //if (CustomSetting.CustomTrader) { }
+        if (CustomSetting.CustomTrader) customTraderServices.Start();
         if (CustomSetting.CustomItem) customItemServices.Start();
         if (CustomSetting.KeyClassfy) keyClassfyServices.Start();
          botsServer.MGmodBots(GetBotSetting());

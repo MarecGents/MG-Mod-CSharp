@@ -20,7 +20,7 @@ public class CustomItemServices(
     ISptLogger<CustomItemServices> logger,
     DatabaseService databaseService,
     LocalesServer localesServer,
-    MGUtils mgUtils,
+    MGUtils mGUtils,
     FileUtil fileUtil,
     JsonUtil jsonUtil,
     TemplatesServer templatesServer,
@@ -40,7 +40,7 @@ public class CustomItemServices(
 
     public Dictionary<string, MGItem> GetAllItems()
     {
-        var files = mgUtils.GetFiles(Paths.MGItemDB);
+        var files = mGUtils.GetFiles(Paths.MGItemDB);
         var ItemList = new Dictionary<string, MGItem>();
         var num = 1;
         foreach (var file in files)
@@ -56,7 +56,7 @@ public class CustomItemServices(
     public void SuperItemsToMG()
     {
         string[] superItemProp = ["tpl", "items", "handbook"];
-        var files = mgUtils.GetFiles(Paths.SuperItemPath);
+        var files = mGUtils.GetFiles(Paths.SuperItemPath);
         foreach(var file in files)
         {
             
@@ -66,7 +66,7 @@ public class CustomItemServices(
             List<string> errKey = new();
             foreach(var err in superItemProp)
             {
-                if (!mgUtils.HasProp(item, err) ?? false)
+                if (!mGUtils.HasProp(item, err) ?? false)
                 {
                     errKey.Add(err);
                 }
@@ -109,8 +109,8 @@ public class CustomItemServices(
             {
                 mgItem.HandbookId = "5b47574386f77428ca22b2f4";
             }
-            string Data = mgUtils.Serialize(mgItem);
-            mgUtils.WriteFile(Path.Combine(Paths.MGItemDB, $"{fileName}-Super.json"), Data);
+            string Data = mGUtils.Serialize(mgItem);
+            mGUtils.WriteFile(Path.Combine(Paths.MGItemDB, $"{fileName}-Super.json"), Data);
             fileUtil.DeleteFile(file);
         }
     }
@@ -118,7 +118,7 @@ public class CustomItemServices(
     public void BroItemsToMG()
     {
         List<string> broItemProp = new() { "newId", "itemTplToClone", "overrideProperties", "locales" };
-        var files = mgUtils.GetFiles(Paths.BrothersItemDB);
+        var files = mGUtils.GetFiles(Paths.BrothersItemDB);
         foreach(var file in files)
         {
             if (!fileUtil.FileExists(file)) continue;
@@ -129,7 +129,7 @@ public class CustomItemServices(
             List<string> errKey = new();
             foreach (var err in broItemProp)
             {
-                if (!mgUtils.HasProp(item, err) ?? false)
+                if (!mGUtils.HasProp(item, err) ?? false)
                 {
                     errKey.Add(err);
                 }
@@ -166,8 +166,8 @@ public class CustomItemServices(
             {
                 mgItem.HandbookId = "5b47574386f77428ca22b2f4";
             }
-            string Data = mgUtils.Serialize(mgItem);
-            mgUtils.WriteFile(Path.Combine(Paths.MGItemDB, $"{fileName}-Bro.json"), Data);
+            string Data = mGUtils.Serialize(mgItem);
+            mGUtils.WriteFile(Path.Combine(Paths.MGItemDB, $"{fileName}-Bro.json"), Data);
             fileUtil.DeleteFile(file);
         }
     }
@@ -229,20 +229,20 @@ public class CustomItemServices(
                 if (HBItemParentId != "null") item.HandbookId = HBItemParentId;
                 else item.HandbookId = "5b47574386f77428ca22b2f4";
             }
-            string Data = mgUtils.Serialize<MGItem>(item);
-            mgUtils.DeleteFile(Path.Combine(Paths.MGItemDB, $"{it}.json"));
-            mgUtils.WriteFile(Path.Combine(Paths.MGItemDB, $"{it}.json"), Data);
+            string Data = mGUtils.Serialize<MGItem>(item);
+            mGUtils.DeleteFile(Path.Combine(Paths.MGItemDB, $"{it}.json"));
+            mGUtils.WriteFile(Path.Combine(Paths.MGItemDB, $"{it}.json"), Data);
         }
         return ItemList;
     }
 
     public (MGItem A, bool B)? CreatNewKey(MGItem item, string key, object value)
     {
-        if (mgUtils.HasProp(item, key) ?? false)
+        if (mGUtils.HasProp(item, key) ?? false)
         {
             return (item, false);
         }
-        bool setSuccess = mgUtils.SetPropValue(item,key,value);
+        bool setSuccess = mGUtils.SetPropValue(item,key,value);
         return (item, setSuccess);
     }
     
@@ -252,7 +252,7 @@ public class CustomItemServices(
         List<string> errKey = new();
         foreach (var key in baseProperty)
         {
-            if(!mgUtils.HasProp(item, key)??true)
+            if(!mGUtils.HasProp(item, key)??true)
             {
                 errKey.Add(key);
             }

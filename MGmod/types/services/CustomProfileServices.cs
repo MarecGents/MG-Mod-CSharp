@@ -15,19 +15,19 @@ public class CustomProfileServices
 	private ISptLogger<CustomProfileServices> logger;
 	private DatabaseService databaseService;
 	private TemplatesServer templatesServer;
-	private MGUtils mgUtils;
+	private MGUtils mGUtils;
 
 	public CustomProfileServices(
 		ISptLogger<CustomProfileServices> _logger,
 		DatabaseService _databaseService,
 		TemplatesServer _templatesServer,
-		MGUtils _mgUtils
+		MGUtils _mGUtils
 		)
 	{
 		logger = _logger;
 		databaseService = _databaseService;
 		templatesServer = _templatesServer;
-		mgUtils = _mgUtils;
+		mGUtils = _mGUtils;
 	}
 
 	public void start()
