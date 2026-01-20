@@ -59,6 +59,13 @@ public class TemplatesServer(
         }
         return ParentList;
     }
+
+    public bool AddItemToDB(TemplateItem item)
+    {
+        var Items = GetItems();
+        var flag = Items.TryAdd(item.Id, item);
+        return flag;
+    }
     public void AddFilters(Dictionary<string,string> _filterList)
     {
         var itemsDB = GetItems();
@@ -273,6 +280,12 @@ public class TemplatesServer(
         var filterList = new Dictionary<string, string>()
         { { item.items.newId, item.items.cloneId} };
         AddFilters(filterList);
+    }
+
+    public bool AddCustomTraderItemsToDB(CustomTraderItems item)
+    {
+        var flag = AddItemToDB(item.item);
+        return flag;
     }
     public void AddProfile()
     {

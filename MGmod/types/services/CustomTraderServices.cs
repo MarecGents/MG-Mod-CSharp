@@ -1,4 +1,5 @@
-﻿using _MGMod.types.models.EFT.traders;
+﻿using _MGMod.types.models.EFT.templetes;
+using _MGMod.types.models.EFT.traders;
 using _MGMod.types.models.Paths;
 using _MGMod.types.server;
 using _MGMod.types.utils;
@@ -51,13 +52,17 @@ public class CustomTraderServices
     {
         var TradersDirectories = mGUtils.GetDirectories(Paths.Traders);
         BundleManifest Bundles = new BundleManifest();
-        foreach (var traderName in TradersDirectories)
+        foreach (var traderPath in TradersDirectories)
         {
-            string traderPath = Path.Combine(Paths.Traders, traderName);
             bool addFlag = AddTraderBaseToDB(traderPath);
             if (!addFlag) continue;
-            
-            logger.LogWithColor($"[MGMod][独立商人]商人【{Path.GetFileName(traderName)}】已添加。");
+            AddImageToDB(traderPath);
+            AddTraderItemsToDB(traderPath);
+            AddTraderLocalesToDB(traderPath);
+            AddTraderLocationToDB(traderPath);
+            AddTraderTemplatesToDB(traderPath);
+            AddTraderGlobalsToDB(traderPath);
+            logger.LogWithColor($"[MGMod][独立商人]商人【{Path.GetFileName(traderPath)}】已添加。", LogTextColor.Yellow);
         }
         return Bundles;
     }
@@ -235,17 +240,47 @@ public class CustomTraderServices
 
     public void AddImageToDB(string traderPath)
     {
+        // quests
+        var questsPath =  Path.Combine(traderPath,TraderPathsType.TraderQuestImagesPath);
+        if (mGUtils.DirectoryExists(questsPath,false))
+        {
+            var iconList = mGUtils.GetFiles(questsPath);
+            foreach (var iconPath in iconList)
+            {
+                imageRouter.AddRoute($"/files/quest/icon/{mGUtils.StripExtension(iconPath)}", $"{Path.Combine(questsPath,iconPath)}");
+            }
+        }
         
     }
 
     public void AddTraderItemsToDB(string traderPath)
     {
-        
+        Dictionary<string, string> filterList = new();
+        string TraderItemsPath = Path.Combine(traderPath, TraderPathsType.TraderItemsPath);
+        var itemList = mGUtils.GetFiles(TraderItemsPath);
+        foreach (var itemFilePath in itemList)
+        {
+            CustomTraderItems traderItem = mGUtils.GetJsonDataFromFile<CustomTraderItems>(new()
+            {
+                FileName = Path.GetFileName(itemFilePath),
+                Path = TraderItemsPath,
+            }, false);
+            if (templatesServer.IsItemExists(traderItem.item.Id))
+            {
+                logger.LogWithColor($"[MGMod][独立商人]【警告】独立商人物品【id:{traderItem.item.Id}】已存在，请酌情修改id，本次不执行添加操作。", LogTextColor.Cyan);
+            }
+
+            if (!String.IsNullOrEmpty(traderItem.origin) && mGUtils.IsMongoId(traderItem.origin))
+                filterList.TryAdd(traderItem.item.Id, traderItem.origin);
+            var flag = templatesServer.AddCustomTraderItemsToDB(traderItem);
+            if(!flag) logger.LogWithColor($"[MGMod][独立商人]【警告】独立商人物品【id:{traderItem.item.Id}】添加失败，请检查物品文件是否正确。", LogTextColor.Cyan);
+        }
+        templatesServer.AddFilters(filterList);
     }
 
     public void AddTraderLocalesToDB(string traderPath)
     {
-        
+        // 2026.01.20 进度于此 
     }
 
     public void AddTraderLocationToDB(string traderPath)
@@ -254,11 +289,6 @@ public class CustomTraderServices
     }
 
     public void AddTraderTemplatesToDB(string traderPath)
-    {
-        
-    }
-
-    public void AddTraderBundlesToDB(string traderPath)
     {
         
     }

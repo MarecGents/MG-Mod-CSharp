@@ -133,7 +133,7 @@ public class SyncFleaMarketServices
 
     private void Log(string data, LogTextColor textColor)
     {
-        logger.LogWithColor("[MG-Mod][实时跳蚤]："+ data, textColor);
+        logger.LogWithColor("[MGMod][实时跳蚤]："+ data, textColor);
     }
 }
 

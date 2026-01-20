@@ -11,6 +11,7 @@ using System.Reflection;
 using System.Text.Json;
 using System.Text.RegularExpressions;
 using SPTarkov.Server.Core.Models.Logging;
+using Path = System.IO.Path;
 
 namespace _MGMod.types.utils;
 [Injectable(TypePriority = OnLoadOrder.PreSptModLoader + 1)]
@@ -24,10 +25,10 @@ public class MGUtils(
 {
     private string? modPath => modHelper.GetAbsolutePathToModFolder(Assembly.GetExecutingAssembly());
 
-    public virtual T? GetJsonDataFromFile<T>(PathType filePath)
+    public virtual T? GetJsonDataFromFile<T>(PathType filePath, bool useModPath = true)
     {
-        var fullPath = System.IO.Path.Combine(modPath, filePath.Path);
-        if (File.Exists(System.IO.Path.Combine(fullPath, filePath.FileName)))
+        var fullPath = useModPath ? Path.Combine(modPath, filePath.Path) : filePath.Path;
+        if (File.Exists(Path.Combine(fullPath, filePath.FileName)))
         {
             return modHelper.GetJsonDataFromFile<T>(fullPath, filePath.FileName);
         }
@@ -121,9 +122,9 @@ public class MGUtils(
         }
     }
 
-    public List<string> GetFiles(string relativePath)
+    public List<string> GetFiles(string relativePath, bool useModePath = true)
     {
-        var fullPath = System.IO.Path.Combine(modPath, relativePath);
+        var fullPath = useModePath ? Path.Combine(modPath, relativePath) : relativePath;
         if (Directory.Exists(fullPath))
         {
             var files = fileUtil.GetFiles(fullPath);
@@ -132,6 +133,13 @@ public class MGUtils(
         return new List<string>();
     }
 
+    public bool DirectoryExists(string relativePath, bool useModePath = true)
+    {
+        if(useModePath) return fileUtil.DirectoryExists(Path.Combine(modPath, relativePath));
+        
+        return fileUtil.DirectoryExists(relativePath);
+    }
+   
     public string[] GetDirectories(string relativePath = "")
     {
         var fullPath = System.IO.Path.Combine(modPath, relativePath);
@@ -142,23 +150,33 @@ public class MGUtils(
         }
         return Array.Empty<string>();
     }
+    
     public bool FileExists(string relativeFilePath)
     {
         return fileUtil.FileExists(System.IO.Path.Combine(modPath, relativeFilePath));
     }
+    
     public void DeleteFile(string relativeFilePath)
     {
         fileUtil.DeleteFile(System.IO.Path.Combine(modPath, relativeFilePath));
     }
+    
     public void WriteFile(string relativeFilePath, string Data)
     {
         fileUtil.WriteFile(System.IO.Path.Combine(modPath, relativeFilePath), Data);
     }
+
+    public string StripExtension(string filePath)
+    {
+        return fileUtil.StripExtension(filePath);
+    }
+    
     public MongoId Generate()
     {
         //return hashUtil.Generate();
         return new MongoId();
     }
+    
     public bool IsMongoId(string id)
     {
         //return hashUtil.IsValidMongoId(id);
