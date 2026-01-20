@@ -136,6 +136,25 @@ public class CustomTraderServices
             }
         };
         
+        // dialogue.json
+        foreach (var dialogue in newTrader.Dialogue)
+        {
+            if (traderInfo.insurance.Message.TryGetValue(dialogue.Key, out var message))
+            {
+                dialogue.Value?.AddRange(message);
+            }
+        }
+        // questassort.json
+        
+        // assort.json
+        TraderAssort traderAssort = mGUtils.GetJsonDataFromFile<TraderAssort>(new PathType
+        {
+            FileName = "assort.json",
+            Path = Path.Combine(traderPath,TraderPathsType.TraderDataPath),
+        });
+        
+        
+        
         
         
         Traders.Add(traderInfo._id, newTrader);
@@ -181,4 +200,15 @@ public class CustomTraderServices
         
     }
 
+    public TraderAssort FixTraderAssort(TraderAssort assort)
+    {
+        string AssortString = mGUtils.Serialize(assort);
+        foreach (var item in assort.Items)
+        {
+            if(mGUtils.IsMongoId(item.Id)) continue;
+            
+            
+        }
+        return assort;
+    }
 }

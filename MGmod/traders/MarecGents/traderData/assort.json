@@ -529,16 +529,6 @@
         "UnlimitedCount": true,
         "StackObjectsCount": 9999999
       }
-    },
-    {
-      "_id": "mgtrader_custom_assort_guns1_PKP",
-      "_tpl": "64ca3d3954fc657e230529cc",
-      "parentId": "hideout",
-      "slotId": "hideout",
-      "upd": {
-        "UnlimitedCount": true,
-        "StackObjectsCount": 2
-      }
     }
   ],
   "barter_scheme": {
@@ -965,14 +955,6 @@
           "_tpl": "5449016a4bdc2d6f028b456f"
         }
       ]
-    ],
-    "mgtrader_custom_assort_guns1_PKP": [
-      [
-        {
-          "count": 500000,
-          "_tpl": "5449016a4bdc2d6f028b456f"
-        }
-      ]
     ]
 
   },
@@ -1029,7 +1011,6 @@
     "mgtrader_default_assort_bullet50": 1,
     "mgtrader_default_assort_bullet51": 2,
     "mgtrader_default_assort_bullet52": 3,
-    "mgtrader_default_assort_item1": 1,
-    "mgtrader_custom_assort_guns1_PKP": 4
+    "mgtrader_default_assort_item1": 1
   }
 }

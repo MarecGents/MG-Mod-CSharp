@@ -59,17 +59,7 @@ public class CustomTraderInsurance
     public int pay { get; set; }
     public int chance { get; set; }
     public int storageTime { get; set; }
-    public CustomTraderInsuranceMessage? Message { get; set; }
-}
-
-public class CustomTraderInsuranceMessage
-{
-    public List<string>? insuranceStart { get; set; }
-    public List<string>? insuranceFound { get; set; }
-    public List<string>? insuranceFailed { get; set; }
-    public List<string>? insuranceExpired { get; set; }
-    public List<string>? insuranceComplete { get; set; }
-    public List<string>? insuranceFailedLabs { get; set; }
+    public Dictionary<string, List<string>?>? Message { get; set; }
 }
 
 public class CustomTraderRepair
