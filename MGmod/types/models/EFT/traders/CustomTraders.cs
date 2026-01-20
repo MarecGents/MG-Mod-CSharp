@@ -56,7 +56,7 @@ public class CustomTraderInsurance
     public bool enable { get; set; }
     public int minreturntime { get; set; }
     public int maxreturntime { get; set; }
-    public double pay { get; set; }
+    public int pay { get; set; }
     public int chance { get; set; }
     public int storageTime { get; set; }
     public CustomTraderInsuranceMessage? Message { get; set; }
@@ -82,7 +82,7 @@ public class CustomTraderRepair
 public class CustomTraderLoyaltyLevels
 {
     public CustomTraderLoyaltyLevelsDesc? description { get; set; }
-    public HashSet<TraderLoyaltyLevel>? range { get; set; }
+    public List<TraderLoyaltyLevel>? range { get; set; }
 }
 
 public class CustomTraderLoyaltyLevelsDesc

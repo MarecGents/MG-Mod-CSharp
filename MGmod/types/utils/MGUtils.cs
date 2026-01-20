@@ -67,10 +67,8 @@ public class MGUtils(
 
     public bool? HasProp(object obj, string propertyName)
     {
-        //logger.Debug(propertyName);
         if (obj == null || string.IsNullOrWhiteSpace(propertyName))
         {
-            //logger.Debug("1");
             return false;
         }
 
@@ -82,12 +80,10 @@ public class MGUtils(
 
         if (prop == null)
         {
-            //logger.Debug("2");
             return false; // 不存在此属性
         }
 
         var value = prop.GetValue(obj);
-        //logger.Debug("3");
 
         return value != null;
     }

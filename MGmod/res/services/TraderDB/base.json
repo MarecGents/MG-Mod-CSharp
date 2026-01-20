@@ -17,7 +17,7 @@
 	"currency": "RUB",
 	"nextResupply": 20000000,
 	"repair": {
-		"availability": true,
+		"availability": false,
 		"quality": "2",
 		"excluded_id_list": [],
 		"excluded_category": [],
@@ -25,7 +25,7 @@
 		"currency_coefficient": 3
 	},
 	"insurance": {
-		"availability": true,
+		"availability": false,
 		"min_payment": 0,
 		"min_return_hour": 0,
 		"max_return_hour": 0,
@@ -125,6 +125,24 @@
 		],
 		"category": []
 	},
+	"items_sell":{
+		"1": {
+			"category": [],
+			"id_list":[]
+		},
+		"2": {
+			"category": [],
+			"id_list":[]
+		},
+		"3": {
+			"category": [],
+			"id_list":[]
+		},
+		"4": {
+			"category": [],
+			"id_list":[]
+		}
+	},
 	"sell_category": [
 		"5b47574386f77428ca22b2ed",
 		"5b47574386f77428ca22b2ee",
@@ -213,7 +231,10 @@
 		"5c518ec986f7743b68682ce2",
 		"5c518ed586f774119a772aee"
 	],
+	"isAvailableInPVE": true,
 	"isCanTransferItems": false,
+	"isCanTransferItemsFromPve": false,
+	"mainDialogue": null,
 	"prohibitedTransferableItems": {
 		"category": [],
 		"id_list": []

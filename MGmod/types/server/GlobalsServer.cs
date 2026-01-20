@@ -2,6 +2,7 @@
 using SPTarkov.DI.Annotations;
 using SPTarkov.Server.Core.DI;
 using SPTarkov.Server.Core.Models.Eft.Common;
+using SPTarkov.Server.Core.Models.Logging;
 using SPTarkov.Server.Core.Models.Utils;
 using SPTarkov.Server.Core.Services;
 
@@ -22,7 +23,7 @@ public class GlobalsServer(
             Buffs.Add(buffName, buff);
             return;
         }
-        logger.LogWithColor($"针剂Buff名称：{buffName}重复！请更换其他Buff名称。");
+        logger.LogWithColor($"针剂Buff名称：{buffName}重复！请更换其他Buff名称。", LogTextColor.Cyan);
         return;
 
     }

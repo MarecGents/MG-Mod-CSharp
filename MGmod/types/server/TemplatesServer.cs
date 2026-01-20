@@ -48,12 +48,9 @@ public class TemplatesServer(
     {
         List<string> ParentList = new(){};
         string NowId = ItemId;
-        // logger.LogWithColor($"Id {NowId}", LogTextColor.Red, LogBackgroundColor.White);
         while (Templates_.Items.Keys.Contains(NowId) && Templates_.Items[NowId].Parent != "")
         {
-            // logger.LogWithColor($"Id {NowId}", LogTextColor.Red, LogBackgroundColor.White);
             string Temp = FindItemParentIdById(NowId);
-            // logger.LogWithColor($"Id {Temp}", LogTextColor.Red, LogBackgroundColor.White);
             if (Temp == "") { break; }
             ParentList.Add(Temp);
             NowId = Temp;
@@ -218,7 +215,7 @@ public class TemplatesServer(
 
         if(!IsItemExists(item.items.cloneId))
         {
-            logger.LogWithColor($"MG独立物品id为{item.items.newId}的\"cloneId\"未能在items.json找到，无法添加到游戏中，请检查\"cloneId\"是否正确！", LogTextColor.Yellow);
+            logger.LogWithColor($"MG独立物品id为{item.items.newId}的\"cloneId\"未能在items.json找到，无法添加到游戏中，请检查\"cloneId\"是否正确！", LogTextColor.Cyan);
             return;
         }
         

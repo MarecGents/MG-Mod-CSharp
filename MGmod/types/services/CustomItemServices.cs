@@ -71,10 +71,9 @@ public class CustomItemServices(
                     errKey.Add(err);
                 }
             }
-            //logger.Debug(string.Join(", ", errKey));
             if (errKey.Count > 0)
             {
-                logger.LogWithColor($"超模独立物品：{fileName}.json缺少关键属性：{string.Join(", ", errKey)}，请重新检查格式。", LogTextColor.Yellow);
+                logger.LogWithColor($"超模独立物品：{fileName}.json缺少关键属性：{string.Join(", ", errKey)}，请重新检查格式。", LogTextColor.Cyan);
                 continue;
             }
 
@@ -123,7 +122,6 @@ public class CustomItemServices(
         {
             if (!fileUtil.FileExists(file)) continue;
             var fileName = fileUtil.StripExtension(file);
-            //logger.Error(fileName);
             var item = jsonUtil.DeserializeFromFile<BrothersItem>(file);
 
             List<string> errKey = new();
@@ -134,10 +132,9 @@ public class CustomItemServices(
                     errKey.Add(err);
                 }
             }
-            //logger.Debug(string.Join(", ", errKey));
             if (errKey.Count > 0)
             {
-                logger.LogWithColor($"三兄贵独立物品：{fileName}.json缺少关键属性：{string.Join(", ", errKey)}，请重新检查格式。", LogTextColor.Yellow);
+                logger.LogWithColor($"三兄贵独立物品：{fileName}.json缺少关键属性：{string.Join(", ", errKey)}，请重新检查格式。", LogTextColor.Cyan);
                 continue;
             }
             var mgItem = new MGItem
