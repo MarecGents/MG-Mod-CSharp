@@ -34,13 +34,14 @@ public class TemplatesServer(
     }
     public bool IsItemExists(string ItemId)
     {
-        return Templates_.Items.ContainsKey(ItemId);
+        return GetItems().ContainsKey(ItemId);
     }
     public string FindItemParentIdById(string ItemId)
     {
-        if (Templates_.Items.ContainsKey(ItemId))
+        var Items = GetItems();
+        if (Items.ContainsKey(ItemId))
         {
-            return Templates_.Items[ItemId].Parent;
+            return Items[ItemId].Parent;
         }
         return "null";
     }
@@ -48,7 +49,8 @@ public class TemplatesServer(
     {
         List<string> ParentList = new(){};
         string NowId = ItemId;
-        while (Templates_.Items.Keys.Contains(NowId) && Templates_.Items[NowId].Parent != "")
+        var Items = GetItems();
+        while (Items.Keys.Contains(NowId) && Items[NowId].Parent != "")
         {
             string Temp = FindItemParentIdById(NowId);
             if (Temp == "") { break; }
@@ -59,7 +61,7 @@ public class TemplatesServer(
     }
     public void AddFilters(Dictionary<string,string> _filterList)
     {
-        var itemsDB = Templates_.Items;
+        var itemsDB = GetItems();
         List<string> filterList = new() { "StackSlots", "Slots", "Chambers", "Cartridges", "Grids" };
         foreach (var itemId in itemsDB.Keys)
         {
@@ -161,6 +163,7 @@ public class TemplatesServer(
             }
         }
     }
+    
     // handbook.json
     public HandbookBase GetHandbook()
     {
@@ -197,6 +200,28 @@ public class TemplatesServer(
         }
         if (v == 0) return;
         Templates_.Handbook.Categories.Add(HbCategory);
+    }
+    
+    // profile.json
+    public Dictionary<string, ProfileSides> GetProfiles()
+    {
+        return databaseService.GetProfileTemplates();
+    }
+
+    public void AddTraderInitLoyaltyLevel(MongoId Id, int Level = 1)
+    {
+        var profiles = GetProfiles();
+        foreach (var profile in profiles)
+        {
+            profile.Value.Bear.Trader.InitialLoyaltyLevel.TryAdd(Id, Level);
+            profile.Value.Usec.Trader.InitialLoyaltyLevel.TryAdd(Id, Level);
+        }
+    }
+
+    // traders
+    public Dictionary<MongoId, Trader> GetTraders()
+    {
+        return databaseService.GetTraders();
     }
     
     public void AddCustomItem(NewItemFromCloneDetails item)
@@ -280,7 +305,8 @@ public class TemplatesServer(
         string[] MedcParent = [ "5448f39d4bdc2d0a728b4568", "5448f3a14bdc2d27728b4569", "5448f3a64bdc2d60728b456a", "5448f3ac4bdc2dce718b4569" ];
         string[] WeaponFilter = [ "FirstPrimaryWeapon", "SecondPrimaryWeapon", "Holster" ];
         HashSet<MongoId> ArmorVestList = new HashSet<MongoId> { "5448e5284bdc2dcb718b4567", "5448e54d4bdc2dcc718b4568", "57bef4c42459772e8d35a53b" };
-        foreach (var Item in Templates_.Items)
+        var ItemDB = GetItems();
+        foreach (var Item in ItemDB)
         {
             string ItemId = Item.Value.Id;
             string ItemParent = Item.Value.Parent;

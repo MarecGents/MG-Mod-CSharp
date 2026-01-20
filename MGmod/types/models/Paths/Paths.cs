@@ -83,10 +83,37 @@ public static class Paths
 
 public class TraderPathsType
 {
+    public static readonly string TraderImagesPath = "./images";
+    public static readonly string TraderQuestImagesPath = "./images/quests";
     public static readonly string TraderItemsPath = "./items";
     public static readonly string TraderLocalesPath = "./locales";
+    public static readonly PathType TraderItemDesc = new ()
+    {
+        FileName = "itemsdescription.json",
+        Path = TraderLocalesPath
+    };
+    public static readonly PathType TraderMail = new ()
+    {
+        FileName = "mail.json",
+        Path = TraderLocalesPath
+    };
     public static readonly string TraderLocationPath = "./location";
+    public static readonly PathType TraderLooseLoot = new ()
+    {
+        FileName = "looseLoot.json",
+        Path = TraderLocationPath
+    };
     public static readonly string TraderTemplatesPath = "./templates";
+    public static readonly PathType TraderHandbook = new ()
+    {
+        FileName = "handbook.json",
+        Path = TraderTemplatesPath
+    };
+    public static readonly PathType TraderQuests = new ()
+    {
+        FileName = "quests.json",
+        Path = TraderTemplatesPath
+    };
     public static readonly string TraderDataPath = "./traderData";
     public static readonly string TraderBundles = "bundles.json";
     public static readonly string TraderGlobals = "globals.json";

@@ -10,7 +10,7 @@ using SPTarkov.Server.Core.Services;
 using SPTarkov.Server.Core.Utils;
 
 using _MGMod.types.models.Paths;
-using _MGMod.types.models.EFTofMG.templetes;
+using _MGMod.types.models.EFT.templetes;
 using _MGMod.types.utils;
 using SPTarkov.Server.Core.Models.Utils;
 namespace _MGMod.types.services;
