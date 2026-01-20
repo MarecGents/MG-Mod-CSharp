@@ -280,7 +280,7 @@ public class CustomTraderServices
 
     public void AddTraderLocalesToDB(string traderPath)
     {
-        // 2026.01.20 进度于此 
+        // 2026.01.20 23:21 进度于此 
     }
 
     public void AddTraderLocationToDB(string traderPath)
