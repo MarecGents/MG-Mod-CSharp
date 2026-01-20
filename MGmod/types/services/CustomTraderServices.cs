@@ -57,7 +57,7 @@ public class CustomTraderServices
             bool addFlag = AddTraderBaseToDB(traderPath);
             if (!addFlag) continue;
             
-            logger.LogWithColor($"[MGMod][独立商人]商人【{traderName}】已添加。");
+            logger.LogWithColor($"[MGMod][独立商人]商人【{Path.GetFileName(traderName)}】已添加。");
         }
         return Bundles;
     }
@@ -155,42 +155,43 @@ public class CustomTraderServices
                 dialogue.Value?.AddRange(message);
             }
         }
-        // questassort.json
-        Dictionary<string, Dictionary<MongoId, MongoId>> traderQuestAssort = mGUtils.GetJsonDataFromFile<Dictionary<string, Dictionary<MongoId, MongoId>>>(new PathType
+        // questassort.json  Dictionary<string, Dictionary<MongoId, MongoId>>
+        Dictionary<string, Dictionary<string, string>> traderQuestAssort = mGUtils.GetJsonDataFromFile<Dictionary<string, Dictionary<string, string>>>(new PathType
         {
             FileName = "questassort.json",
             Path = Path.Combine(traderPath,TraderPathsType.TraderDataPath),
         });
         // assort.json
-        TraderAssort traderAssort = mGUtils.GetJsonDataFromFile<TraderAssort>(new PathType
+        TraderAssortStringId traderAssortStringId = mGUtils.GetJsonDataFromFile<TraderAssortStringId>(new PathType
         {
             FileName = "assort.json",
             Path = Path.Combine(traderPath,TraderPathsType.TraderDataPath),
         });
-        if (traderAssort.Items.Count > 0)
+        if (traderAssortStringId.items.Count > 0)
         {
-            foreach (var item in traderAssort.Items)
+            foreach (var item in traderAssortStringId.items)
             {
-                if(mGUtils.IsMongoId(item.Id)) continue;
+                if(mGUtils.IsMongoId(item._id)) continue;
                 MongoId newId = new MongoId();
-                traderAssort = mGUtils.ReplaceKey(traderAssort, item.Id, newId);
-                traderQuestAssort = mGUtils.ReplaceKey(traderQuestAssort, item.Id, newId);
+                traderAssortStringId = mGUtils.ReplaceKey(traderAssortStringId, item._id, newId);
+                traderQuestAssort = mGUtils.ReplaceKey(traderQuestAssort, item._id, newId);
             }
+            TraderAssort traderAssort = mGUtils.Deserialize<TraderAssort>(mGUtils.Serialize(traderAssortStringId));
             newTrader.Assort.Items.AddRange(traderAssort.Items);
             foreach (var item in traderAssort.BarterScheme)
             {
-                newTrader.Assort.BarterScheme.Add(item.Key, item.Value);
+                newTrader.Assort.BarterScheme.TryAdd(item.Key, item.Value);
             }
             foreach (var item in traderAssort.LoyalLevelItems)
             {
-                newTrader.Assort.LoyalLevelItems.Add(item.Key, item.Value);
+                newTrader.Assort.LoyalLevelItems.TryAdd(item.Key, item.Value);
             }
 
             foreach (var key in traderQuestAssort)
             {
                 foreach (var key2 in key.Value)
                 {
-                    newTrader.QuestAssort[key.Key].Add(key2.Key, key2.Value);
+                    newTrader.QuestAssort[key.Key].TryAdd(key2.Key, key2.Value);
                 }
             }
         }

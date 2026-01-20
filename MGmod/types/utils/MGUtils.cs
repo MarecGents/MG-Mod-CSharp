@@ -168,7 +168,7 @@ public class MGUtils(
     /// <summary>
     /// 替换对象 JSON 中的指定 key，并反序列化为目标类型 T
     /// </summary>
-    public T ReplaceKey<T>(T data, MongoId oldKey, MongoId newKey)
+    public T ReplaceKey<T>(T data, string? oldKey, MongoId newKey)
     {
         string dataToString = jsonUtil.Serialize(data, true);
         string replacedData = ReplaceAll(dataToString, oldKey.ToString(), newKey.ToString());
