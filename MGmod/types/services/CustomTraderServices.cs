@@ -1,4 +1,6 @@
-﻿using _MGMod.types.models.EFT.templetes;
+﻿using _MGMod.types.models.EFT;
+using _MGMod.types.models.EFT.locales;
+using _MGMod.types.models.EFT.templetes;
 using _MGMod.types.models.EFT.traders;
 using _MGMod.types.models.Paths;
 using _MGMod.types.server;
@@ -7,6 +9,7 @@ using SPTarkov.DI.Annotations;
 using SPTarkov.Server.Core.DI;
 using SPTarkov.Server.Core.Loaders;
 using SPTarkov.Server.Core.Models.Common;
+using SPTarkov.Server.Core.Models.Eft.Common;
 using SPTarkov.Server.Core.Models.Eft.Common.Tables;
 using SPTarkov.Server.Core.Models.Logging;
 using SPTarkov.Server.Core.Models.Utils;
@@ -23,6 +26,7 @@ public class CustomTraderServices
     private LocalesServer localesServer;
     private ConfigsServer configsServer;
     private TemplatesServer templatesServer;
+    private GlobalsServer globalsServer;
     
     public CustomTraderServices(
         MGUtils _mGUtils,
@@ -30,7 +34,8 @@ public class CustomTraderServices
         ImageRouter _imageRouter,
         LocalesServer _localesServer,
         ConfigsServer _configsServer,
-        TemplatesServer _templatesServer
+        TemplatesServer _templatesServer,
+        GlobalsServer _globalsServer
     )
     {
         mGUtils = _mGUtils;
@@ -39,6 +44,7 @@ public class CustomTraderServices
         localesServer = _localesServer;
         configsServer = _configsServer;
         templatesServer = _templatesServer;
+        globalsServer = _globalsServer;
     }
     
     
@@ -280,21 +286,87 @@ public class CustomTraderServices
 
     public void AddTraderLocalesToDB(string traderPath)
     {
-        // 2026.01.20 23:21 进度于此 
+        // itemsdescription.json
+        Dictionary<MongoId, ItemsDesc> itemsDescs = mGUtils.GetJsonDataFromFile<Dictionary<MongoId, ItemsDesc>>(new PathType
+        {
+            FileName = TraderPathsType.TraderItemDesc.FileName,
+            Path = Path.Combine(traderPath,TraderPathsType.TraderItemDesc.Path),
+        }, false);
+        foreach (var item in itemsDescs)
+        {
+            localesServer.AddItemInfo(new ItemsInfo
+            {
+                Id = item.Key,
+                Desc = item.Value
+            });
+        }
+        
+        // mail.json
+        Dictionary<MongoId, QuestDesc> mails = mGUtils.GetJsonDataFromFile<Dictionary<MongoId, QuestDesc>>(new PathType
+        {
+            FileName = TraderPathsType.TraderMail.FileName,
+            Path = Path.Combine(traderPath, TraderPathsType.TraderMail.Path),
+        }, false);
+        foreach (var quest in mails)
+        {
+            localesServer.AddQuestInfo(new QuestInfo
+            {
+                Id = quest.Key,
+                Desc = quest.Value
+            });
+        }
     }
 
     public void AddTraderLocationToDB(string traderPath)
     {
-        
+        // 暂时不写
     }
 
     public void AddTraderTemplatesToDB(string traderPath)
     {
+        // handbook.json
+        HandbookBase handbookBase = templatesServer.GetHandbook();
+        List<HandbookItem> items = mGUtils.GetJsonDataFromFile<List<HandbookItem>>(new PathType
+        {
+            FileName = TraderPathsType.TraderHandbook.FileName,
+            Path = Path.Combine(traderPath, TraderPathsType.TraderHandbook.Path),
+        });
+        handbookBase.Items.AddRange(items);
         
+        // quests.json
+        Dictionary<MongoId, Quest> quests = templatesServer.GetQuests();
+        Dictionary<MongoId, Quest> mGQuests = mGUtils.GetJsonDataFromFile<Dictionary<MongoId, Quest>>(new PathType
+        {
+            FileName = TraderPathsType.TraderQuests.FileName,
+            Path = Path.Combine(traderPath, TraderPathsType.TraderQuests.Path),
+        });
+        foreach (var quest in mGQuests)
+        {
+            quests.TryAdd(quest.Key, quest.Value);
+        }
+
     }
 
     public void AddTraderGlobalsToDB(string traderPath)
     {
+        CustomGlobals mGGlobals = mGUtils.GetJsonDataFromFile<CustomGlobals>(new PathType
+        {
+            FileName = TraderPathsType.TraderGlobals,
+            Path = traderPath,
+        });
+        Globals globals = globalsServer.GetGlobals();
+        
+        // ItemPreset
+        foreach (var itemPreset in mGGlobals.ItemPresets)
+        {
+            globals.ItemPresets.Add(itemPreset.Key, itemPreset.Value);
+        }
+        
+        // Buffs
+        if (mGGlobals.Buffs?.Count > 0)
+        {
+            globalsServer.AddBuffs(mGGlobals.Buffs);
+        }
         
     }
     

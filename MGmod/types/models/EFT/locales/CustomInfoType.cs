@@ -1,4 +1,6 @@
-﻿namespace _MGMod.types.models.EFT.locales;
+﻿using SPTarkov.Server.Core.Models.Common;
+
+namespace _MGMod.types.models.EFT.locales;
 
 public class GeneralInfo
 {
@@ -45,8 +47,7 @@ public class QuestDesc
     public string? acceptPlayerMessage { get; set; }
     public string? completePlayerMessage { get; set; }
     public string? declinePlayerMessage { get; set; }
-
-    public Dictionary<string, string>? other { get; set; }
+    public Dictionary<MongoId, string>? other { get; set; }
 }
 
 public class AnyInfo : Dictionary<string, string>

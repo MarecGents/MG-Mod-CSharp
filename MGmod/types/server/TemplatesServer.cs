@@ -14,6 +14,7 @@ using SPTarkov.Server.Core.Services.Mod;
 using SPTarkov.Server.Core.Models.Logging;
 using SPTarkov.Server.Core.Constants;
 using SPTarkov.Server.Core.Models.Common;
+using SPTarkov.Server.Core.Models.Eft.Common;
 
 namespace _MGMod.types.server;
 
@@ -229,6 +230,12 @@ public class TemplatesServer(
     public Dictionary<MongoId, Trader> GetTraders()
     {
         return databaseService.GetTraders();
+    }
+    
+    // quest
+    public Dictionary<MongoId, Quest> GetQuests()
+    {
+        return databaseService.GetQuests();
     }
     
     public void AddCustomItem(NewItemFromCloneDetails item)

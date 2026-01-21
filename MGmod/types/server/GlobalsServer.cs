@@ -15,6 +15,11 @@ public class GlobalsServer(
     )
 {
     private Globals Globals => databaseService.GetGlobals();
+
+    public Globals GetGlobals()
+    {
+        return Globals;
+    }
     public void AddBuff(string buffName, List<Buff> buff)
     {
         var Buffs = Globals.Configuration.Health.Effects.Stimulator.Buffs;
