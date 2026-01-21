@@ -2,6 +2,12 @@
 
 public static class Paths
 {
+    public static readonly PathType BundlesJson = new ()
+    {
+        FileName = "bundles.json",
+        Path = "./"
+    };
+    
     public static readonly PathType PriceJson = new ()
     {
         FileName = "price.json",

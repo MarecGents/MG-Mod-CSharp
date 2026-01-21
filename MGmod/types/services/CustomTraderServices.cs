@@ -69,13 +69,21 @@ public class CustomTraderServices
             AddTraderTemplatesToDB(traderPath);
             AddTraderGlobalsToDB(traderPath);
             logger.LogWithColor($"[MGMod][独立商人]商人【{Path.GetFileName(traderPath)}】已添加。", LogTextColor.Yellow);
+            BundleManifest bundles = mGUtils.GetJsonDataFromFile<BundleManifest>(new PathType
+            {
+                FileName = TraderPathsType.TraderBundles,
+                Path = traderPath,
+            }, false);
+            Bundles.Manifest.AddRange(bundles.Manifest);
         }
         return Bundles;
     }
 
     public void AddBundles(BundleManifest Bundles)
     {
-        
+        BundleManifest mainBundles = mGUtils.GetJsonDataFromFile<BundleManifest>(Paths.BundlesJson);
+        mainBundles.Manifest.Clear();
+        mainBundles.Manifest.AddRange(Bundles.Manifest);
     }
 
     public bool AddTraderBaseToDB(string traderPath)
@@ -84,7 +92,7 @@ public class CustomTraderServices
         {
             FileName = TraderPathsType.TraderInfo,
             Path = traderPath,
-        });
+        }, false);
         var returnFlag = 0;
         if (traderInfo == default)
         {
@@ -171,13 +179,13 @@ public class CustomTraderServices
         {
             FileName = "questassort.json",
             Path = Path.Combine(traderPath,TraderPathsType.TraderDataPath),
-        });
+        }, false);
         // assort.json
         TraderAssortStringId traderAssortStringId = mGUtils.GetJsonDataFromFile<TraderAssortStringId>(new PathType
         {
             FileName = "assort.json",
             Path = Path.Combine(traderPath,TraderPathsType.TraderDataPath),
-        });
+        }, false);
         if (traderAssortStringId.items.Count > 0)
         {
             foreach (var item in traderAssortStringId.items)
@@ -330,7 +338,7 @@ public class CustomTraderServices
         {
             FileName = TraderPathsType.TraderHandbook.FileName,
             Path = Path.Combine(traderPath, TraderPathsType.TraderHandbook.Path),
-        });
+        }, false);
         handbookBase.Items.AddRange(items);
         
         // quests.json
@@ -339,7 +347,7 @@ public class CustomTraderServices
         {
             FileName = TraderPathsType.TraderQuests.FileName,
             Path = Path.Combine(traderPath, TraderPathsType.TraderQuests.Path),
-        });
+        }, false);
         foreach (var quest in mGQuests)
         {
             quests.TryAdd(quest.Key, quest.Value);
@@ -353,7 +361,7 @@ public class CustomTraderServices
         {
             FileName = TraderPathsType.TraderGlobals,
             Path = traderPath,
-        });
+        }, false);
         Globals globals = globalsServer.GetGlobals();
         
         // ItemPreset
