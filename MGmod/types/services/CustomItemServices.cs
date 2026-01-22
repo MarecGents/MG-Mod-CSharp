@@ -171,6 +171,7 @@ public class CustomItemServices(
     
     public void AddMGItemsToDB(Dictionary<string, MGItem> ItemList)
     {
+        var count = 0;
         foreach(var it in ItemList.Keys)
         {
             
@@ -197,7 +198,10 @@ public class CustomItemServices(
             {
                 globalsServer.AddBuffs(item.Buffs);
             }
+
+            count = count + 1;
         }
+        Log($"已添加{count}个独立物品。", LogTextColor.Yellow);
     }
 
     public Dictionary<string, MGItem> TransferMGItemsStruct(Dictionary<string, MGItem> ItemList)
@@ -255,5 +259,10 @@ public class CustomItemServices(
             }
         }
         return (errKey.Count>0, errKey);
+    }
+
+    private void Log(string data, LogTextColor textColor)
+    {
+        mGUtils.Log("独立物品", data, textColor);
     }
 }

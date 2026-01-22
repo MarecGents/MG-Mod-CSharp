@@ -8,6 +8,7 @@ using SPTarkov.DI.Annotations;
 using SPTarkov.Server.Core.DI;
 using SPTarkov.Server.Core.Models.Common;
 using SPTarkov.Server.Core.Models.Eft.Common.Tables;
+using SPTarkov.Server.Core.Models.Logging;
 using SPTarkov.Server.Core.Models.Utils;
 
 namespace _MGMod.types.services;
@@ -38,6 +39,7 @@ public class KeyClassfyServices
     {
         var mapHdIds = AddMapZhNameIdToHb();
         AddorChangeKeyHbParendId(mapHdIds);
+        Log("已开启。", LogTextColor.Yellow);
     }
 
     public Dictionary<string, string> AddMapZhNameIdToHb()
@@ -104,5 +106,10 @@ public class KeyClassfyServices
                 
             }            
         }
+    }
+
+    public void Log(string data, LogTextColor textColor)
+    {
+        mGUtils.Log("钥匙分类", data, textColor);
     }
 }

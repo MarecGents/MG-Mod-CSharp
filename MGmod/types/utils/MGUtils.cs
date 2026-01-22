@@ -215,9 +215,14 @@ public class MGUtils(
         fileUtil.WriteFile(System.IO.Path.Combine(modPath, $"./Log/{new MongoId()}.log"),jsonUtil.Serialize(data));
     }
 
+    public void Log(string server,string data, LogTextColor textColor)
+    {
+        logger.LogWithColor($"[MGMod][{server}]：" + data, textColor);
+    }
+
     public void TestOutput<T>(T data)
     {
-        string data2String = jsonUtil.Serialize<T>(data);
+        string data2String = jsonUtil.Serialize(data);
         logger.LogWithColor(data2String,  LogTextColor.Gray, LogBackgroundColor.White);
     }
 }

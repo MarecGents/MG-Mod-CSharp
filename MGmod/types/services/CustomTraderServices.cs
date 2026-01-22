@@ -1,5 +1,6 @@
 ﻿using _MGMod.types.models.EFT;
 using _MGMod.types.models.EFT.locales;
+using _MGMod.types.models.EFT.locations;
 using _MGMod.types.models.EFT.templetes;
 using _MGMod.types.models.EFT.traders;
 using _MGMod.types.models.Paths;
@@ -27,6 +28,7 @@ public class CustomTraderServices
     private ConfigsServer configsServer;
     private TemplatesServer templatesServer;
     private GlobalsServer globalsServer;
+    private LocationsServer locationsServer;
     
     public CustomTraderServices(
         MGUtils _mGUtils,
@@ -35,7 +37,8 @@ public class CustomTraderServices
         LocalesServer _localesServer,
         ConfigsServer _configsServer,
         TemplatesServer _templatesServer,
-        GlobalsServer _globalsServer
+        GlobalsServer _globalsServer,
+        LocationsServer _locationsServer
     )
     {
         mGUtils = _mGUtils;
@@ -45,6 +48,7 @@ public class CustomTraderServices
         configsServer = _configsServer;
         templatesServer = _templatesServer;
         globalsServer = _globalsServer;
+        locationsServer = _locationsServer;
     }
     
     
@@ -68,7 +72,7 @@ public class CustomTraderServices
             AddTraderLocationToDB(traderPath);
             AddTraderTemplatesToDB(traderPath);
             AddTraderGlobalsToDB(traderPath);
-            logger.LogWithColor($"[MGMod][独立商人]商人【{Path.GetFileName(traderPath)}】已添加。", LogTextColor.Yellow);
+            Log($"商人【{Path.GetFileName(traderPath)}】已添加。", LogTextColor.Yellow);
             BundleManifest bundles = mGUtils.GetJsonDataFromFile<BundleManifest>(new PathType
             {
                 FileName = TraderPathsType.TraderBundles,
@@ -97,20 +101,20 @@ public class CustomTraderServices
         if (traderInfo == default)
         {
             // 2026.01.19 23:14 进度于此
-            logger.LogWithColor($"[MGMod][独立商人]商人{Path.GetFileName(traderPath)}不存在配置文件\"traderInfo.json\"，请检查商人文件完整性。",LogTextColor.Cyan);
+            Log($"商人{Path.GetFileName(traderPath)}不存在配置文件\"traderInfo.json\"，请检查商人文件完整性。",LogTextColor.Cyan);
             returnFlag = returnFlag + 1;
         }
         
         var Traders = templatesServer.GetTraders();
         if (Traders.ContainsKey(traderInfo._id))
         {
-            logger.LogWithColor($"[MGMod][独立商人]商人{Path.GetFileName(traderPath)}的Id:{traderInfo._id}已存在于游戏中,请修改。",LogTextColor.Cyan);
+            Log($"商人{Path.GetFileName(traderPath)}的Id:{traderInfo._id}已存在于游戏中,请修改。",LogTextColor.Cyan);
             returnFlag = returnFlag + 1;
         }
         
         if (returnFlag != 0) return false;
         if (!MongoId.IsValidMongoId(traderInfo._id)) 
-            logger.LogWithColor($"[MGMod][独立商人]商人{traderInfo.name}的Id:{traderInfo._id}不符合MongoId格式，请酌情修改。【如果你安装了无视MongoId限制的Mod，可忽视本条消息】",LogTextColor.Cyan);
+            Log($"商人{traderInfo.name}的Id:{traderInfo._id}不符合MongoId格式，请酌情修改。【如果你安装了无视MongoId限制的Mod，可忽视本条消息】",LogTextColor.Cyan);
         
         if (!traderInfo.enable) return false;
 
@@ -223,11 +227,11 @@ public class CustomTraderServices
             newTrader.Base.Avatar = newTrader.Base.Avatar.Replace("000000000000000000000000.jpg", traderImage);
             imageRouter.AddRoute(newTrader.Base.Avatar.Replace(".jpg",""), imagePath);
         }
-        else logger.LogWithColor($"[MGMod][独立商人]{traderInfo.name}：混蛋，你把我的头像放哪了！快还给我！", LogTextColor.Cyan);
+        else Log($"{traderInfo.name}：混蛋，你把我的头像放哪了！快还给我！", LogTextColor.Cyan);
 
         if (!Traders.TryAdd(traderInfo._id, newTrader))
         {
-            logger.LogWithColor($"[MGMod][独立商人]{traderInfo.name}：添加失败，发生了未知错误", LogTextColor.Cyan);
+            Log($"{traderInfo.name}：添加失败，发生了未知错误。", LogTextColor.Cyan);
             return false;
         }
         
@@ -281,13 +285,13 @@ public class CustomTraderServices
             }, false);
             if (templatesServer.IsItemExists(traderItem.item.Id))
             {
-                logger.LogWithColor($"[MGMod][独立商人]【警告】独立商人物品【id:{traderItem.item.Id}】已存在，请酌情修改id，本次不执行添加操作。", LogTextColor.Cyan);
+                Log($"【警告】独立商人物品【id:{traderItem.item.Id}】已存在，请酌情修改id，本次不执行添加操作。", LogTextColor.Cyan);
             }
 
             if (!String.IsNullOrEmpty(traderItem.origin) && mGUtils.IsMongoId(traderItem.origin))
                 filterList.TryAdd(traderItem.item.Id, traderItem.origin);
             var flag = templatesServer.AddCustomTraderItemsToDB(traderItem);
-            if(!flag) logger.LogWithColor($"[MGMod][独立商人]【警告】独立商人物品【id:{traderItem.item.Id}】添加失败，请检查物品文件是否正确。", LogTextColor.Cyan);
+            if(!flag) Log($"【警告】独立商人物品【id:{traderItem.item.Id}】添加失败，请检查物品文件是否正确。", LogTextColor.Cyan);
         }
         templatesServer.AddFilters(filterList);
     }
@@ -326,8 +330,19 @@ public class CustomTraderServices
     }
 
     public void AddTraderLocationToDB(string traderPath)
-    {
-        // 暂时不写
+    { 
+        // var locations = locationsServer.GetLocations();
+        // Dictionary<string, CustomTraderLooseLoot> looseLoots = mGUtils.GetJsonDataFromFile<Dictionary<string, CustomTraderLooseLoot>>(new PathType
+        // {
+        //     FileName = TraderPathsType.TraderLooseLoot.FileName,
+        //     Path = Path.Combine(traderPath, TraderPathsType.TraderLooseLoot.Path),
+        // }, false);
+        // foreach (var mapLooseLoot in looseLoots)
+        // {
+        //     if (!locations.ContainsKey(mapLooseLoot.Key)) continue;
+        //     var looseLoot = locationsServer.ResetLooseLoot(mapLooseLoot.Value);
+        //     locationsServer.AddLooseLootByMapName(looseLoot,mapLooseLoot.Key);
+        // }
     }
 
     public void AddTraderTemplatesToDB(string traderPath)
@@ -377,5 +392,9 @@ public class CustomTraderServices
         }
         
     }
-    
+
+    public void Log(string data, LogTextColor textColor)
+    {
+        mGUtils.Log("独立商人", data, textColor);
+    }
 }

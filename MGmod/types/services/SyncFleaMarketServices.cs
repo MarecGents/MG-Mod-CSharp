@@ -101,7 +101,7 @@ public class SyncFleaMarketServices
         }
         catch (Exception ex)
         {
-            Log($"获取出错<{ex.Message}>", LogTextColor.Red);
+            Log($"获取出错<{ex.Message}>。", LogTextColor.Red);
         }
 
     }
@@ -128,12 +128,12 @@ public class SyncFleaMarketServices
                 item.Price = price;
             }
         }
-		Log($"已同步至日期[{priceJson.date[0]}年{priceJson.date[1]}月{priceJson.date[2]}日]", LogTextColor.Cyan);
+		Log($"已同步至日期 {priceJson.date[0]}年{priceJson.date[1]}月{priceJson.date[2]}日。", LogTextColor.Cyan);
     }
 
     private void Log(string data, LogTextColor textColor)
     {
-        logger.LogWithColor("[MGMod][实时跳蚤]："+ data, textColor);
+        mGUtils.Log("实时跳蚤", data, textColor);
     }
 }
 

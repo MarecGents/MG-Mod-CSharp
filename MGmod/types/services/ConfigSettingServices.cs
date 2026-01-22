@@ -5,6 +5,7 @@ using _MGMod.types.utils;
 using SPTarkov.DI.Annotations;
 using SPTarkov.Server.Core.DI;
 using SPTarkov.Server.Core.Models.Eft.Common;
+using SPTarkov.Server.Core.Models.Logging;
 using SPTarkov.Server.Core.Models.Utils;
 using SPTarkov.Server.Core.Services.Mod;
 
@@ -86,6 +87,7 @@ public class ConfigSettingServices
          locationsServer.MGmodLocations(GetLocationsSetting());
          templatesServer.MGmodTemplates(GetTemplatesSetting());
          tradersServer.MGmodTraders(GetTradersSetting());
+         mGUtils.Log("常规设置", "已开启。", LogTextColor.Yellow);
     }
 
     public MGModConfig_Bot? GetBotSetting()
