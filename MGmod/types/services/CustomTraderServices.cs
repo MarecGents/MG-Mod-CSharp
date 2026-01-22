@@ -61,7 +61,10 @@ public class CustomTraderServices
     public BundleManifest AddTraders()
     {
         var TradersDirectories = mGUtils.GetDirectories(Paths.Traders);
-        BundleManifest Bundles = new BundleManifest();
+        BundleManifest Bundles = new BundleManifest
+        {
+            Manifest = []
+        };
         foreach (var traderPath in TradersDirectories)
         {
             bool addFlag = AddTraderBaseToDB(traderPath);
@@ -78,7 +81,7 @@ public class CustomTraderServices
                 FileName = TraderPathsType.TraderBundles,
                 Path = traderPath,
             }, false);
-            Bundles.Manifest.AddRange(bundles.Manifest);
+            if(bundles.Manifest.Count > 0) Bundles.Manifest.AddRange(bundles.Manifest);
         }
         return Bundles;
     }
@@ -87,7 +90,12 @@ public class CustomTraderServices
     {
         BundleManifest mainBundles = mGUtils.GetJsonDataFromFile<BundleManifest>(Paths.BundlesJson);
         mainBundles.Manifest.Clear();
-        mainBundles.Manifest.AddRange(Bundles.Manifest);
+        if (Bundles.Manifest.Count > 0)
+        {
+            mainBundles.Manifest.AddRange(Bundles.Manifest);
+        }
+        mGUtils.DeleteFile(Paths.BundlesJson.FileName);
+        mGUtils.WriteFile(Paths.BundlesJson.FileName, mGUtils.Serialize(mainBundles));
     }
 
     public bool AddTraderBaseToDB(string traderPath)
@@ -331,18 +339,7 @@ public class CustomTraderServices
 
     public void AddTraderLocationToDB(string traderPath)
     { 
-        // var locations = locationsServer.GetLocations();
-        // Dictionary<string, CustomTraderLooseLoot> looseLoots = mGUtils.GetJsonDataFromFile<Dictionary<string, CustomTraderLooseLoot>>(new PathType
-        // {
-        //     FileName = TraderPathsType.TraderLooseLoot.FileName,
-        //     Path = Path.Combine(traderPath, TraderPathsType.TraderLooseLoot.Path),
-        // }, false);
-        // foreach (var mapLooseLoot in looseLoots)
-        // {
-        //     if (!locations.ContainsKey(mapLooseLoot.Key)) continue;
-        //     var looseLoot = locationsServer.ResetLooseLoot(mapLooseLoot.Value);
-        //     locationsServer.AddLooseLootByMapName(looseLoot,mapLooseLoot.Key);
-        // }
+        
     }
 
     public void AddTraderTemplatesToDB(string traderPath)
