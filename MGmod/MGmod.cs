@@ -45,7 +45,6 @@ public class MGmod(
         // var modPath = modHelper.GetAbsolutePathToModFolder(Assembly.GetExecutingAssembly());
         // logger.LogWithColor("This is MGmod", LogTextColor.Red);
         await configSettingServices.ModSetting();
- 
     }
 }
 

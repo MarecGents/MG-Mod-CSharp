@@ -210,6 +210,13 @@ public class TemplatesServer(
         Templates_.Handbook.Categories.Add(HbCategory);
     }
     
+    // prices.json
+    public Dictionary<MongoId, double> GetPrices()
+    {
+        return databaseService.GetPrices();
+    }
+    
+    
     // profile.json
     public Dictionary<string, ProfileSides> GetProfiles()
     {
