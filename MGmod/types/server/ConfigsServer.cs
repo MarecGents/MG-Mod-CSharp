@@ -272,7 +272,11 @@ public class ConfigsServer(
         //功能：容器随机生成 RandomContainer
         if (ConfigSetting.RandomContainer)
         {
-            Location.ContainerRandomisationSettings.Enabled = ConfigSetting.RandomContainer;
+            Location.ContainerRandomisationSettings.Enabled = false; // 默认为开启随机， 所以若为true，则表示关闭随机
+            foreach (var map in Location.ContainerRandomisationSettings.Maps.Keys)
+            {
+                Location.ContainerRandomisationSettings.Maps[map] = false;
+            }
         }
 
         // loot.json
