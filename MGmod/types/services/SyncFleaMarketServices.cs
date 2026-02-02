@@ -65,7 +65,8 @@ public class SyncFleaMarketServices
         else
         {
             Log("同步数据与当前日期差距过大，正在重新同步。", LogTextColor.Blue);
-            GetPrices();
+            await GetPrices();
+            LoadPrice();
         }
     }
 
@@ -96,8 +97,6 @@ public class SyncFleaMarketServices
 
             priceJson = mGUtils.Deserialize<PriceType>(fileContent);
             SavePrice();
-            
-            LoadPrice();
         }
         catch (Exception ex)
         {
