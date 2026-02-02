@@ -11,6 +11,7 @@ using SPTarkov.Server.Core.Utils;
 
 using _MGMod.types.models.Paths;
 using _MGMod.types.models.EFT.templetes;
+using _MGMod.types.server;
 using _MGMod.types.utils;
 using SPTarkov.Server.Core.Models.Utils;
 namespace _MGMod.types.services;
@@ -24,19 +25,24 @@ public class SyncFleaMarketServices
     private ISptLogger<SyncFleaMarketServices> logger;
     private MGUtils mGUtils;
     private DatabaseService databaseService;
+    private ConfigsServer  configsServer;
+    
     public SyncFleaMarketServices(
         ISptLogger<SyncFleaMarketServices> _logger,
         DatabaseService _databaseService,
+        ConfigsServer _configsServer,
         MGUtils _mGUtils
         )
     {
         logger = _logger;
         databaseService = _databaseService;
+        configsServer = _configsServer;
         mGUtils = _mGUtils;
     }
 
     public async Task Start()
     {
+        configsServer.IfUseHandbookPrice(true);
         await Init();
     }
 
@@ -113,7 +119,7 @@ public class SyncFleaMarketServices
     private void LoadPrice()
     { 
         if (priceJson == null) return;
-        var prices = databaseService.GetTemplates().Prices;
+        var prices = databaseService.GetPrices();
         foreach (var id in prices.Keys)
         {
             if (priceJson.prices.TryGetValue(id, out var price))
