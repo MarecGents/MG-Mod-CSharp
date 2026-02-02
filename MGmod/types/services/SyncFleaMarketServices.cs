@@ -122,14 +122,14 @@ public class SyncFleaMarketServices
             }
         }
 
-        var HbItem = databaseService.GetHandbook().Items;
-        foreach (var item in HbItem)
-        {
-            if (priceJson.prices.TryGetValue(item.Id, out var price))
-            {
-                item.Price = price;
-            }
-        }
+        // var HbItem = databaseService.GetHandbook().Items;
+        // foreach (var item in HbItem)
+        // {
+        //     if (priceJson.prices.TryGetValue(item.Id, out var price))
+        //     {
+        //         item.Price = price;
+        //     }
+        // }
 		Log($"已同步至日期 {priceJson.date[0]}年{priceJson.date[1]}月{priceJson.date[2]}日。", LogTextColor.Cyan);
     }
 
