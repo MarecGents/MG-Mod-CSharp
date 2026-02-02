@@ -45,7 +45,7 @@ public class SyncFleaMarketServices
         if (!mGUtils.FileExists(Path.Combine(Paths.PriceJson.Path, Paths.PriceJson.FileName)))
         {
             DateTime date = (DateTime.Now).AddDays(-4);
-            priceJson = new() { date = [date.Year, date.Month, date.Day], prices = databaseService.GetPrices() };
+            priceJson = new PriceType { date = [date.Year, date.Month, date.Day], prices = databaseService.GetPrices() };
         }
         else
         {
@@ -113,10 +113,13 @@ public class SyncFleaMarketServices
     private void LoadPrice()
     { 
         if (priceJson == null) return;
-        var Prices = databaseService.GetTemplates().Prices;
-        foreach (var (id, price) in priceJson.prices)
+        var prices = databaseService.GetTemplates().Prices;
+        foreach (var id in prices.Keys)
         {
-            Prices[id] = price;
+            if (priceJson.prices.TryGetValue(id, out var price))
+            {
+                prices[id] = price;
+            }
         }
 
         var HbItem = databaseService.GetHandbook().Items;
