@@ -114,9 +114,11 @@ public class ConfigsServer(
     }
     
     // ragfair.json
-    public void IfUseHandbookPrice(bool flag)
+    public void ApplyBaseFleaPrices()
     {
-        Ragfair.Dynamic.GenerateBaseFleaPrices.UseHandbookPrice = flag;
+        Ragfair.Dynamic.GenerateBaseFleaPrices.UseHandbookPrice = false;
+        Ragfair.Dynamic.GenerateBaseFleaPrices.PriceMultiplier = 1;
+        Ragfair.Dynamic.GenerateBaseFleaPrices.PreventPriceBeingBelowTraderBuyPrice = false;
     }
     public void AddTraderRagfair(MongoId Id, bool flag = true)
     {

@@ -42,7 +42,7 @@ public class SyncFleaMarketServices
 
     public async Task Start()
     {
-        configsServer.IfUseHandbookPrice(true);
+        configsServer.ApplyBaseFleaPrices();
         await Init();
     }
 
@@ -138,7 +138,7 @@ public class SyncFleaMarketServices
         // }
 		Log($"已同步至日期 {priceJson.date[0]}年{priceJson.date[1]}月{priceJson.date[2]}日。", LogTextColor.Cyan);
     }
-
+    
     private void Log(string data, LogTextColor textColor)
     {
         mGUtils.Log("实时跳蚤", data, textColor);
