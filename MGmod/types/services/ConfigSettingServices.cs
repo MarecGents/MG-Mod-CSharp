@@ -90,7 +90,7 @@ public class ConfigSettingServices
          mGUtils.Log("常规设置", "已开启。", LogTextColor.Yellow);
     }
 
-    public MGModConfig_Bot? GetBotSetting()
+    private MGModConfig_Bot? GetBotSetting()
     { 
         if(configJson != null)
         {
@@ -99,7 +99,7 @@ public class ConfigSettingServices
         return null;
     }
 
-    public MGModConfig_Config? GetConfigSetting()
+    private MGModConfig_Config? GetConfigSetting()
     {
         if (configJson != null)
         {
@@ -107,7 +107,7 @@ public class ConfigSettingServices
         }
         return null;
     }
-    public MGModConfig_Globals? GetGlobalsSetting()
+    private MGModConfig_Globals? GetGlobalsSetting()
     {
         if (configJson != null)
         {
@@ -116,7 +116,7 @@ public class ConfigSettingServices
         return null;
 
     }
-    public MGModConfig_Hideout? GetHideoutSetting()
+    private MGModConfig_Hideout? GetHideoutSetting()
     {
         if (configJson != null)
         {
@@ -124,7 +124,7 @@ public class ConfigSettingServices
         }
         return null;
     }
-    public MGModConfig_Locations? GetLocationsSetting()
+    private MGModConfig_Locations? GetLocationsSetting()
     {
         if (configJson != null)
         {
@@ -132,7 +132,7 @@ public class ConfigSettingServices
         }
         return null;
     }
-    public MGModConfig_Templates? GetTemplatesSetting()
+    private MGModConfig_Templates? GetTemplatesSetting()
     {
         if (configJson != null)
         {
@@ -140,7 +140,7 @@ public class ConfigSettingServices
         }
         return null;
     }
-    public MGModConfig_Traders? GetTradersSetting()
+    private MGModConfig_Traders? GetTradersSetting()
     {
         if (configJson != null)
         {
@@ -148,7 +148,7 @@ public class ConfigSettingServices
         }
         return null;
     }
-    public MGModConfig_MGCustom? GetMGCustomSetting()
+    private MGModConfig_MGCustom? GetMGCustomSetting()
     {
         if (configJson != null)
         {
