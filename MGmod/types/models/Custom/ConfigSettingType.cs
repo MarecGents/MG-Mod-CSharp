@@ -120,9 +120,11 @@ public class MGModConfig_Globals_Buffs
 
 public class MGModConfig_Hideout
 {
-    public EnableValueDouble BuildTime { get; set; } // string || double
-    public EnableValueDouble ProductTime { get; set; } // string || double
-    public EnableValueDouble ScavCaseTime { get; set; } // string || double
+    public EnableValueDouble BuildTime { get; set; }
+    public EnableValueDouble ProductTime { get; set; }
+    public EnableValueDouble ScavCaseTime { get; set; }
+    public bool UpgradeNoLimit { get; set; }
+    public EnableValueInt BonusesLevel { get; set; } 
 }
 public class MGModConfig_Locations
 {

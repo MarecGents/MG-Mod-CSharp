@@ -167,6 +167,11 @@
     "ScavCaseTime": {
       "enable": false,
       "value": 30
+    },
+    "UpgradeNoLimit": false,
+    "BonusesLevel": {
+      "enable": false,
+      "value": 1
     }
   },
   "Locations": {

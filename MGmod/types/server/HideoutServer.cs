@@ -52,6 +52,78 @@ public class HideoutServer(
             }
         }
     }
+
+    private void SetUpgradeNoLimit()
+    {
+        foreach(var area in Hideout.Areas)
+        {
+            foreach(var n in area.Stages.Keys)
+            {
+                area.Stages[n].Requirements = [];
+            }
+        }
+    }
+
+    private void SetBonusesLevel(int value)
+    {
+        List<String> RealValue = [
+            "EnergyRegeneration", 
+            "HydrationRegeneration",
+            "HealthRegeneration",
+            "MaximumEnergyReserve",
+            "StashSize",
+        ];
+        List<String> AddPercent = [
+            "DebuffEndDelay",
+            "ExperienceRate",
+            "SkillGroupLevelingBoost",
+            "QuestMoneyReward",
+            "RepairWeaponBonus",
+            "RepairArmorBonus",
+        ];
+        List<String> ReducePercent = [
+            "FuelConsumption",
+            "ScavCooldownTimer",
+            "InsuranceReturnTime",
+            "RagfairCommission",
+        ];
+        List<String> PassItem = [
+            "AdditionalSlots",
+            "UnlockWeaponModification",
+            "UnlockWeaponRepair",
+            "UnlockArmorRepair",
+            "TextBonus",
+        ];
+
+        List<double> TimesValue = [1, 2, 5, 10];
+        List<double> AddorReducePercent = [0, 10, 20, 50];
+        
+        foreach(var area in Hideout.Areas)
+        {
+            foreach(var n in area.Stages.Keys)
+            {
+                foreach (var bonus in area.Stages[n].Bonuses)
+                {
+                    if (RealValue.Contains(bonus.Type.ToString()))
+                    {
+                        bonus.Value *= TimesValue[value];
+                    }
+                    else if (AddPercent.Contains(bonus.Type.ToString()))
+                    {
+                        bonus.Value += AddorReducePercent[value];
+                    }
+                    else if (ReducePercent.Contains(bonus.Type.ToString()))
+                    {
+                        bonus.Value -= AddorReducePercent[value];
+                    }
+                    else if (PassItem.Contains(bonus.Type.ToString()))
+                    {
+                        continue;
+                    }
+                }
+            }
+        }
+    }
     public void MGmodHideout(MGModConfig_Hideout HideoutSetting)
     {
         // 功能：藏身处升级时间 BuildTime
@@ -68,6 +140,17 @@ public class HideoutServer(
         if (HideoutSetting.ScavCaseTime.enable)
         {
             SetScavecaseTime(HideoutSetting.ScavCaseTime.value);
+        }
+        // 功能：藏身处升级无限制 UpgradeNoLimit
+        if (HideoutSetting.UpgradeNoLimit)
+        {
+            SetUpgradeNoLimit();
+        }
+        
+        // 功能：藏身处区域加成等级 BonusesLevel
+        if (HideoutSetting.BonusesLevel.enable)
+        {
+            SetBonusesLevel(HideoutSetting.BonusesLevel.value);
         }
     }
 }
