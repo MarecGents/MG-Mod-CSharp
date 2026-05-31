@@ -19,7 +19,7 @@ public class HideoutServer(
         return Hideout;
     }
 
-    public void SetConstructionTime(double value)
+    private void SetConstructionTime(double value)
     {
         foreach(var area in Hideout.Areas)
         {
@@ -32,7 +32,7 @@ public class HideoutServer(
             }
         }
     }
-    public void SetProductionTime(double value)
+    private void SetProductionTime(double value)
     {
         foreach(var product in Hideout.Production.Recipes)
         {
@@ -42,7 +42,7 @@ public class HideoutServer(
             }
         }
     }
-    public void SetScavecaseTime(double value)
+    private void SetScavecaseTime(double value)
     {
         foreach(var scavcase in Hideout.Production.ScavRecipes)
         {
