@@ -125,6 +125,7 @@ public class MGModConfig_Hideout
     public EnableValueDouble ScavCaseTime { get; set; }
     public bool UpgradeNoLimit { get; set; }
     public EnableValueInt BonusesLevel { get; set; } 
+    public bool NoNeedsFuel { get; set; } 
 }
 public class MGModConfig_Locations
 {

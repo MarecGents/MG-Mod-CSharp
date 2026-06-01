@@ -52,7 +52,6 @@ public class HideoutServer(
             }
         }
     }
-
     private void SetUpgradeNoLimit()
     {
         foreach(var area in Hideout.Areas)
@@ -63,7 +62,6 @@ public class HideoutServer(
             }
         }
     }
-
     private void SetBonusesLevel(int value)
     {
         List<String> RealValue = [
@@ -124,6 +122,14 @@ public class HideoutServer(
             }
         }
     }
+    private void SetNoNeedsFuel()
+    {
+        foreach(var area in Hideout.Areas)
+        {
+            area.NeedsFuel = false;
+        }
+    }
+    
     public void MGmodHideout(MGModConfig_Hideout HideoutSetting)
     {
         // 功能：藏身处升级时间 BuildTime
@@ -146,11 +152,15 @@ public class HideoutServer(
         {
             SetUpgradeNoLimit();
         }
-        
         // 功能：藏身处区域加成等级 BonusesLevel
         if (HideoutSetting.BonusesLevel.enable)
         {
             SetBonusesLevel(HideoutSetting.BonusesLevel.value);
+        }
+        // 功能：藏身处区域无需供电 NoNeedsFuel
+        if (HideoutSetting.NoNeedsFuel)
+        {
+            SetNoNeedsFuel();
         }
     }
 }
