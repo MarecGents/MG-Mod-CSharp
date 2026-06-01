@@ -2,6 +2,7 @@
 using SPTarkov.DI.Annotations;
 using SPTarkov.Server.Core.DI;
 using SPTarkov.Server.Core.Models.Eft.Hideout;
+using SPTarkov.Server.Core.Models.Enums.Hideout;
 using SPTarkov.Server.Core.Models.Spt.Hideout;
 using SPTarkov.Server.Core.Services;
 
@@ -129,6 +130,45 @@ public class HideoutServer(
             area.NeedsFuel = false;
         }
     }
+    private void SetQteSucess100()
+    {
+        foreach (var qte in Hideout.Qte)
+        {
+            foreach (var quickTimeEvents in qte.QuickTimeEvents)
+            {
+                quickTimeEvents.Coordinates.X = 0.5f;
+                quickTimeEvents.Coordinates.Y = 0.25f;
+                quickTimeEvents.SuccessCoordinates.X = 0.45f;
+                quickTimeEvents.SuccessCoordinates.Y = 0.1f;
+            }
+        }
+    }
+    private void SetQteNoPunish()
+    {
+        foreach (var qte in Hideout.Qte)
+        {
+            foreach (var n in qte.Results.Keys)
+            {
+                qte.Results[n].Energy = 0;
+                qte.Results[n].Hydration = 0;
+                qte.Results[QteEffectType.finishEffect].RewardEffects[0].Time = 1;
+                qte.Results[QteEffectType.singleFailEffect].RewardEffects = [];
+            }
+        }
+    }
+    private void SetQteRewardMultiple(int value)
+    {
+        foreach (var qte in Hideout.Qte)
+        {
+            foreach (var rewardEffects in qte.Results[QteEffectType.singleSuccessEffect].RewardEffects)
+            {
+                foreach (var levelMultiplier in rewardEffects.LevelMultipliers)
+                {
+                    levelMultiplier.MultiplierValue *= value;
+                }
+            }
+        }
+    }
     
     public void MGmodHideout(MGModConfig_Hideout HideoutSetting)
     {
@@ -161,6 +201,21 @@ public class HideoutServer(
         if (HideoutSetting.NoNeedsFuel)
         {
             SetNoNeedsFuel();
+        }
+        // 功能：健身房锻炼百分百成功 Sucess100
+        if (HideoutSetting.Qte.Sucess100)
+        {
+            SetQteSucess100();
+        }
+        // 功能：健身房锻炼无惩罚 NoPunish
+        if (HideoutSetting.Qte.NoPunish)
+        {
+            SetQteNoPunish();
+        }
+        // 功能：健身房锻炼奖励倍率 RewardMultiple
+        if (HideoutSetting.Qte.RewardMultiple.enable)
+        {
+            SetQteRewardMultiple(HideoutSetting.Qte.RewardMultiple.value);
         }
     }
 }

@@ -173,7 +173,15 @@
       "enable": false,
       "value": 1
     },
-    "NoNeedsFuel": false
+    "NoNeedsFuel": false,
+    "Qte": {
+      "Sucess100": false,
+      "NoPunish": false,
+      "RewardMultiple": {
+        "enable": false,
+        "value": 1
+      }
+    }
   },
   "Locations": {
     "RaidTime": {

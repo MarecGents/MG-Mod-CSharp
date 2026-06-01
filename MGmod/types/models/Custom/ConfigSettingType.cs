@@ -126,7 +126,16 @@ public class MGModConfig_Hideout
     public bool UpgradeNoLimit { get; set; }
     public EnableValueInt BonusesLevel { get; set; } 
     public bool NoNeedsFuel { get; set; } 
+    public MGModConfig_Hideout_Qte Qte { get; set; } 
 }
+
+public class MGModConfig_Hideout_Qte
+{
+    public bool Sucess100 { get; set; }
+    public bool NoPunish { get; set; }
+    public EnableValueInt RewardMultiple { get; set; }
+}
+
 public class MGModConfig_Locations
 {
     public EnableValueDouble RaidTime { get; set; } // string || int
