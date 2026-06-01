@@ -340,12 +340,12 @@ public class TemplatesServer(
             var ItemProps = Item.Value.Properties;
             if (ItemParent == "") continue;
             if (ItemProps == null) continue;
-            //武器栏可放全部武器 WeaponFilter
+            // 物品全检视 Examined
             if (TemplatesSetting.Examined)
             {
                 ItemProps.ExaminedByDefault = true;
             }
-            //武器栏可放全部武器 WeaponFilter
+            // 武器栏可放全部武器 WeaponFilter
             if (ItemId == "55d7217a4bdc2d86028b456d" && TemplatesSetting.WeaponFilter)
             {
                 foreach (var item in ItemProps.Slots)

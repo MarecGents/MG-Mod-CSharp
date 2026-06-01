@@ -138,8 +138,9 @@ public class HideoutServer(
             {
                 quickTimeEvents.Coordinates.X = 0.5f;
                 quickTimeEvents.Coordinates.Y = 0.25f;
-                quickTimeEvents.SuccessCoordinates.X = 0.45f;
-                quickTimeEvents.SuccessCoordinates.Y = 0.1f;
+                quickTimeEvents.SuccessCoordinates.X = 0.5f;
+                quickTimeEvents.SuccessCoordinates.Y = 0.25f;
+                quickTimeEvents.MovementSpeed = 1;
             }
         }
     }
