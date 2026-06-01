@@ -169,7 +169,6 @@ public class HideoutServer(
             }
         }
     }
-    
     public void MGmodHideout(MGModConfig_Hideout HideoutSetting)
     {
         // 功能：藏身处升级时间 BuildTime
