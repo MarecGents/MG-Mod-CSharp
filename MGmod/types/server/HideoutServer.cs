@@ -105,15 +105,15 @@ public class HideoutServer(
                 {
                     if (RealValue.Contains(bonus.Type.ToString()))
                     {
-                        bonus.Value *= TimesValue[value];
+                        bonus.Value *= TimesValue[value-1];
                     }
                     else if (AddPercent.Contains(bonus.Type.ToString()))
                     {
-                        bonus.Value += AddorReducePercent[value];
+                        bonus.Value += AddorReducePercent[value-1];
                     }
                     else if (ReducePercent.Contains(bonus.Type.ToString()))
                     {
-                        bonus.Value -= AddorReducePercent[value];
+                        bonus.Value -= AddorReducePercent[value-1];
                     }
                     else if (PassItem.Contains(bonus.Type.ToString()))
                     {
