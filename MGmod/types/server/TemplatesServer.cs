@@ -611,18 +611,19 @@ public class TemplatesServer(
                 ItemProps.MaxHpResource *= TemplatesSetting.MedcDurability;
                 ItemProps.HpResourceRate *= TemplatesSetting.MedcDurability;
             }
-            //武器无故障 WeaponNoLost
+            // 武器无故障 WeaponNoLost
             if (FindItemParentsIdById(ItemId).Contains("5422acb9af1c889c16000029"))
             {
                 if (ItemProps.BaseMalfunctionChance > 0 && TemplatesSetting.WeaponNoLost)
                 {
                     ItemProps.BaseMalfunctionChance = 0;
-                    ItemProps.AllowFeed = false;
+                    //ItemProps.AllowFeed = false;
                     ItemProps.AllowJam = false;
                     ItemProps.AllowMisfire = true;
                     ItemProps.AllowOverheat = false;
                     ItemProps.AllowSlide = false;
                 }
+                // 武器维修无损耗 WeaponRepairPerfect
                 if (TemplatesSetting.WeaponRepairPerfect)
                 {
                     ItemProps.MaxRepairDegradation = 0;     //商人

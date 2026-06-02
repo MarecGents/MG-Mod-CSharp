@@ -151,6 +151,7 @@ public class GlobalsServer(
             skillsettings.Melee.BuffSettings.MaxDurabilityLossToRemoveBuff = 1;
             skillsettings.Melee.BuffSettings.ReceivedDurabilityMaxPercent = chance;
 
+            Globals.Configuration.RepairSettings.MinimumLevelToApplyBuff = 0;
         }
         //100%枪械附魔
         if (GlobalsSetting.Buffs.BuffsWeapon)
@@ -165,18 +166,20 @@ public class GlobalsServer(
             skillsettings.WeaponTreatment.BuffSettings.RareBuffChanceCoff = chance / 100;
             skillsettings.WeaponTreatment.BuffSettings.ReceivedDurabilityMaxPercent = chance;
             skillsettings.WeaponTreatment.SkillPointsPerRepair = 5000;
+            
+            Globals.Configuration.RepairSettings.MinimumLevelToApplyBuff = 0;
         }
         // 功能：练技能速度 ExpOptimize
         if (GlobalsSetting.ExpOptimize)
         {
             Globals.Configuration.SkillEnduranceWeightThreshold = 0.65;   // 耐力技能增长条件：0.1*最大负重时
-            Globals.Configuration.SkillFatiguePerPoint = 1.1;    // 疲劳因子  >=1 则没有疲劳
-            Globals.Configuration.SkillFatigueReset = 200;   // 疲劳结束冷却时间 (s)
-            Globals.Configuration.SkillFreshEffectiveness = 3;   // 疲劳冷却后 技能升级加速300%
-            Globals.Configuration.SkillMinEffectiveness = 1;   //最低获得技能点数
-            Globals.Configuration.SkillPointsBeforeFatigue = 10; //技能疲劳前可以升多少级
+            Globals.Configuration.SkillFatiguePerPoint = 1;    // 疲劳因子  >=1 则没有疲劳
+            Globals.Configuration.SkillFatigueReset = 0;   // 疲劳结束冷却时间 (s)
+            Globals.Configuration.SkillFreshEffectiveness = 1.5;   // 疲劳冷却后 技能升级加速300%
+            Globals.Configuration.SkillMinEffectiveness = 0.1;   //最低获得技能点数
+            Globals.Configuration.SkillPointsBeforeFatigue = 5; //技能疲劳前可以升多少级
             Globals.Configuration.SkillsSettings.SkillProgressRate = 2; //全局技能速率
-            Globals.Configuration.SkillsSettings.WeaponSkillProgressRate = 2; //全局武器技能速率
+            Globals.Configuration.SkillsSettings.WeaponSkillProgressRate = 5; //全局武器技能速率
             Globals.Configuration.SkillsSettings.WeaponSkillRecoilBonusPerLevel = 0.1; //每级的全局武器技能速率加成
         }
     }
