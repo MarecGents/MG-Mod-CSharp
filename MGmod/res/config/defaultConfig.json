@@ -129,7 +129,8 @@
           1
         ]
       }
-    }
+    },
+    "NoLostonDeath": false
   },
   "Globals": {
     "EscapeNoTimeLimit": false,

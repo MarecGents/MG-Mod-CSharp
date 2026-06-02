@@ -39,7 +39,7 @@ public class MGModConfig_Config
     public MGModConfig_Config_Buffs Buffs {  get; set; }
     public EnableValueInt UpdateTime {  get; set; }    // string | int
     public MGModConfig_Config_WeatherSettings WeatherSettings {  get; set; }
-   
+    public bool NoLostonDeath {  get; set; }
 }
 
 public class MGModConfig_Config_RaidDefault

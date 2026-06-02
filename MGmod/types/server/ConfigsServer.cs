@@ -286,7 +286,25 @@ public class ConfigsServer(
         }
 
         // loot.json
+        
         // lostondeath.json
+        // 功能： 死亡不掉落 NoLostonDeath
+        if (ConfigSetting.NoLostonDeath)
+        {
+            LostOnDeath.Equipment.Headwear = false;
+            LostOnDeath.Equipment.Earpiece = false;
+            LostOnDeath.Equipment.FaceCover = false;
+            LostOnDeath.Equipment.ArmorVest = false;
+            LostOnDeath.Equipment.Eyewear = false;
+            LostOnDeath.Equipment.TacticalVest = false;
+            LostOnDeath.Equipment.PocketItems = false;
+            LostOnDeath.Equipment.Backpack = false;
+            LostOnDeath.Equipment.Holster = false;
+            LostOnDeath.Equipment.FirstPrimaryWeapon = false;
+            LostOnDeath.Equipment.SecondPrimaryWeapon = false;
+            LostOnDeath.QuestItems = false;
+        }
+        
         // match.json
         // playerscav.json
 
