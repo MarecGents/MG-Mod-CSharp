@@ -130,7 +130,8 @@
         ]
       }
     },
-    "NoLostonDeath": false
+    "NoLostonDeath": false,
+    "ScavEquipmentOptimize": false
   },
   "Globals": {
     "EscapeNoTimeLimit": false,

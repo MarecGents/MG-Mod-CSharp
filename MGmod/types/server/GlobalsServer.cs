@@ -56,7 +56,7 @@ public class GlobalsServer(
         {
             Globals.Configuration.RestrictionsInRaid = [];
         }
-        // 功能：Scav优化 ScavOptimize
+        // 功能：Scav无冷却 ScavOptimize
         if(GlobalsSetting.ScavOptimize)
         {
             //SCAV冷却时间

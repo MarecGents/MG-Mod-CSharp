@@ -40,6 +40,7 @@ public class MGModConfig_Config
     public EnableValueInt UpdateTime {  get; set; }    // string | int
     public MGModConfig_Config_WeatherSettings WeatherSettings {  get; set; }
     public bool NoLostonDeath {  get; set; }
+    public bool ScavEquipmentOptimize { get; set; }
 }
 
 public class MGModConfig_Config_RaidDefault

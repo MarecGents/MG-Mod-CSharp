@@ -306,8 +306,28 @@ public class ConfigsServer(
         }
         
         // match.json
+        
         // playerscav.json
-
+        // 功能： Scav装备优化 ScavEquipmentOptimize
+        if (ConfigSetting.ScavEquipmentOptimize)
+        {
+            foreach (var level in PlayerScav.KarmaLevel.Keys)
+            {
+                int addValue = 0;
+                if (int.TryParse(level, out int x))
+                {
+                    addValue = x;
+                }
+                foreach (var equipment in PlayerScav.KarmaLevel[level].Modifiers.Equipment.Keys)
+                {
+                    PlayerScav.KarmaLevel[level].Modifiers.Equipment[equipment] += (addValue + 8) * 3;
+                }
+                foreach (var mod in PlayerScav.KarmaLevel[level].Modifiers.Mod.Keys)
+                {
+                    PlayerScav.KarmaLevel[level].Modifiers.Equipment[mod] += (addValue + 8) * 3;
+                }
+            }
+        }
         // pmc.json
         // 功能：USEC比例 USECRate
         if (ConfigSetting.USECRate.enable)
