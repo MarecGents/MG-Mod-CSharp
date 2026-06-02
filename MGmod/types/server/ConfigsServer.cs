@@ -324,7 +324,7 @@ public class ConfigsServer(
                 }
                 foreach (var mod in PlayerScav.KarmaLevel[level].Modifiers.Mod.Keys)
                 {
-                    PlayerScav.KarmaLevel[level].Modifiers.Equipment[mod] += (addValue + 8) * 3;
+                    PlayerScav.KarmaLevel[level].Modifiers.Mod[mod] += (addValue + 8) * 3;
                 }
             }
         }
