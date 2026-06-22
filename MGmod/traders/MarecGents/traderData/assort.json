@@ -521,6 +521,46 @@
       }
     },
     {
+      "_id": "mgtrader_default_assort_bullet53",
+      "_tpl": "67d41936f378a36c4706eeb9",
+      "parentId": "hideout",
+      "slotId": "hideout",
+      "upd": {
+        "UnlimitedCount": true,
+        "StackObjectsCount": 9999999
+      }
+    },
+    {
+      "_id": "mgtrader_default_assort_bullet54",
+      "_tpl": "67dc212493ce32834b0fa446",
+      "parentId": "hideout",
+      "slotId": "hideout",
+      "upd": {
+        "UnlimitedCount": true,
+        "StackObjectsCount": 9999999
+      }
+    },
+    {
+      "_id": "mgtrader_default_assort_bullet55",
+      "_tpl": "67dc255ee3028a8b120efc48",
+      "parentId": "hideout",
+      "slotId": "hideout",
+      "upd": {
+        "UnlimitedCount": true,
+        "StackObjectsCount": 9999999
+      }
+    },
+    {
+      "_id": "mgtrader_default_assort_bullet56",
+      "_tpl": "67dc2648ba5b79876906a166",
+      "parentId": "hideout",
+      "slotId": "hideout",
+      "upd": {
+        "UnlimitedCount": true,
+        "StackObjectsCount": 9999999
+      }
+    },
+    {
       "_id": "mgtrader_default_assort_item1",
       "_tpl": "8ef5b2ef0000000000000000",
       "parentId": "hideout",
@@ -948,6 +988,38 @@
         }
       ]
     ],
+    "mgtrader_default_assort_bullet53": [
+      [
+        {
+          "count": 400,
+          "_tpl": "5449016a4bdc2d6f028b456f"
+        }
+      ]
+    ],
+    "mgtrader_default_assort_bullet54": [
+      [
+        {
+          "count": 800,
+          "_tpl": "5449016a4bdc2d6f028b456f"
+        }
+      ]
+    ],
+    "mgtrader_default_assort_bullet55": [
+      [
+        {
+          "count": 1200,
+          "_tpl": "5449016a4bdc2d6f028b456f"
+        }
+      ]
+    ],
+    "mgtrader_default_assort_bullet56": [
+      [
+        {
+          "count": 1600,
+          "_tpl": "5449016a4bdc2d6f028b456f"
+        }
+      ]
+    ],
     "mgtrader_default_assort_item1": [
       [
         {
@@ -1011,6 +1083,10 @@
     "mgtrader_default_assort_bullet50": 1,
     "mgtrader_default_assort_bullet51": 2,
     "mgtrader_default_assort_bullet52": 3,
+    "mgtrader_default_assort_bullet53": 1,
+    "mgtrader_default_assort_bullet54": 2,
+    "mgtrader_default_assort_bullet55": 3,
+    "mgtrader_default_assort_bullet56": 4,
     "mgtrader_default_assort_item1": 1
   }
 }
