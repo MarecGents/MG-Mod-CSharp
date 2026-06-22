@@ -49,7 +49,13 @@ public static class Paths
         FileName = "profile.json",
         Path = "./res/profile"
     };
-
+    
+    public static readonly PathType GunSmithJson = new()
+    {
+        FileName = "GunSmith.json",
+        Path = "./res/profile"
+    };
+    
     public static readonly PathType GPNVGJson = new()
     {
         FileName = "GPNVG.json",

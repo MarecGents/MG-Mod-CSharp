@@ -223,6 +223,12 @@ public class TemplatesServer(
         return databaseService.GetProfileTemplates();
     }
 
+    public void AddProfile(MGProfile mGProfile)
+    {
+        Dictionary<string, ProfileSides> Profiles = GetProfiles();
+        Profiles.TryAdd(mGProfile.profileName, mGProfile.profileSides);
+    }
+    
     public void AddTraderInitLoyaltyLevel(MongoId Id, int Level = 1)
     {
         var profiles = GetProfiles();
@@ -300,10 +306,6 @@ public class TemplatesServer(
     {
         var flag = AddItemToDB(item.item);
         return flag;
-    }
-    public void AddProfile()
-    {
-
     }
 
     public void MGmodTemplates(MGModConfig_Templates TemplatesSetting)

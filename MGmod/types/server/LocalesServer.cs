@@ -229,11 +229,5 @@ public class LocalesServer(
             }
         }
     }
-
-    public void AddProfileInfo(AnyInfo info)
-    {
-        var global = Locale.Global;
-        
-    }
     
 }

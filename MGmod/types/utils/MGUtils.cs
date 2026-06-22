@@ -151,9 +151,11 @@ public class MGUtils(
         return Array.Empty<string>();
     }
     
-    public bool FileExists(string relativeFilePath)
+    public bool FileExists(string relativeFilePath, bool useModePath = true)
     {
-        return fileUtil.FileExists(System.IO.Path.Combine(modPath, relativeFilePath));
+        if(useModePath) return fileUtil.DirectoryExists(Path.Combine(modPath, relativeFilePath));
+        
+        return fileUtil.FileExists(relativeFilePath);
     }
     
     public void DeleteFile(string relativeFilePath)
