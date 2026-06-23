@@ -4,7 +4,7 @@ namespace _MGMod.types.models.EFT.templetes;
 
 public class MGProfile
 {
-	public required string profileName;
-	public required ProfileSides profileSides;
-	public string? description;
+	public required string profileName { get; set; }
+	public required ProfileSides profileSides { get; set; }
+	public string? description { get; set; }
 }
