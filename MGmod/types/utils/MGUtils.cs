@@ -153,24 +153,28 @@ public class MGUtils(
     
     public bool FileExists(string relativeFilePath, bool useModePath = true)
     {
-        if(useModePath) return fileUtil.FileExists(Path.Combine(modPath, relativeFilePath));
-        
+        if (useModePath) return fileUtil.FileExists(Path.Combine(modPath, relativeFilePath));
         return fileUtil.FileExists(relativeFilePath);
     }
     
-    public void DeleteFile(string relativeFilePath, bool useModePath = true)
+    public bool DeleteFile(string relativeFilePath, bool useModePath = true)
     {
-        if(useModePath) fileUtil.DeleteFile(Path.Combine(modPath, relativeFilePath));
-        fileUtil.DeleteFile(relativeFilePath);
+        if (useModePath) return fileUtil.DeleteFile(Path.Combine(modPath, relativeFilePath));
+        return fileUtil.DeleteFile(relativeFilePath);
     }
     
     public void WriteFile(string relativeFilePath, string Data, bool useModePath = true)
     {
-        if(useModePath) fileUtil.WriteFile(Path.Combine(modPath, relativeFilePath), Data);
+        if (useModePath)
+        {
+            fileUtil.WriteFile(Path.Combine(modPath, relativeFilePath), Data);
+            return;
+        }
         fileUtil.WriteFile(relativeFilePath, Data);
     }
 
     public string StripExtension(string filePath)
+    
     {
         return fileUtil.StripExtension(filePath);
     }
