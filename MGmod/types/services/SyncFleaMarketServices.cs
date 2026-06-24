@@ -22,19 +22,16 @@ public class SyncFleaMarketServices
 
     private PriceType? priceJson;
     private GitHubTokenType? githubToken;
-    private ISptLogger<SyncFleaMarketServices> logger;
     private MGUtils mGUtils;
     private DatabaseService databaseService;
     private ConfigsServer  configsServer;
     
     public SyncFleaMarketServices(
-        ISptLogger<SyncFleaMarketServices> _logger,
         DatabaseService _databaseService,
         ConfigsServer _configsServer,
         MGUtils _mGUtils
         )
     {
-        logger = _logger;
         databaseService = _databaseService;
         configsServer = _configsServer;
         mGUtils = _mGUtils;
@@ -70,7 +67,7 @@ public class SyncFleaMarketServices
         if (diff.TotalDays < 3) LoadPrice();
         else
         {
-            Log("同步数据与当前日期差距过大，正在重新同步。", LogTextColor.Blue);
+            Log("同步数据与当前日期差距过大，正在重新同步。", LogTextColor.Cyan);
             await GetPrices();
             LoadPrice();
         }
@@ -136,7 +133,7 @@ public class SyncFleaMarketServices
         //         item.Price = price;
         //     }
         // }
-		Log($"已同步至日期 {priceJson.date[0]}年{priceJson.date[1]}月{priceJson.date[2]}日。", LogTextColor.Cyan);
+		Log($"已同步至日期 {priceJson.date[0]}年{priceJson.date[1]}月{priceJson.date[2]}日。", LogTextColor.Yellow);
     }
     
     private void Log(string data, LogTextColor textColor)
