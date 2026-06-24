@@ -31,6 +31,7 @@ public class ConfigSettingServices
     private SyncFleaMarketServices syncFleaMarketServices;
     private CustomTraderServices  customTraderServices;
     private CustomProfileServices  customProfileServices;
+    private CustomAssortServices  customAssortServices;
     private TestServices testServices;
     public ConfigSettingServices(
         ISptLogger<ConfigSettingServices> _logger,
@@ -47,6 +48,7 @@ public class ConfigSettingServices
         CustomTraderServices _customTraderServices,
         CustomItemServices _customItemServices,
         CustomProfileServices _customProfileServices,
+        CustomAssortServices _customAssortServices,
         KeyClassfyServices _keyClassfyServices,
         SyncFleaMarketServices _syncFleaMarketServices,
             
@@ -67,6 +69,7 @@ public class ConfigSettingServices
         customTraderServices = _customTraderServices;
         customItemServices = _customItemServices;
         customProfileServices = _customProfileServices;
+        customAssortServices = _customAssortServices;
         keyClassfyServices = _keyClassfyServices;
         syncFleaMarketServices = _syncFleaMarketServices;
         
@@ -84,6 +87,7 @@ public class ConfigSettingServices
         if (CustomSetting.CustomItem) customItemServices.Start();
         if (CustomSetting.KeyClassfy) keyClassfyServices.Start();
         if (CustomSetting.CustomProfile) customProfileServices.Start();
+        if (CustomSetting.CustomAssort) customAssortServices.Start();
          botsServer.MGmodBots(GetBotSetting());
          configsServer.MGmodConfigs(GetConfigSetting());
          globalsServer.MGmodGlobals(GetGlobalsSetting());
