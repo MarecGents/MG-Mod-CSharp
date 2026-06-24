@@ -1,5 +1,7 @@
-﻿using _MGMod.types.models.EFT.templetes;
+﻿using System.Runtime.CompilerServices;
+using _MGMod.types.models.EFT.templetes;
 using _MGMod.types.models.EFT.traders;
+using _MGMod.types.models.Paths;
 using _MGMod.types.utils;
 using SPTarkov.DI.Annotations;
 using SPTarkov.Server.Core.DI;
@@ -14,8 +16,8 @@ public class CustomAssortServices(
     ISptLogger<CustomAssortServices> logger,
     MGUtils mGUtils
     )
-{
-   public CustomItemAssorts CreateCustomItemAssorts(MGItem item)
+{ 
+    public CustomItemAssorts CreateCustomItemAssorts(MGItem item)
     {
         var customAssorts = new CustomItemAssorts()
         {
