@@ -1,4 +1,4 @@
-﻿namespace _MGMod.types.models.Paths;
+namespace _MGMod.types.models.Paths;
 
 public static class Paths
 {
@@ -11,12 +11,6 @@ public static class Paths
     public static readonly PathType PriceJson = new ()
     {
         FileName = "price.json",
-        Path = "./res/price"
-    };
-
-    public static readonly PathType GithubToken = new()
-    {
-        FileName = "token.json",
         Path = "./res/price"
     };
 

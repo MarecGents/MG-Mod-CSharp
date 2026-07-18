@@ -1,7 +1,3 @@
-﻿using System.Net.Http.Headers;
-using System.Text;
-using System.Text.Json;
-using System.Reflection;
 using SPTarkov.Server.Core.Models.Logging;
 using SPTarkov.DI.Annotations;
 using SPTarkov.Server.Core.DI;
@@ -21,7 +17,6 @@ public class SyncFleaMarketServices
 {
 
     private PriceType? priceJson;
-    private GitHubTokenType? githubToken;
     private MGUtils mGUtils;
     private DatabaseService databaseService;
     private ConfigsServer  configsServer;
@@ -55,58 +50,74 @@ public class SyncFleaMarketServices
             priceJson = mGUtils.GetJsonDataFromFile<PriceType>(Paths.PriceJson);
         }
 
-        if (!mGUtils.FileExists(Path.Combine(Paths.GithubToken.Path, Paths.GithubToken.FileName)))
-        {
-            return;
-        }
+        if (priceJson == null) return;
 
-        githubToken = mGUtils.GetJsonDataFromFile<GitHubTokenType>(Paths.GithubToken);
-        
         DateTime nowDate = new DateTime(priceJson.date[0], priceJson.date[1], priceJson.date[2]);
         TimeSpan diff = DateTime.Now - nowDate;
-        if (diff.TotalDays < 3) LoadPrice();
+        if (diff.TotalDays < 3)
+        {
+            LoadPrice();
+        }
         else
         {
             Log("同步数据与当前日期差距过大，正在重新同步。", LogTextColor.Cyan);
             await GetPrices();
-            LoadPrice();
+            if (priceJson != null) LoadPrice();
         }
     }
 
+    /// <summary>
+    /// 多级回退获取价格数据：
+    /// ① jsDelivr CDN（中国大陆友好）→ ② raw.githubusercontent.com（官方源）→ ③ 使用本地缓存
+    /// </summary>
     private async Task GetPrices()
     {
-        if (githubToken == null) return;
+        string[] urls = GetPriceUrls();
 
-        var client = new HttpClient();
+        foreach (var url in urls)
+        {
+            if (await TryFetchPriceFromUrl(url)) return;
+        }
 
-        // GitHub API 要求带有 User-Agent
-        client.DefaultRequestHeaders.UserAgent.Add(new ProductInfoHeaderValue("MyApp", "1.0"));
-        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("token", githubToken.token);
+        Log("所有外部源均不可用，已保留本地缓存数据。", LogTextColor.Cyan);
+    }
 
-        string url = $"https://api.github.com/repos/{githubToken.owner}/{githubToken.repo}/contents/{githubToken.filePath}";
+    private string[] GetPriceUrls()
+    {
+        return
+        [
+            "https://cdn.jsdelivr.net/gh/MarecGents/MG-FleaMarket@main/res/price.json",
+            "https://raw.githubusercontent.com/MarecGents/MG-FleaMarket/main/res/price.json"
+        ];
+    }
 
+    private async Task<bool> TryFetchPriceFromUrl(string url)
+    {
         try
         {
-            var response = await client.GetAsync(url);
-            response.EnsureSuccessStatusCode();
+            using var client = new HttpClient();
+            client.Timeout = TimeSpan.FromSeconds(10);
+            string json = await client.GetStringAsync(url);
 
-            var content = await response.Content.ReadAsStringAsync();
+            var fetched = mGUtils.Deserialize<PriceType>(json);
+            if (fetched == null)
+            {
+                Log($"从 [{url}] 获取数据格式异常。", LogTextColor.Yellow);
+                return false;
+            }
 
-            // GitHub 的 contents API 返回的是 Base64 编码的内容
-            var jsonDoc = JsonDocument.Parse(content);
-            var encodedContent = jsonDoc.RootElement.GetProperty("content").GetString();
-            var decodedBytes = Convert.FromBase64String(encodedContent.Replace("\n", ""));
-            string fileContent = Encoding.UTF8.GetString(decodedBytes);
-
-            priceJson = mGUtils.Deserialize<PriceType>(fileContent);
+            priceJson = fetched;
             SavePrice();
+            Log($"已从 CDN 同步最新价格数据。", LogTextColor.Green);
+            return true;
         }
         catch (Exception ex)
         {
-            Log($"获取出错<{ex.Message}>。", LogTextColor.Red);
+            Log($"从 [{url}] 获取失败: {ex.Message}", LogTextColor.Yellow);
+            return false;
         }
-
     }
+
     private void SavePrice()
     {
         if (priceJson == null) return;
@@ -125,27 +136,11 @@ public class SyncFleaMarketServices
             }
         }
 
-        // var HbItem = databaseService.GetHandbook().Items;
-        // foreach (var item in HbItem)
-        // {
-        //     if (priceJson.prices.TryGetValue(item.Id, out var price))
-        //     {
-        //         item.Price = price;
-        //     }
-        // }
-		Log($"已同步至日期 {priceJson.date[0]}年{priceJson.date[1]}月{priceJson.date[2]}日。", LogTextColor.Yellow);
+        Log($"已同步至日期 {priceJson.date[0]}年{priceJson.date[1]}月{priceJson.date[2]}日。", LogTextColor.Yellow);
     }
     
     private void Log(string data, LogTextColor textColor)
     {
         mGUtils.Log("实时跳蚤", data, textColor);
     }
-}
-
-public class GitHubTokenType
-{
-    public required string token { get; set; }
-    public required string owner { get; set; }
-    public required string repo { get; set; }
-    public required string filePath { get; set; }
 }
