@@ -4,6 +4,10 @@ using SPTarkov.Server.Core.DI;
 using SPTarkov.Server.Core.Helpers;
 using SPTarkov.Server.Core.Services;
 using SPTarkov.Server.Core.Utils;
+using System.Net;
+using SPTarkov.Server.Core.Models.Common;
+using System.Text.Json;
+
 
 using _MGMod.types.models.Paths;
 using _MGMod.types.models.EFT.templetes;
@@ -95,11 +99,43 @@ public class SyncFleaMarketServices
     {
         try
         {
-            using var client = new HttpClient();
-            client.Timeout = TimeSpan.FromSeconds(10);
-            string json = await client.GetStringAsync(url);
+            using var handler = new HttpClientHandler
+            {
+                AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate,
+                AllowAutoRedirect = true
+            };
+            using var client = new HttpClient(handler);
 
-            var fetched = mGUtils.Deserialize<PriceType>(json);
+            client.DefaultRequestHeaders.UserAgent.TryParseAdd(
+                "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"
+            );
+            client.Timeout = TimeSpan.FromSeconds(30);
+
+            using var response = await client.GetAsync(url);
+            if (!response.IsSuccessStatusCode)
+            {
+                Log($"从 [{url}] 返回 HTTP {(int)response.StatusCode}", LogTextColor.Yellow);
+                return false;
+            }
+
+            string json = await response.Content.ReadAsStringAsync();
+
+            // 手动解析 JSON，跳过非 MongoId 的键（如 "customdogtags12345678910"）
+            using var doc = JsonDocument.Parse(json);
+            var root = doc.RootElement;
+
+            var date = new List<int>();
+            foreach (var d in root.GetProperty("date").EnumerateArray())
+                date.Add(d.GetInt32());
+
+            var prices = new Dictionary<MongoId, double>();
+            foreach (var item in root.GetProperty("prices").EnumerateObject())
+            {
+                if (MongoId.IsValidMongoId(item.Name))
+                    prices[item.Name] = item.Value.GetDouble();
+            }
+
+            var fetched = new PriceType { date = date, prices = prices };
             if (fetched == null)
             {
                 Log($"从 [{url}] 获取数据格式异常。", LogTextColor.Yellow);
@@ -113,11 +149,13 @@ public class SyncFleaMarketServices
         }
         catch (Exception ex)
         {
-            Log($"从 [{url}] 获取失败: {ex.Message}", LogTextColor.Yellow);
+            string detail = ex.InnerException != null
+                ? $"{ex.Message} → {ex.InnerException.Message}"
+                : ex.Message;
+            Log($"从 [{url}] 获取失败: {detail}", LogTextColor.Yellow);
             return false;
         }
     }
-
     private void SavePrice()
     {
         if (priceJson == null) return;
