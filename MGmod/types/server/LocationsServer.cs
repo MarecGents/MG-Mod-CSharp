@@ -40,6 +40,23 @@ public class LocationsServer
     {
         var Locations_ = Locations.GetDictionary();
         string[] Exclude = [ "Develop", "Hideout", "PrivateArea", "Suburbs", "Terminal", "Town"];
+        List<string> bossNames = [
+            "bossBully",
+            "bossKnight",
+            "bossPartisan",
+            "bossTagilla",
+            "bossKilla",
+            "bossZryachiy",
+            "bossGluhar",
+            "bossSanitar",
+            "bossBoar",
+            "bossBoarSniper",
+            "bossKolontay",
+            "bossTagillaAgro",
+            "tagillaHelperAgro",
+            "bossKojaniy",
+            "bossKillaAgro"
+        ];
         foreach (var mapName  in Locations_.Keys)
         {
             if (Exclude.Contains(mapName)) continue;
@@ -53,10 +70,8 @@ public class LocationsServer
             {
                 foreach(var Bzone in Locations_[mapName].Base.BossLocationSpawn)
                 {
-                    if (Bzone.BossName.IndexOf("boss") == 0 || Bzone.Supports != null)
-                    {
-                        Bzone.BossChance = LocationsSetting.BOSSSpwanChance.value;
-                    }
+                    if (!bossNames.Contains(Bzone.BossName)) continue;
+                    Bzone.BossChance = LocationsSetting.BOSSSpwanChance.value;
                 }
             }
             // 功能：100%可拉闸  功能：100%可撤离
