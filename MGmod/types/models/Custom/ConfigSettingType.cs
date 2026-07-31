@@ -184,7 +184,7 @@ public class MGModConfig_Templates
     public int MagazineCapacity { get; set; }
     public bool T7ThermalImaging { get; set; }
     public bool ResetFree { get; set; }
-    public bool QuestOptimize { get; set; }
+    public MGModConfig_Templates_QuestSystem QuestSystem { get; set; }
 }
 
 public class MGModConfig_Templates_ContainerExpands
@@ -226,6 +226,11 @@ public class MGModConfig_Templates_EquipmentPlate
     public int Durability { get; set; }
     public bool NoBuff { get; set; }
     public bool NoWeight { get; set; }
+}
+
+public class MGModConfig_Templates_QuestSystem
+{
+    public bool QuestOptimize { get; set; }
 }
 public class MGModConfig_Traders
 {

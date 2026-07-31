@@ -674,18 +674,23 @@ public class TemplatesServer(
             RQT.Exploration.ChangeCost[0].Count = 0;
             RQT.Pickup.ChangeCost[0].Count = 0;
         }
+        
+        var Quest = Templates_.Quests;
+        bool questOptimize = TemplatesSetting.QuestSystem.QuestOptimize;
+
         // 功能：任务优化 QuestOptimize
-        if (TemplatesSetting.QuestOptimize)
+        if (questOptimize)
         {
-            var Quest = Templates_.Quests;
             foreach (var qusetId in Quest.Keys)
             {
-                var AForFinish = Quest[qusetId].Conditions.AvailableForFinish;
+                var quest = Quest[qusetId];
+                
+                var AForFinish = quest.Conditions.AvailableForFinish;
                 foreach (var Finish in AForFinish)
                 {
                     Finish.Value = 1;
                 }
-                var AForStart = Quest[qusetId].Conditions.AvailableForStart;
+                var AForStart = quest.Conditions.AvailableForStart;
                 foreach (var Start in AForStart)
                 {
                     Start.AvailableAfter = 0;

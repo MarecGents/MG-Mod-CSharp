@@ -436,7 +436,9 @@
     "MagazineCapacity": 1,
     "T7ThermalImaging": false,
     "ResetFree": false,
-    "QuestOptimize": false
+    "QuestSystem": {
+      "QuestOptimize": false
+    }
   },
   "Traders": {
     "InsuranceTime": {
