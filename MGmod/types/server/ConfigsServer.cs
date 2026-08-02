@@ -210,21 +210,25 @@ public class ConfigsServer(
         {
             var Type = ConfigSetting.AirdropType;
             var Weight = Airdrop.AirdropTypeWeightings;
+            foreach (var w in Weight.Keys)
+            {
+                Weight[w] = 0;
+            }
             if(Type == "moreWeapon")
             {
-                Weight[SptAirdropTypeEnum.weaponArmor] = 12;
+                Weight[SptAirdropTypeEnum.weaponArmor] = 1000;
             } 
             else if (Type == "moreFoodMedical")
             {
-                Weight[SptAirdropTypeEnum.foodMedical] = 12;
+                Weight[SptAirdropTypeEnum.foodMedical] = 1000;
             }
             else if (Type == "moreBarter")
             {
-                Weight[SptAirdropTypeEnum.barter] = 12;
+                Weight[SptAirdropTypeEnum.barter] = 1000;
             }
             else if (Type == "moreMixed")
             {
-                Weight[SptAirdropTypeEnum.mixed] = 9;
+                Weight[SptAirdropTypeEnum.mixed] = 1000;
             }
         }
 
@@ -458,8 +462,9 @@ public class ConfigsServer(
         {
             Repair.RepairKitIntellectGainMultiplier.Weapon = 100;
             Repair.RepairKitIntellectGainMultiplier.Armor = 100;
-            // Repair.MaxIntellectGainPerRepair.Kit = 1;
-            // Repair.MaxIntellectGainPerRepair.Trader = 1;
+            Repair.WeaponTreatment.CritSuccessChance= 1;
+            Repair.WeaponTreatment.CritFailureChance= 0;
+            Repair.WeaponTreatment.PointGainMultiplier= 100;
         }
 
         // scavcase.json
