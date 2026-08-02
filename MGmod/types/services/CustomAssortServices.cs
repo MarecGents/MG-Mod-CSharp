@@ -9,11 +9,11 @@ using SPTarkov.Server.Core.DI;
 using SPTarkov.Server.Core.Models.Common;
 using SPTarkov.Server.Core.Models.Eft.Common.Tables;
 using SPTarkov.Server.Core.Models.Enums;
-using SPTarkov.Server.Core.Models.Logging;
 using SPTarkov.Server.Core.Models.Utils;
+using Color = Spectre.Console.Color;
 
 namespace _MGMod.types.services;
-[Injectable(TypePriority = OnLoadOrder.PostDBModLoader + 1)]
+[Injectable(TypePriority = OnLoadOrder.PostLoad + 1)]
 public class CustomAssortServices(
     MGUtils mGUtils,
     TradersServer tradersServer
@@ -22,7 +22,7 @@ public class CustomAssortServices(
     public void Start()
     {
         var count = AddAssortsToTraders(GetAssorts());
-        Log($"已添加{count}个独立预设。",LogTextColor.Yellow);
+        Log($"已添加{count}个独立预设。",Color.Yellow);
     }
 
     private Dictionary<string, CustomItemAssorts> GetAssorts()
@@ -102,7 +102,7 @@ public class CustomAssortServices(
         return newAssorts;
     }
 
-    private void Log(string data, LogTextColor textColor)
+    private void Log(string data, Color textColor)
     {
         mGUtils.Log("独立预设",data,textColor);
     }

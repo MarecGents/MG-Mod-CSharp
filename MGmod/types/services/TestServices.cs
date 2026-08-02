@@ -2,6 +2,7 @@
 using _MGMod.types.models.EFT.templetes;
 using _MGMod.types.models.Paths;
 using _MGMod.types.utils;
+using SPTarkov.Common.Logger;
 using SPTarkov.DI.Annotations;
 using SPTarkov.Server.Core.DI;
 using SPTarkov.Server.Core.Models.Common;
@@ -9,14 +10,14 @@ using SPTarkov.Server.Core.Models.Utils;
 
 namespace _MGMod.types.services;
 
-[Injectable(TypePriority = OnLoadOrder.PostDBModLoader + 1)]
+[Injectable(TypePriority = OnLoadOrder.PostLoad + 1)]
 public class TestServices
 {
-    private ISptLogger<TestServices> logger;
+    private SptLogger<TestServices> logger;
     private MGUtils mGUtils;
     
     public TestServices(
-        ISptLogger<TestServices> _logger,
+        SptLogger<TestServices> _logger,
         MGUtils _mGUtils
     )
     {

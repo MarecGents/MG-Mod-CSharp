@@ -1,50 +1,78 @@
 ﻿using _MGMod.types.models.Custom;
+using SPTarkov.Common.Logger;
 using SPTarkov.DI.Annotations;
 using SPTarkov.Server.Core.DI;
 using SPTarkov.Server.Core.Models.Common;
 using SPTarkov.Server.Core.Models.Enums;
-using SPTarkov.Server.Core.Models.Logging;
 using SPTarkov.Server.Core.Models.Spt.Config;
 using SPTarkov.Server.Core.Models.Utils;
 using SPTarkov.Server.Core.Servers;
 
 namespace _MGMod.types.server;
 
-[Injectable(TypePriority = OnLoadOrder.PostDBModLoader + 1)]
+[Injectable(TypePriority = OnLoadOrder.PostLoad + 1)]
 
 public class ConfigsServer(
-    ConfigServer configServer,
-    ISptLogger<ConfigsServer> logger
+    // ConfigServer configServer,
+    SptLogger<ConfigsServer> logger,
+    AirdropConfig Airdrop,
+    BackupConfig Backup,
+    BotConfig Bot,
+    BtrDeliveryConfig BtrDelivery,
+    CoreConfig Core,
+    GiftsConfig Gifts,
+    HealthConfig Health,
+    HideoutConfig Hideout,
+    HttpConfig Http,
+    InRaidConfig InRaid,
+    InsuranceConfig Insurance,
+    InventoryConfig Inventory,
+    ItemConfig Item,
+    LocaleConfig Locale,
+    LocationConfig Location,
+    LootConfig Loot,
+    LostOnDeathConfig LostOnDeath,
+    MatchConfig Match,
+    PlayerScavConfig PlayerScav,
+    PmcChatResponseConfig PmcChatResponse,
+    PmcConfig Pmc,
+    QuestConfig Quest,
+    RagfairConfig Ragfair,
+    RepairConfig Repair,
+    ScavCaseConfig ScavCase,
+    SeasonalEventConfig SeasonalEvent,
+    TraderConfig Trader,
+    WeatherConfig Weather
     )
 {
-    private AirdropConfig Airdrop => configServer.GetConfig<AirdropConfig>();
-    private BackupConfig Backup => configServer.GetConfig<BackupConfig>();
-    private BotConfig Bot => configServer.GetConfig<BotConfig>();
-    private BtrDeliveryConfig BtrDelivery => configServer.GetConfig<BtrDeliveryConfig>();
-    private CoreConfig Core => configServer.GetConfig<CoreConfig>();
-    private GiftsConfig Gifts => configServer.GetConfig<GiftsConfig>();
-    private HealthConfig Health => configServer.GetConfig<HealthConfig>();
-    private HideoutConfig Hideout => configServer.GetConfig<HideoutConfig>();
-    private HttpConfig Http => configServer.GetConfig<HttpConfig>();
-    private InRaidConfig InRaid => configServer.GetConfig<InRaidConfig>();
-    private InsuranceConfig Insurance => configServer.GetConfig<InsuranceConfig>();
-    private InventoryConfig Inventory => configServer.GetConfig<InventoryConfig>();
-    private ItemConfig Item => configServer.GetConfig<ItemConfig>();
-    private LocaleConfig Locale => configServer.GetConfig<LocaleConfig>();
-    private LocationConfig Location => configServer.GetConfig<LocationConfig>();
-    private LootConfig Loot => configServer.GetConfig<LootConfig>();
-    private LostOnDeathConfig LostOnDeath => configServer.GetConfig<LostOnDeathConfig>();
-    private MatchConfig Match => configServer.GetConfig<MatchConfig>();
-    private PlayerScavConfig PlayerScav => configServer.GetConfig<PlayerScavConfig>();
-    private PmcChatResponse PmcChatResponse => configServer.GetConfig<PmcChatResponse>();
-    private PmcConfig Pmc => configServer.GetConfig<PmcConfig>();
-    private QuestConfig Quest => configServer.GetConfig<QuestConfig>();
-    private RagfairConfig Ragfair => configServer.GetConfig<RagfairConfig>();
-    private RepairConfig Repair => configServer.GetConfig<RepairConfig>();
-    private ScavCaseConfig ScavCase => configServer.GetConfig<ScavCaseConfig>();
-    private SeasonalEventConfig SeasonalEvent => configServer.GetConfig<SeasonalEventConfig>();
-    private TraderConfig Trader => configServer.GetConfig<TraderConfig>();
-    private WeatherConfig Weather => configServer.GetConfig<WeatherConfig>();
+    // private AirdropConfig Airdrop => configServer.GetConfig<AirdropConfig>();
+    // private BackupConfig Backup => configServer.GetConfig<BackupConfig>();
+    // private BotConfig Bot => configServer.GetConfig<BotConfig>();
+    // private BtrDeliveryConfig BtrDelivery => configServer.GetConfig<BtrDeliveryConfig>();
+    // private CoreConfig Core => configServer.GetConfig<CoreConfig>();
+    // private GiftsConfig Gifts => configServer.GetConfig<GiftsConfig>();
+    // private HealthConfig Health => configServer.GetConfig<HealthConfig>();
+    // private HideoutConfig Hideout => configServer.GetConfig<HideoutConfig>();
+    // private HttpConfig Http => configServer.GetConfig<HttpConfig>();
+    // private InRaidConfig InRaid => configServer.GetConfig<InRaidConfig>();
+    // private InsuranceConfig Insurance => configServer.GetConfig<InsuranceConfig>();
+    // private InventoryConfig Inventory => configServer.GetConfig<InventoryConfig>();
+    // private ItemConfig Item => configServer.GetConfig<ItemConfig>();
+    // private LocaleConfig Locale => configServer.GetConfig<LocaleConfig>();
+    // private LocationConfig Location => configServer.GetConfig<LocationConfig>();
+    // private LootConfig Loot => configServer.GetConfig<LootConfig>();
+    // private LostOnDeathConfig LostOnDeath => configServer.GetConfig<LostOnDeathConfig>();
+    // private MatchConfig Match => configServer.GetConfig<MatchConfig>();
+    // private PlayerScavConfig PlayerScav => configServer.GetConfig<PlayerScavConfig>();
+    // private PmcChatResponse PmcChatResponse => configServer.GetConfig<PmcChatResponse>();
+    // private PmcConfig Pmc => configServer.GetConfig<PmcConfig>();
+    // private QuestConfig Quest => configServer.GetConfig<QuestConfig>();
+    // private RagfairConfig Ragfair => configServer.GetConfig<RagfairConfig>();
+    // private RepairConfig Repair => configServer.GetConfig<RepairConfig>();
+    // private ScavCaseConfig ScavCase => configServer.GetConfig<ScavCaseConfig>();
+    // private SeasonalEventConfig SeasonalEvent => configServer.GetConfig<SeasonalEventConfig>();
+    // private TraderConfig Trader => configServer.GetConfig<TraderConfig>();
+    // private WeatherConfig Weather => configServer.GetConfig<WeatherConfig>();
 
     // insurance.json
     public void AddTraderReturnChance(MongoId Id, double Chance)
@@ -430,8 +458,8 @@ public class ConfigsServer(
         {
             Repair.RepairKitIntellectGainMultiplier.Weapon = 100;
             Repair.RepairKitIntellectGainMultiplier.Armor = 100;
-            Repair.MaxIntellectGainPerRepair.Kit = 1;
-            Repair.MaxIntellectGainPerRepair.Trader = 1;
+            // Repair.MaxIntellectGainPerRepair.Kit = 1;
+            // Repair.MaxIntellectGainPerRepair.Trader = 1;
         }
 
         // scavcase.json

@@ -4,16 +4,26 @@ using SPTarkov.DI.Annotations;
 using SPTarkov.Server.Core.DI;
 using SPTarkov.Server.Core.Models.Common;
 using SPTarkov.Server.Core.Models.Eft.Common.Tables;
+using SPTarkov.Server.Core.Models.Spt.Tables;
 using SPTarkov.Server.Core.Services;
 
 namespace _MGMod.types.server;
 
-[Injectable(TypePriority = OnLoadOrder.PostDBModLoader + 1)]
+[Injectable(TypePriority = OnLoadOrder.PostLoad + 1)]
 public class TradersServer(
-    DatabaseService databaseService
+    TradersTable Traders
     )
 {
-    private Dictionary<MongoId, Trader> Traders => databaseService.GetTraders();
+    public Dictionary<MongoId, Trader> GetTraders()
+    {
+        return Traders;
+    }
+    
+    public Trader? GetTrader(MongoId traderId)
+    {
+        return Traders.GetTrader(traderId);
+    }
+    
     public void AddAssortsToTrader(CustomItemAssorts assorts)
     {
         if (!Traders.ContainsKey(assorts.traderId))

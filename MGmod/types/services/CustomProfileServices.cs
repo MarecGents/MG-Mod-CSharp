@@ -3,44 +3,27 @@ using _MGMod.types.models.Paths;
 using _MGMod.types.utils;
 using SPTarkov.DI.Annotations;
 using SPTarkov.Server.Core.DI;
-using SPTarkov.Server.Core.Models.Utils;
-using SPTarkov.Server.Core.Servers;
-using SPTarkov.Server.Core.Services;
-using SPTarkov.Server.Core.Models.Eft.Common.Tables;
 using _MGMod.types.server;
+using SPTarkov.Common.Logger;
 using SPTarkov.Server.Core.Models.Eft.Profile;
-using SPTarkov.Server.Core.Models.Logging;
-using Path = System.IO.Path;
+using Color = Spectre.Console.Color;
 
 namespace _MGMod.types.services;
-[Injectable(TypePriority = OnLoadOrder.PostDBModLoader + 1)]
+[Injectable(TypePriority = OnLoadOrder.PostLoad + 1)]
 
-public class CustomProfileServices
+public class CustomProfileServices(
+	SptLogger<CustomProfileServices> logger,
+	TemplatesServer templatesServer,
+	MGUtils mGUtils
+	)
 {
-	private ISptLogger<CustomProfileServices> logger;
-	private DatabaseService databaseService;
-	private TemplatesServer templatesServer;
-	private MGUtils mGUtils;
-
-	public CustomProfileServices(
-		ISptLogger<CustomProfileServices> _logger,
-		DatabaseService _databaseService,
-		TemplatesServer _templatesServer,
-		MGUtils _mGUtils
-		)
-	{
-		logger = _logger;
-		databaseService = _databaseService;
-		templatesServer = _templatesServer;
-		mGUtils = _mGUtils;
-	}
 
 	public void Start()
 	{
 		List<MGProfile> MGProfiles = mGUtils.GetJsonDataFromFile<List<MGProfile>>(Paths.ProfileJson);
 		AddProfileToServer(MGProfiles);
 		AddProfileToDB(MGProfiles);
-        Log("已开启。", LogTextColor.Yellow);
+        Log("已开启。", Color.Yellow);
 		return;
 	}
 
@@ -93,7 +76,7 @@ public class CustomProfileServices
 		}
 	}
 
-	private void Log(string data, LogTextColor textColor)
+	private void Log(string data, Color textColor)
 	{
 		mGUtils.Log("独立存档", data, textColor);
 	}

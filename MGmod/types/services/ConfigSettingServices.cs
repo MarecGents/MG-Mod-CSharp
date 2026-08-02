@@ -2,19 +2,19 @@
 using _MGMod.types.models.Paths;
 using _MGMod.types.server;
 using _MGMod.types.utils;
+using Spectre.Console;
+using SPTarkov.Common.Logger;
 using SPTarkov.DI.Annotations;
 using SPTarkov.Server.Core.DI;
 using SPTarkov.Server.Core.Models.Eft.Common;
-using SPTarkov.Server.Core.Models.Logging;
 using SPTarkov.Server.Core.Models.Utils;
-using SPTarkov.Server.Core.Services.Mod;
 
 namespace _MGMod.types.services;
 
-[Injectable(TypePriority = OnLoadOrder.PostDBModLoader + 1)]
+[Injectable(TypePriority = OnLoadOrder.PostLoad + 1)]
 public class ConfigSettingServices
 {
-    private ISptLogger<ConfigSettingServices> logger;
+    private SptLogger<ConfigSettingServices> logger;
     private ConfigSettingType? configJson;
     private MGUtils mGUtils;
 
@@ -34,7 +34,7 @@ public class ConfigSettingServices
     private CustomAssortServices  customAssortServices;
     private TestServices testServices;
     public ConfigSettingServices(
-        ISptLogger<ConfigSettingServices> _logger,
+        SptLogger<ConfigSettingServices> _logger,
         MGUtils _mGUtils,
 
         BotsServer _botsServer,
@@ -95,7 +95,7 @@ public class ConfigSettingServices
          locationsServer.MGmodLocations(GetLocationsSetting());
          templatesServer.MGmodTemplates(GetTemplatesSetting());
          tradersServer.MGmodTraders(GetTradersSetting());
-         mGUtils.Log("常规设置", "已开启。", LogTextColor.Yellow);
+         mGUtils.Log("常规设置", "已开启。", Color.Yellow);
     }
 
     private MGModConfig_Bot? GetBotSetting()

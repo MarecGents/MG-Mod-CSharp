@@ -1,17 +1,17 @@
-﻿using SPTarkov.Server.Core.Models.Spt.Server;
-using SPTarkov.DI.Annotations;
+﻿using SPTarkov.DI.Annotations;
 using SPTarkov.Server.Core.DI;
 using SPTarkov.Server.Core.Services;
 
 using _MGMod.types.models.EFT.locales;
+using SPTarkov.Server.Core.Models.Spt.Tables;
+
 namespace _MGMod.types.server;
 
-[Injectable(TypePriority = OnLoadOrder.PostDBModLoader + 1)]
+[Injectable(TypePriority = OnLoadOrder.PostLoad + 1)]
 public class LocalesServer(
-    DatabaseService databaseService
+    LocaleTable Locale
     )
 {
-    private LocaleBase Locale => databaseService.GetLocales();
     
     private List<string> _itemDescList = new () { "Name", "ShortName", "Description" };
     private List<string> _questDescList = new () 
@@ -33,7 +33,7 @@ public class LocalesServer(
         "Description"
     };
     
-    public LocaleBase GetLocales()
+    public LocaleTable GetLocales()
     {
         var locale = Locale;
         return locale;

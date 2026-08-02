@@ -2,23 +2,21 @@
 using _MGMod.types.models.Paths;
 using _MGMod.types.server;
 using _MGMod.types.utils;
+using SPTarkov.Common.Logger;
 using SPTarkov.DI.Annotations;
 using SPTarkov.Server.Core.DI;
-using SPTarkov.Server.Core.Models.Eft.Common;
 using SPTarkov.Server.Core.Models.Eft.Common.Tables;
 using SPTarkov.Server.Core.Models.Enums;
-using SPTarkov.Server.Core.Models.Logging;
-using SPTarkov.Server.Core.Models.Utils;
-using SPTarkov.Server.Core.Services;
 using SPTarkov.Server.Core.Utils;
 using SPTarkov.Server.Core.Models.Spt.Mod;
+using SPTarkov.Server.Core.Models.Spt.Tables;
+using Color = Spectre.Console.Color;
 using Path = System.IO.Path;
 
 namespace _MGMod.types.services;
-[Injectable(TypePriority = OnLoadOrder.PostDBModLoader + 1)]
+[Injectable(TypePriority = OnLoadOrder.PostLoad + 1)]
 public class CustomItemServices(
-    ISptLogger<CustomItemServices> logger,
-    DatabaseService databaseService,
+    SptLogger<CustomItemServices> logger,
     LocalesServer localesServer,
     MGUtils mGUtils,
     FileUtil fileUtil,
@@ -73,7 +71,7 @@ public class CustomItemServices(
             }
             if (errKey.Count > 0)
             {
-                logger.LogWithColor($"超模独立物品：{fileName}.json缺少关键属性：{string.Join(", ", errKey)}，请重新检查格式。", LogTextColor.Cyan);
+                logger.LogWithColor($"超模独立物品：{fileName}.json缺少关键属性：{string.Join(", ", errKey)}，请重新检查格式。", Color.Cyan);
                 continue;
             }
 
@@ -134,7 +132,7 @@ public class CustomItemServices(
             }
             if (errKey.Count > 0)
             {
-                logger.LogWithColor($"三兄贵独立物品：{fileName}.json缺少关键属性：{string.Join(", ", errKey)}，请重新检查格式。", LogTextColor.Cyan);
+                logger.LogWithColor($"三兄贵独立物品：{fileName}.json缺少关键属性：{string.Join(", ", errKey)}，请重新检查格式。", Color.Cyan);
                 continue;
             }
             var mgItem = new MGItem
@@ -180,12 +178,12 @@ public class CustomItemServices(
             
             if (resp.A)
             {
-                logger.LogWithColor($"MG独立物品：{it}.json缺少关键属性：{string.Join(", ", resp.B)}", LogTextColor.Yellow);
+                logger.LogWithColor($"MG独立物品：{it}.json缺少关键属性：{string.Join(", ", resp.B)}", Color.Yellow);
                 continue;
             }
-            if (databaseService.GetItems().Keys.Contains(item.items.newId))
+            if (templatesServer.GetItems().Keys.Contains(item.items.newId))
             {
-                logger.LogWithColor($"MG独立物品：{it}.json的newId已存在于items.json中，请修改newId。", LogTextColor.Yellow);
+                logger.LogWithColor($"MG独立物品：{it}.json的newId已存在于items.json中，请修改newId。", Color.Yellow);
                 continue;
             }
             templatesServer.AddMGItemsToDB(item);
@@ -201,7 +199,7 @@ public class CustomItemServices(
 
             count = count + 1;
         }
-        Log($"已添加{count}个独立物品。", LogTextColor.Yellow);
+        Log($"已添加{count}个独立物品。", Color.Yellow);
     }
 
     public Dictionary<string, MGItem> TransferMGItemsStruct(Dictionary<string, MGItem> ItemList)
@@ -214,7 +212,7 @@ public class CustomItemServices(
             var resp = DectectMGItemKey(item);
             if (resp.A)
             {
-                logger.LogWithColor($"MG独立物品：{it}.json缺少关键属性：{string.Join(", ", resp.B)}", LogTextColor.Yellow);
+                logger.LogWithColor($"MG独立物品：{it}.json缺少关键属性：{string.Join(", ", resp.B)}", Color.Yellow);
                 continue;
             }
 
@@ -261,7 +259,7 @@ public class CustomItemServices(
         return (errKey.Count>0, errKey);
     }
 
-    private void Log(string data, LogTextColor textColor)
+    private void Log(string data, Color textColor)
     {
         mGUtils.Log("独立物品", data, textColor);
     }

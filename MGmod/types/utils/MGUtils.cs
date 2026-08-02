@@ -4,23 +4,25 @@ using SPTarkov.Server.Core.DI;
 using SPTarkov.Server.Core.Extensions;
 using SPTarkov.Server.Core.Helpers;
 using SPTarkov.Server.Core.Models.Common;
-using SPTarkov.Server.Core.Models.Eft.Common.Tables;
 using SPTarkov.Server.Core.Models.Utils;
 using SPTarkov.Server.Core.Utils;
 using System.Reflection;
 using System.Text.Json;
 using System.Text.RegularExpressions;
-using SPTarkov.Server.Core.Models.Logging;
+using SPTarkov.Common.Logger;
+using SPTarkov.Server.Core.Helpers.Server;
+using SPTarkov.Server.Core.Models.Eft.Common.Tables;
+using Color = Spectre.Console.Color;
 using Path = System.IO.Path;
 
 namespace _MGMod.types.utils;
-[Injectable(TypePriority = OnLoadOrder.PreSptModLoader + 1)]
+[Injectable(TypePriority = OnLoadOrder.Preload + 1)]
 
 public class MGUtils(
     ModHelper modHelper,
     JsonUtil jsonUtil,
     FileUtil fileUtil,
-    ISptLogger<MGUtils> logger
+    SptLogger<MGUtils> logger
     )
 {
     private string? modPath => modHelper.GetAbsolutePathToModFolder(Assembly.GetExecutingAssembly());
@@ -218,22 +220,22 @@ public class MGUtils(
         return Regex.Escape(input);
     }
 
-    public void Log(object data)
+    public void Logs(object data)
     {
         fileUtil.WriteFile(System.IO.Path.Combine(modPath, $"./Log/{new MongoId()}.log"),jsonUtil.Serialize(data));
     }
 
-    public void Log(string server,string data, LogTextColor textColor)
+    public void Log(string server,string data, Color textColor)
     {
         logger.LogWithColor($"[MGMod][{server}]：" + data, textColor);
     }
-    public void Log_GT(string server,string data, LogTextColor textColor)
+    public void Log_GT(string server,string data, Color textColor)
     {
         logger.LogWithColor($"[MG通用商人框架][{server}]：" + data, textColor);
     }
     public void TestOutput<T>(T data)
     {
         string data2String = jsonUtil.Serialize(data);
-        logger.LogWithColor(data2String,  LogTextColor.Gray, LogBackgroundColor.White);
+        logger.LogWithColor(data2String,  Color.Gray, Color.White);
     }
 }

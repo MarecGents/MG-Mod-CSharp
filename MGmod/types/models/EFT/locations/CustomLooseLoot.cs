@@ -34,8 +34,8 @@ public class CustomSpawnpointTemplate
     public bool? IsContainer { get; set; }
     public bool? useGravity { get; set; }
     public bool? randomRotation { get; set; }
-    public XYZ? Position { get; set; }
-    public XYZ? Rotation { get; set; }
+    public Vector3? Position { get; set; }
+    public Vector3? Rotation { get; set; }
     public bool? IsGroupPosition { get; set; }
     public IEnumerable<GroupPosition>? GroupPositions { get; set; }
     public bool? IsAlwaysSpawn { get; set; }

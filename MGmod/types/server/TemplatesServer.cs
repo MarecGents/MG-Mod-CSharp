@@ -3,35 +3,35 @@ using _MGMod.types.models.EFT.locales;
 using _MGMod.types.models.EFT.templetes;
 using _MGMod.types.models.Paths;
 using _MGMod.types.utils;
+using SPTarkov.Common.Logger;
 using SPTarkov.DI.Annotations;
 using SPTarkov.Server.Core.DI;
 using SPTarkov.Server.Core.Models.Eft.Common.Tables;
 using SPTarkov.Server.Core.Models.Spt.Mod;
-using SPTarkov.Server.Core.Models.Spt.Templates;
 using SPTarkov.Server.Core.Models.Utils;
 using SPTarkov.Server.Core.Services;
-using SPTarkov.Server.Core.Services.Mod;
-using SPTarkov.Server.Core.Models.Logging;
 using SPTarkov.Server.Core.Constants;
 using SPTarkov.Server.Core.Models.Common;
 using SPTarkov.Server.Core.Models.Eft.Common;
+using SPTarkov.Server.Core.Models.Spt.Tables;
+using SPTarkov.Server.Core.Services.Modding.Custom;
+using Color = Spectre.Console.Color;
 
 namespace _MGMod.types.server;
 
-[Injectable(TypePriority = OnLoadOrder.PostDBModLoader + 1)]
+[Injectable(TypePriority = OnLoadOrder.PostLoad + 1)]
 public class TemplatesServer(
-    ISptLogger<TemplatesServer> logger,
-    DatabaseService databaseService,
+    SptLogger<TemplatesServer> logger,
+    TemplateTable Templates,
     LocalesServer localesServer,
     CustomItemService customItemService,
     MGUtils mGUtils
     )
 {
-    private Templates Templates_ => databaseService.GetTemplates();
     // Item.json
     public Dictionary<MongoId, TemplateItem> GetItems()
     {
-        return Templates_.Items;
+        return Templates.Items;
     }
     public bool IsItemExists(string ItemId)
     {
@@ -175,11 +175,11 @@ public class TemplatesServer(
     // handbook.json
     public HandbookBase GetHandbook()
     {
-        return Templates_.Handbook;
+        return Templates.Handbook;
     }
     public string FindHBItemParentId(string ItemId)
     {
-        foreach (var item in Templates_.Handbook.Items)
+        foreach (var item in Templates.Handbook.Items)
         {
             if (item.Id == ItemId)
             {
@@ -194,11 +194,11 @@ public class TemplatesServer(
         
         if (HbCategory.ParentId == null)
         {
-            Templates_.Handbook.Categories.Add(HbCategory);
+            Templates.Handbook.Categories.Add(HbCategory);
             return;
         }
         int v = 0;
-        foreach (var Categories in Templates_.Handbook.Categories)
+        foreach (var Categories in Templates.Handbook.Categories)
         {
             if (Categories.Id == HbCategory.ParentId)
             {
@@ -207,20 +207,20 @@ public class TemplatesServer(
             }
         }
         if (v == 0) return;
-        Templates_.Handbook.Categories.Add(HbCategory);
+        Templates.Handbook.Categories.Add(HbCategory);
     }
     
     // prices.json
     public Dictionary<MongoId, double> GetPrices()
     {
-        return databaseService.GetPrices();
+        return Templates.Prices;
     }
     
     
     // profile.json
     public Dictionary<string, ProfileSides> GetProfiles()
     {
-        return databaseService.GetProfileTemplates();
+        return Templates.Profiles;
     }
 
     public void AddProfile(MGProfile mGProfile)
@@ -239,16 +239,16 @@ public class TemplatesServer(
         }
     }
 
-    // traders
-    public Dictionary<MongoId, Trader> GetTraders()
-    {
-        return databaseService.GetTraders();
-    }
-    
+    // // traders
+    // public Dictionary<MongoId, Trader> GetTraders()
+    // {
+    //     return databaseService.GetTraders();
+    // }
+    //
     // quest
     public Dictionary<MongoId, Quest> GetQuests()
     {
-        return databaseService.GetQuests();
+        return Templates.Quests;
     }
     
     public void AddCustomItem(NewItemFromCloneDetails item)
@@ -267,7 +267,7 @@ public class TemplatesServer(
 
         if(!IsItemExists(item.items.cloneId))
         {
-            logger.LogWithColor($"MG独立物品id为{item.items.newId}的\"cloneId\"未能在items.json找到，无法添加到游戏中，请检查\"cloneId\"是否正确！", LogTextColor.Cyan);
+            logger.LogWithColor($"MG独立物品id为{item.items.newId}的\"cloneId\"未能在items.json找到，无法添加到游戏中，请检查\"cloneId\"是否正确！", Color.Cyan);
             return;
         }
         
@@ -284,6 +284,7 @@ public class TemplatesServer(
         }
         var newItemDetails = new NewItemFromCloneDetails()
         {
+            NewItemName=item.description.Name,
             FleaPriceRoubles = item.price,
             HandbookParentId = item.HandbookId??"5b47574386f77428ca22b2f4",
             HandbookPriceRoubles = item.price,
@@ -668,14 +669,14 @@ public class TemplatesServer(
         // 功能：任务免费重置 ResetFree
         if (TemplatesSetting.ResetFree)
         {
-            var RQT = Templates_.RepeatableQuests.Templates;
+            var RQT = Templates.RepeatableQuests.Templates;
             RQT.Elimination.ChangeCost[0].Count = 0;
             RQT.Completion.ChangeCost[0].Count = 0;
             RQT.Exploration.ChangeCost[0].Count = 0;
             RQT.Pickup.ChangeCost[0].Count = 0;
         }
         
-        var Quest = Templates_.Quests;
+        var Quest = Templates.Quests;
         bool questOptimize = TemplatesSetting.QuestSystem.QuestOptimize;
 
         // 功能：任务优化 QuestOptimize

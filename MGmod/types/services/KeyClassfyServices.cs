@@ -1,18 +1,16 @@
-﻿using _MGMod.types.models.Custom;
-using _MGMod.types.models.EFT.locales;
-using _MGMod.types.models.EFT.templetes;
+﻿using _MGMod.types.models.EFT.locales;
 using _MGMod.types.models.Paths;
 using _MGMod.types.server;
 using _MGMod.types.utils;
 using SPTarkov.DI.Annotations;
 using SPTarkov.Server.Core.DI;
 using SPTarkov.Server.Core.Models.Common;
+using SPTarkov.Common.Models.Logging;
 using SPTarkov.Server.Core.Models.Eft.Common.Tables;
-using SPTarkov.Server.Core.Models.Logging;
-using SPTarkov.Server.Core.Models.Utils;
+using Color = Spectre.Console.Color;
 
 namespace _MGMod.types.services;
-[Injectable(TypePriority = OnLoadOrder.PostDBModLoader + 1)]
+[Injectable(TypePriority = OnLoadOrder.PostLoad + 1)]
 public class KeyClassfyServices
 {
     private ISptLogger<KeyClassfyServices> logger;
@@ -39,7 +37,7 @@ public class KeyClassfyServices
     {
         var mapHdIds = AddMapZhNameIdToHb();
         AddorChangeKeyHbParendId(mapHdIds);
-        Log("已开启。", LogTextColor.Yellow);
+        Log("已开启。", Color.Yellow);
     }
 
     public Dictionary<string, string> AddMapZhNameIdToHb()
@@ -108,7 +106,7 @@ public class KeyClassfyServices
         }
     }
 
-    public void Log(string data, LogTextColor textColor)
+    public void Log(string data, Color textColor)
     {
         mGUtils.Log("钥匙分类", data, textColor);
     }

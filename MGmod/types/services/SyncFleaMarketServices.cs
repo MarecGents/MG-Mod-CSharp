@@ -1,40 +1,26 @@
-using SPTarkov.Server.Core.Models.Logging;
 using SPTarkov.DI.Annotations;
 using SPTarkov.Server.Core.DI;
-using SPTarkov.Server.Core.Helpers;
-using SPTarkov.Server.Core.Services;
-using SPTarkov.Server.Core.Utils;
-using System.Net;
 using SPTarkov.Server.Core.Models.Common;
+using System.Net;
 using System.Text.Json;
-
 
 using _MGMod.types.models.Paths;
 using _MGMod.types.models.EFT.templetes;
 using _MGMod.types.server;
 using _MGMod.types.utils;
-using SPTarkov.Server.Core.Models.Utils;
+using Spectre.Console;
+
 namespace _MGMod.types.services;
 
-[Injectable(TypePriority = OnLoadOrder.PostDBModLoader + 1)]
-public class SyncFleaMarketServices
+[Injectable(TypePriority = OnLoadOrder.PostLoad + 1)]
+public class SyncFleaMarketServices(
+    MGUtils mGUtils,
+    TemplatesServer templatesServer,
+    ConfigsServer  configsServer
+    )
 {
-
     private PriceType? priceJson;
-    private MGUtils mGUtils;
-    private DatabaseService databaseService;
-    private ConfigsServer  configsServer;
-    
-    public SyncFleaMarketServices(
-        DatabaseService _databaseService,
-        ConfigsServer _configsServer,
-        MGUtils _mGUtils
-        )
-    {
-        databaseService = _databaseService;
-        configsServer = _configsServer;
-        mGUtils = _mGUtils;
-    }
+
 
     public async Task Start()
     {
@@ -47,7 +33,7 @@ public class SyncFleaMarketServices
         if (!mGUtils.FileExists(Path.Combine(Paths.PriceJson.Path, Paths.PriceJson.FileName)))
         {
             DateTime date = (DateTime.Now).AddDays(-4);
-            priceJson = new PriceType { date = [date.Year, date.Month, date.Day], prices = databaseService.GetPrices() };
+            priceJson = new PriceType { date = [date.Year, date.Month, date.Day], prices = templatesServer.GetPrices() };
         }
         else
         {
@@ -64,7 +50,7 @@ public class SyncFleaMarketServices
         }
         else
         {
-            Log("同步数据与当前日期差距过大，正在重新同步。", LogTextColor.Cyan);
+            Log("同步数据与当前日期差距过大，正在重新同步。", Color.Cyan);
             await GetPrices();
             if (priceJson != null) LoadPrice();
         }
@@ -83,7 +69,7 @@ public class SyncFleaMarketServices
             if (await TryFetchPriceFromUrl(url)) return;
         }
 
-        Log("所有外部源均不可用，已保留本地缓存数据。", LogTextColor.Cyan);
+        Log("所有外部源均不可用，已保留本地缓存数据。", Color.Cyan);
     }
 
     private string[] GetPriceUrls()
@@ -114,7 +100,7 @@ public class SyncFleaMarketServices
             using var response = await client.GetAsync(url);
             if (!response.IsSuccessStatusCode)
             {
-                Log($"从 [{url}] 返回 HTTP {(int)response.StatusCode}", LogTextColor.Yellow);
+                Log($"从 [{url}] 返回 HTTP {(int)response.StatusCode}", Color.Yellow);
                 return false;
             }
 
@@ -138,13 +124,13 @@ public class SyncFleaMarketServices
             var fetched = new PriceType { date = date, prices = prices };
             if (fetched == null)
             {
-                Log($"从 [{url}] 获取数据格式异常。", LogTextColor.Yellow);
+                Log($"从 [{url}] 获取数据格式异常。", Color.Yellow);
                 return false;
             }
 
             priceJson = fetched;
             SavePrice();
-            Log($"已从 CDN 同步最新价格数据。", LogTextColor.Green);
+            Log($"已从 CDN 同步最新价格数据。", Color.Green);
             return true;
         }
         catch (Exception ex)
@@ -152,7 +138,7 @@ public class SyncFleaMarketServices
             string detail = ex.InnerException != null
                 ? $"{ex.Message} → {ex.InnerException.Message}"
                 : ex.Message;
-            Log($"从 [{url}] 获取失败: {detail}", LogTextColor.Yellow);
+            Log($"从 [{url}] 获取失败: {detail}", Color.Yellow);
             return false;
         }
     }
@@ -165,7 +151,7 @@ public class SyncFleaMarketServices
     private void LoadPrice()
     { 
         if (priceJson == null) return;
-        var prices = databaseService.GetPrices();
+        var prices = templatesServer.GetPrices();
         foreach (var id in prices.Keys)
         {
             if (priceJson.prices.TryGetValue(id, out var price))
@@ -174,10 +160,10 @@ public class SyncFleaMarketServices
             }
         }
 
-        Log($"已同步至日期 {priceJson.date[0]}年{priceJson.date[1]}月{priceJson.date[2]}日。", LogTextColor.Yellow);
+        Log($"已同步至日期 {priceJson.date[0]}年{priceJson.date[1]}月{priceJson.date[2]}日。", Color.Yellow);
     }
     
-    private void Log(string data, LogTextColor textColor)
+    private void Log(string data, Color textColor)
     {
         mGUtils.Log("实时跳蚤", data, textColor);
     }

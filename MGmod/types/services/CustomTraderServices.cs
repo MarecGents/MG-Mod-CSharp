@@ -1,56 +1,35 @@
 ﻿using _MGMod.types.models.EFT;
 using _MGMod.types.models.EFT.locales;
-using _MGMod.types.models.EFT.locations;
 using _MGMod.types.models.EFT.templetes;
 using _MGMod.types.models.EFT.traders;
 using _MGMod.types.models.Paths;
 using _MGMod.types.server;
 using _MGMod.types.utils;
+using SPTarkov.Common.Logger;
 using SPTarkov.DI.Annotations;
 using SPTarkov.Server.Core.DI;
-using SPTarkov.Server.Core.Loaders;
 using SPTarkov.Server.Core.Models.Common;
-using SPTarkov.Server.Core.Models.Eft.Common;
 using SPTarkov.Server.Core.Models.Eft.Common.Tables;
-using SPTarkov.Server.Core.Models.Logging;
-using SPTarkov.Server.Core.Models.Utils;
+using SPTarkov.Server.Core.Models.Spt.Bundles;
+using SPTarkov.Server.Core.Models.Spt.Tables;
 using SPTarkov.Server.Core.Routers;
+using Color = Spectre.Console.Color;
 using Path = System.IO.Path;
 
 namespace _MGMod.types.services;
-[Injectable(TypePriority = OnLoadOrder.PostDBModLoader + 1)]
-public class CustomTraderServices
+[Injectable(TypePriority = OnLoadOrder.PostLoad + 1)]
+public class CustomTraderServices (
+    MGUtils mGUtils,
+    SptLogger<CustomTraderServices> logger,
+    ImageRouter imageRouter,
+    LocalesServer localesServer,
+    ConfigsServer configsServer,
+    TemplatesServer templatesServer,
+    GlobalsServer globalsServer,
+    LocationsServer locationsServer,
+    TradersServer tradersServer
+)
 {
-    private MGUtils mGUtils;
-    private ISptLogger<CustomTraderServices> logger;
-    private ImageRouter  imageRouter;
-    private LocalesServer localesServer;
-    private ConfigsServer configsServer;
-    private TemplatesServer templatesServer;
-    private GlobalsServer globalsServer;
-    private LocationsServer locationsServer;
-    
-    public CustomTraderServices(
-        MGUtils _mGUtils,
-        ISptLogger<CustomTraderServices> _logger,
-        ImageRouter _imageRouter,
-        LocalesServer _localesServer,
-        ConfigsServer _configsServer,
-        TemplatesServer _templatesServer,
-        GlobalsServer _globalsServer,
-        LocationsServer _locationsServer
-    )
-    {
-        mGUtils = _mGUtils;
-        logger = _logger;
-        imageRouter = _imageRouter;
-        localesServer = _localesServer;
-        configsServer = _configsServer;
-        templatesServer = _templatesServer;
-        globalsServer = _globalsServer;
-        locationsServer = _locationsServer;
-    }
-    
     
     public void Start()
     {
@@ -75,7 +54,7 @@ public class CustomTraderServices
             AddTraderLocationToDB(traderPath);
             AddTraderTemplatesToDB(traderPath);
             AddTraderGlobalsToDB(traderPath);
-            Log($"商人【{Path.GetFileName(traderPath)}】已添加。", LogTextColor.Yellow);
+            Log($"商人【{Path.GetFileName(traderPath)}】已添加。", Color.Yellow);
             BundleManifest bundles = mGUtils.GetJsonDataFromFile<BundleManifest>(new PathType
             {
                 FileName = TraderPathsType.TraderBundles,
@@ -109,20 +88,20 @@ public class CustomTraderServices
         if (traderInfo == default)
         {
             // 2026.01.19 23:14 进度于此
-            Log($"商人{Path.GetFileName(traderPath)}不存在配置文件\"traderInfo.json\"，请检查商人文件完整性。",LogTextColor.Cyan);
+            Log($"商人{Path.GetFileName(traderPath)}不存在配置文件\"traderInfo.json\"，请检查商人文件完整性。",Color.Cyan);
             returnFlag = returnFlag + 1;
         }
         
-        var Traders = templatesServer.GetTraders();
+        var Traders = tradersServer.GetTraders();
         if (Traders.ContainsKey(traderInfo._id))
         {
-            Log($"商人{Path.GetFileName(traderPath)}的Id:{traderInfo._id}已存在于游戏中,请修改。",LogTextColor.Cyan);
+            Log($"商人{Path.GetFileName(traderPath)}的Id:{traderInfo._id}已存在于游戏中,请修改。",Color.Cyan);
             returnFlag = returnFlag + 1;
         }
         
         if (returnFlag != 0) return false;
         if (!MongoId.IsValidMongoId(traderInfo._id)) 
-            Log($"商人{traderInfo.name}的Id:{traderInfo._id}不符合MongoId格式，请酌情修改。【如果你安装了无视MongoId限制的Mod，可忽视本条消息】",LogTextColor.Cyan);
+            Log($"商人{traderInfo.name}的Id:{traderInfo._id}不符合MongoId格式，请酌情修改。【如果你安装了无视MongoId限制的Mod，可忽视本条消息】",Color.Cyan);
         
         if (!traderInfo.enable) return false;
 
@@ -235,11 +214,11 @@ public class CustomTraderServices
             newTrader.Base.Avatar = newTrader.Base.Avatar.Replace("000000000000000000000000.jpg", traderImage);
             imageRouter.AddRoute(newTrader.Base.Avatar.Replace(".jpg",""), imagePath);
         }
-        else Log($"{traderInfo.name}：混蛋，你把我的头像放哪了！快还给我！", LogTextColor.Cyan);
+        else Log($"{traderInfo.name}：混蛋，你把我的头像放哪了！快还给我！", Color.Cyan);
 
         if (!Traders.TryAdd(traderInfo._id, newTrader))
         {
-            Log($"{traderInfo.name}：添加失败，发生了未知错误。", LogTextColor.Cyan);
+            Log($"{traderInfo.name}：添加失败，发生了未知错误。", Color.Cyan);
             return false;
         }
         
@@ -293,13 +272,13 @@ public class CustomTraderServices
             }, false);
             if (templatesServer.IsItemExists(traderItem.item.Id))
             {
-                Log($"【警告】独立商人物品【id:{traderItem.item.Id}】已存在，请酌情修改id，本次不执行添加操作。", LogTextColor.Cyan);
+                Log($"【警告】独立商人物品【id:{traderItem.item.Id}】已存在，请酌情修改id，本次不执行添加操作。", Color.Cyan);
             }
 
             if (!String.IsNullOrEmpty(traderItem.origin) && mGUtils.IsMongoId(traderItem.origin))
                 filterList.TryAdd(traderItem.item.Id, traderItem.origin);
             var flag = templatesServer.AddCustomTraderItemsToDB(traderItem);
-            if(!flag) Log($"【警告】独立商人物品【id:{traderItem.item.Id}】添加失败，请检查物品文件是否正确。", LogTextColor.Cyan);
+            if(!flag) Log($"【警告】独立商人物品【id:{traderItem.item.Id}】添加失败，请检查物品文件是否正确。", Color.Cyan);
         }
         templatesServer.AddFilters(filterList);
     }
@@ -374,7 +353,7 @@ public class CustomTraderServices
             FileName = TraderPathsType.TraderGlobals,
             Path = traderPath,
         }, false);
-        Globals globals = globalsServer.GetGlobals();
+        GlobalTable globals = globalsServer.GetGlobals();
         
         // ItemPreset
         if (mGGlobals.ItemPresets != null)
@@ -396,7 +375,7 @@ public class CustomTraderServices
         
     }
 
-    public void Log(string data, LogTextColor textColor)
+    public void Log(string data, Color textColor)
     {
         mGUtils.Log("独立商人", data, textColor);
     }
