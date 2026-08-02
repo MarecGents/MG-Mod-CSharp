@@ -2,9 +2,9 @@
 
 **MG-Mod 服务端 Mod 核心逻辑库** — 基于 C# 的 SPTarkov Mod 框架
 
-[![SPT Version](https://img.shields.io/badge/SPT-4.0.13-blue)](https://dev.sp-tarkov.com/)
-[![MGMod Version](https://img.shields.io/badge/version-v0.8.6-green)]()
-[![.NET](https://img.shields.io/badge/.NET-9.0-512BD4)](https://dotnet.microsoft.com/)
+[![SPT Version](https://img.shields.io/badge/SPT-4.1.0-blue)](https://dev.sp-tarkov.com/)
+[![MGMod Version](https://img.shields.io/badge/version-v0.9.0.040100-green)]()
+[![.NET](https://img.shields.io/badge/.NET-10.0-512BD4)](https://dotnet.microsoft.com/)
 [![License](https://img.shields.io/badge/License-CC%20BY--NC--ND%204.0-lightgrey)](LICENSE)
 
 ---
@@ -33,19 +33,21 @@ MG-Mod-CSharp/
 ├── db/                   ← 游戏数据库覆盖
 ├── res/                  ← 运行时配置和资源
 ├── traders/              ← 自定义商人数据
-└── images/               ← 图片资源
+├── images/               ← 图片资源
+├── bundles/              ← 资源包（编译时输出）
+└── Logg/                 ← 运行日志目录
 ```
 
 ### 🔩 技术栈
 
 | 组件 | 技术 |
 |------|------|
-| 语言 | C# 13 |
-| 运行时 | .NET 9.0 |
+| 语言 | C# 14 |
+| 运行时 | .NET 10.0 |
 | 项目类型 | 类库 (Library) |
-| 框架依赖 | SPTarkov.Common 4.0.13, SPTarkov.DI 4.0.13, SPTarkov.Server.Core 4.0.13 |
+| 框架依赖 | SPTarkov.Common 4.1.0, SPTarkov.DI 4.1.0, SPTarkov.Server.Core 4.1.0 |
 | 架构模式 | 依赖注入 (DI) + 服务层 |
-| 版本 | v0.8.6 |
+| 版本 | v0.9.0.040100 |
 
 ---
 
@@ -103,7 +105,7 @@ MG-Mod-CSharp/
 ## 🚀 构建与使用
 
 ### 前置要求
-- .NET 9.0 SDK
+- .NET 10.0 SDK
 - Visual Studio 2022 或 JetBrains Rider
 
 ### 构建
@@ -135,4 +137,5 @@ dotnet build MGmod/MGMod.csproj -c Release
 - [MGModEditor（配置编辑器）](https://github.com/MarecGents/MGModEditor)
 - [MG-FleaMarket（实时跳蚤同步）](https://github.com/MarecGents/MG-FleaMarket)
 - [MGGTMod-CSharp（独立商人 Mod）](https://github.com/MarecGents/MGGTMod-CSharp)
+- [MG-GT-Mod（独立商人发布仓库）](https://github.com/MarecGents/MG-GT-Mod)
 - 作者：[MarecGents](https://sns.oddba.cn/author/92586) | [爱发电](https://ifdian.net/a/MarecGents)
