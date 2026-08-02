@@ -371,10 +371,10 @@ public class TemplatesServer(
                 {
                     // 功能：子弹堆叠 AmmoStack
                     ItemProps.StackMaxSize *= TemplatesSetting.AmmoStack;
+                    ItemProps.Weight = 0;
                     int StackMaxRandom = ItemProps.StackMaxSize??60;
                     if (TemplatesSetting.AmmoStack > 5)
                     {
-                        ItemProps.Weight = 0;
                         StackMaxRandom = 300;
                     }
                     if (TemplatesSetting.AmmoStack > 10)
