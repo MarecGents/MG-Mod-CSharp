@@ -6,8 +6,6 @@ using Spectre.Console;
 using SPTarkov.Common.Logger;
 using SPTarkov.DI.Annotations;
 using SPTarkov.Server.Core.DI;
-using SPTarkov.Server.Core.Models.Eft.Common;
-using SPTarkov.Server.Core.Models.Utils;
 
 namespace _MGMod.types.services;
 

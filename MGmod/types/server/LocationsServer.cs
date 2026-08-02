@@ -1,15 +1,11 @@
 ﻿using _MGMod.types.models.Custom;
-using _MGMod.types.models.EFT.locations;
 using _MGMod.types.utils;
 using SPTarkov.Common.Logger;
 using SPTarkov.DI.Annotations;
 using SPTarkov.Server.Core.DI;
-using SPTarkov.Server.Core.Models.Common;
 using SPTarkov.Server.Core.Models.Eft.Common;
 using SPTarkov.Server.Core.Models.Enums;
 using SPTarkov.Server.Core.Models.Spt.Tables;
-using SPTarkov.Server.Core.Models.Utils;
-using SPTarkov.Server.Core.Services;
 
 namespace _MGMod.types.server;
 

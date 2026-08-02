@@ -1,11 +1,11 @@
 ﻿using _MGMod.types.models.EFT;
 using _MGMod.types.models.EFT.locales;
+using _MGMod.types.models.EFT.locations;
 using _MGMod.types.models.EFT.templetes;
 using _MGMod.types.models.EFT.traders;
 using _MGMod.types.models.Paths;
 using _MGMod.types.server;
 using _MGMod.types.utils;
-using SPTarkov.Common.Logger;
 using SPTarkov.DI.Annotations;
 using SPTarkov.Server.Core.DI;
 using SPTarkov.Server.Core.Models.Common;
@@ -18,9 +18,8 @@ using Path = System.IO.Path;
 
 namespace _MGMod.types.services;
 [Injectable(TypePriority = OnLoadOrder.Preload + 1)]
-public class CustomTraderServices (
+public class CustomTraderServices(
     MGUtils mGUtils,
-    SptLogger<CustomTraderServices> logger,
     ImageRouter imageRouter,
     LocalesServer localesServer,
     ConfigsServer configsServer,

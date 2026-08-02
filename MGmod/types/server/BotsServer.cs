@@ -3,21 +3,18 @@ using SPTarkov.DI.Annotations;
 using SPTarkov.Server.Core.DI;
 using SPTarkov.Server.Core.Models.Spt.Tables;
 
-
 namespace _MGMod.types.server;
 
 [Injectable(TypePriority = OnLoadOrder.Preload + 1)]
 public class BotsServer(
-    BotTable Bots
+    BotTable Bots 
     )
 {
-    
     public BotTable GetBots()
     {
         var bots = Bots;
         return bots;
     }
-
     public void SetBotsHealth(int rate, string? botType = null)
     {
         foreach(var key in Bots.Types.Keys)
