@@ -19,7 +19,7 @@ using Color = Spectre.Console.Color;
 
 namespace _MGMod.types.server;
 
-[Injectable(TypePriority = OnLoadOrder.PostLoad + 1)]
+[Injectable(TypePriority = OnLoadOrder.Preload + 1)]
 public class TemplatesServer(
     SptLogger<TemplatesServer> logger,
     TemplateTable Templates,

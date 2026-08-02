@@ -13,7 +13,7 @@ using SPTarkov.Server.Core.Models.Utils;
 using Color = Spectre.Console.Color;
 
 namespace _MGMod.types.services;
-[Injectable(TypePriority = OnLoadOrder.PostLoad + 1)]
+[Injectable(TypePriority = OnLoadOrder.Preload + 1)]
 public class CustomAssortServices(
     MGUtils mGUtils,
     TradersServer tradersServer

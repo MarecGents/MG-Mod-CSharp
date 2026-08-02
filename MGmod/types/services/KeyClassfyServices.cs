@@ -10,26 +10,21 @@ using SPTarkov.Server.Core.Models.Eft.Common.Tables;
 using Color = Spectre.Console.Color;
 
 namespace _MGMod.types.services;
-[Injectable(TypePriority = OnLoadOrder.PostLoad + 1)]
+[Injectable(TypePriority = OnLoadOrder.Preload + 1)]
 public class KeyClassfyServices
 {
-    private ISptLogger<KeyClassfyServices> logger;
     private LocalesServer  localesServer;
     private TemplatesServer  templatesServer;
     private MGUtils mGUtils;
     
     public KeyClassfyServices(
-        ISptLogger<KeyClassfyServices> _logger,
         LocalesServer _localesServer,
         TemplatesServer _templatesServer,
-        
         MGUtils  _mGUtils
         )
     {
-        logger = _logger;
         localesServer = _localesServer;
         templatesServer = _templatesServer;
-        
         mGUtils = _mGUtils;
     }
 
@@ -40,7 +35,7 @@ public class KeyClassfyServices
         Log("已开启。", Color.Yellow);
     }
 
-    public Dictionary<string, string> AddMapZhNameIdToHb()
+    private Dictionary<string, string> AddMapZhNameIdToHb()
     {
         Dictionary<string,string> mapChName =  mGUtils.GetJsonDataFromFile<Dictionary<string,string>>(Paths.MapChNameJson);
         Dictionary<string,string> mapHdIds = new();
@@ -66,7 +61,7 @@ public class KeyClassfyServices
         return mapHdIds;
     }
 
-    public void AddorChangeKeyHbParendId(Dictionary<string, string> mapHdIds)
+    private void AddorChangeKeyHbParendId(Dictionary<string, string> mapHdIds)
     {
         HashSet<MongoId> keyCardParendId = ["5c518ec986f7743b68682ce2", "5c518ed586f774119a772aee"];
         Dictionary<string,string> mapChName =  mGUtils.GetJsonDataFromFile<Dictionary<string,string>>(Paths.MapChNameJson);
@@ -106,7 +101,7 @@ public class KeyClassfyServices
         }
     }
 
-    public void Log(string data, Color textColor)
+    private void Log(string data, Color textColor)
     {
         mGUtils.Log("钥匙分类", data, textColor);
     }

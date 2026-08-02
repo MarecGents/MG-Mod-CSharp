@@ -7,7 +7,7 @@ using SPTarkov.Server.Core.Models.Spt.Tables;
 
 namespace _MGMod.types.server;
 
-[Injectable(TypePriority = OnLoadOrder.PostLoad + 1)]
+[Injectable(TypePriority = OnLoadOrder.Preload + 1)]
 public class LocalesServer(
     LocaleTable Locale
     )

@@ -10,7 +10,7 @@ using SPTarkov.Server.Core.Models.Utils;
 
 namespace _MGMod.types.services;
 
-[Injectable(TypePriority = OnLoadOrder.PostLoad + 1)]
+[Injectable(TypePriority = OnLoadOrder.Preload + 1)]
 public class TestServices
 {
     private SptLogger<TestServices> logger;

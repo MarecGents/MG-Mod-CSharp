@@ -23,7 +23,7 @@ public record ModMetadata : IModMetadata
 	public string License { get; init; } = "CC BY-NC-ND 4.0";
 }
 
-[Injectable(InjectionType.Singleton,TypePriority = OnLoadOrder.PostLoad + 1)]
+[Injectable(TypePriority = OnLoadOrder.Preload + 1)]
 public class MGmod(
     SptLogger<MGmod> logger,
     ModHelper modHelper,
@@ -39,14 +39,14 @@ public class MGmod(
     }
 }
 
-[Injectable(InjectionType.Singleton, TypePriority = OnLoadOrder.Preload + 1)]
-public class PreMGmodLoad(
-    SptLogger<PreMGmodLoad> logger
-    ) : IOnLoad
-{
-    public Task OnLoadAsync(CancellationToken cancellationToken)
-    {
-        // logger.LogWithColor("This is PreMGmodLoad", LogTextColor.Red, LogBackgroundColor.Cyan);
-        return Task.CompletedTask;
-    }
-}
+// [Injectable(TypePriority = OnLoadOrder.Preload + 1)]
+// public class PreMGmodLoad(
+//     SptLogger<PreMGmodLoad> logger
+//     ) : IOnLoad
+// {
+//     public Task OnLoadAsync(CancellationToken cancellationToken)
+//     {
+//         // logger.LogWithColor("This is PreMGmodLoad", LogTextColor.Red, LogBackgroundColor.Cyan);
+//         return Task.CompletedTask;
+//     }
+// }

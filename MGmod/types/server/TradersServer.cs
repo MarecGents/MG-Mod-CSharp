@@ -9,7 +9,7 @@ using SPTarkov.Server.Core.Services;
 
 namespace _MGMod.types.server;
 
-[Injectable(TypePriority = OnLoadOrder.PostLoad + 1)]
+[Injectable(TypePriority = OnLoadOrder.Preload + 1)]
 public class TradersServer(
     TradersTable Traders
     )
