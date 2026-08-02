@@ -1,6 +1,6 @@
 # MG-Mod-CSharp
 
-**MG-Mod 服务端 Mod 核心逻辑库** — 基于 C# 的 SPTarkov Mod 框架
+**MG-Mod 服务端 Mod 核心逻辑库** — 基于 C# 的 SPT Mod 框架
 
 [![SPT Version](https://img.shields.io/badge/SPT-4.1.0-blue)](https://dev.sp-tarkov.com/)
 [![MGMod Version](https://img.shields.io/badge/version-v0.9.0.040100-green)]()
@@ -11,7 +11,7 @@
 
 ## 📖 简介
 
-**MG-Mod-CSharp** 是 MG-Mod 家族的核心项目，使用 C# 编写的 SPTarkov 服务端 Mod。它通过依赖注入（DI）架构深度集成 SPTarkov 框架，实现对游戏服务器的全面配置与功能扩展。
+**MG-Mod-CSharp** 是 MG-Mod 家族的核心项目，使用 C# 编写的 SPT 服务端 Mod。它通过依赖注入（DI）架构深度集成 SPT 框架，实现对游戏服务器的全面配置与功能扩展。
 
 本仓库编译产出的 DLL 为 MG-Mod 提供全部后端逻辑支持，是 MG-Mod 功能体系的技术基石。
 
@@ -45,7 +45,7 @@ MG-Mod-CSharp/
 | 语言 | C# 14 |
 | 运行时 | .NET 10.0 |
 | 项目类型 | 类库 (Library) |
-| 框架依赖 | SPTarkov.Common 4.1.0, SPTarkov.DI 4.1.0, SPTarkov.Server.Core 4.1.0 |
+| 框架依赖 | SPT.Common 4.1.0, SPT.DI 4.1.0, SPT.Server.Core 4.1.0 |
 | 架构模式 | 依赖注入 (DI) + 服务层 |
 | 版本 | v0.9.0.040100 |
 
