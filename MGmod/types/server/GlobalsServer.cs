@@ -42,6 +42,7 @@ public class GlobalsServer(
         if (GlobalsSetting.EscapeNoTimeLimit)
         {
             Globals.Configuration.Exp.MatchEnd.SurvivedExperienceRequirement = 0;
+            Globals.Configuration.Exp.MatchEnd.SurvivedSecondsRequirement = 0;
         }
         // 功能：跳蚤开放等级 FleaMarketOpenLevel
         if (GlobalsSetting.FleaMarketOpenLevel)
