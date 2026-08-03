@@ -6,7 +6,7 @@
 		<ImplicitUsings>enable</ImplicitUsings>
 		<Nullable>enable</Nullable>
 		<OutputType>Library</OutputType>
-		<Version>0.9.0</Version>
+		<Version>0.9.0.040101</Version>
 		<!-- The two lines below will set the output path for the binaries -->
 		<OutputPath>bin\$(Configuration)\$(ProjectName)\$(AssemblyName)-$(Version)\</OutputPath>
 		<AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
@@ -28,9 +28,9 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <PackageReference Include="SPTarkov.Common" Version="4.1.0" />
-	  <PackageReference Include="SPTarkov.DI" Version="4.1.0" />
-	  <PackageReference Include="SPTarkov.Server.Core" Version="4.1.0" />
+	  <PackageReference Include="SPTarkov.Common" Version="4.1.1" />
+	  <PackageReference Include="SPTarkov.DI" Version="4.1.1" />
+	  <PackageReference Include="SPTarkov.Server.Core" Version="4.1.1" />
 	</ItemGroup>
 	
 </Project>
