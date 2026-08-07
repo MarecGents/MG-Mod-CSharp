@@ -44,13 +44,17 @@ public class TemplatesServer(
     }
     public List<string> FindItemParentsIdById(string ItemId)
     {
-        List<string> ParentList = new(){};
-        string NowId = ItemId;
+        
         var Items = GetItems();
-        while (Items.Keys.Contains(NowId) && Items[NowId].Parent != "")
+        if (!Items.ContainsKey(ItemId)) return null; // 或返回空列表
+        
+        List<string> ParentList = new();
+        string NowId = ItemId;
+        // while (Items.ContainsKey(NowId))
+        while (Items.TryGetValue(NowId, out var NowItem))
         {
-            string Temp = FindItemParentIdById(NowId);
-            if (Temp == "") { break; }
+            string Temp = NowItem.Parent;
+            if (string.IsNullOrEmpty(Temp)) { break; }
             ParentList.Add(Temp);
             NowId = Temp;
         }
