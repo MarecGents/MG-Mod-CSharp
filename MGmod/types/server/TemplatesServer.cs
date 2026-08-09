@@ -12,6 +12,7 @@ using SPTarkov.Server.Core.Models.Common;
 using SPTarkov.Server.Core.Models.Spt.Tables;
 using SPTarkov.Server.Core.Services.Modding.Custom;
 using Color = Spectre.Console.Color;
+using Path = System.IO.Path;
 
 namespace _MGMod.types.server;
 
@@ -22,17 +23,19 @@ public class TemplatesServer(
     LocalesServer localesServer,
     CustomItemService customItemService,
     MGUtils mGUtils
-    )
+)
 {
     // Item.json
     public Dictionary<MongoId, TemplateItem> GetItems()
     {
         return Templates.Items;
     }
+
     public bool IsItemExists(string ItemId)
     {
         return GetItems().ContainsKey(ItemId);
     }
+
     public string FindItemParentIdById(string ItemId)
     {
         var Items = GetItems();
@@ -40,24 +43,30 @@ public class TemplatesServer(
         {
             return Items[ItemId].Parent;
         }
+
         return "null";
     }
+
     public List<string> FindItemParentsIdById(string ItemId)
     {
-        
         var Items = GetItems();
         if (!Items.ContainsKey(ItemId)) return null; // 或返回空列表
-        
+
         List<string> ParentList = new();
         string NowId = ItemId;
         // while (Items.ContainsKey(NowId))
         while (Items.TryGetValue(NowId, out var NowItem))
         {
             string Temp = NowItem.Parent;
-            if (string.IsNullOrEmpty(Temp)) { break; }
+            if (string.IsNullOrEmpty(Temp))
+            {
+                break;
+            }
+
             ParentList.Add(Temp);
             NowId = Temp;
         }
+
         return ParentList;
     }
 
@@ -67,116 +76,123 @@ public class TemplatesServer(
         var flag = Items.TryAdd(item.Id, item);
         return flag;
     }
-    public void AddFilters(Dictionary<string,string> _filterList)
+
+    public void AddFilters(Dictionary<string, string> _filterList)
     {
         var itemsDB = GetItems();
         List<string> filterList = new() { "StackSlots", "Slots", "Chambers", "Cartridges", "Grids" };
         foreach (var itemId in itemsDB.Keys)
         {
-            var itemProp = itemsDB[itemId].Properties?? null;
+            var itemProp = itemsDB[itemId].Properties ?? null;
             if (itemProp == null) continue;
             var StackSlots = itemProp.StackSlots ?? null;
             var Slots = itemProp.Slots ?? null;
             var Chambers = itemProp.Chambers ?? null;
             var Cartridges = itemProp.Cartridges ?? null;
             var Grids = itemProp.Grids ?? null;
-            if (StackSlots != null && StackSlots.Count() > 0)
+            if (StackSlots != null )
             {
                 foreach (var slot in StackSlots)
                 {
-                    if (slot.Properties == null || slot.Properties.Filters == null || slot.Properties.Filters.Count() == 0)
+                    if (slot.Properties == null || slot.Properties.Filters == null ||
+                        !slot.Properties.Filters.Any())
                         continue;
                     foreach (var filter in slot.Properties.Filters)
                     {
-                        if(filter.Filter == null || filter.Filter.Count == 0) continue;
+                        if (filter.Filter == null || filter.Filter.Count == 0) continue;
                         foreach (var fL in _filterList)
                         {
                             if (!filter.Filter.Contains(fL.Value) || filter.Filter.Contains(fL.Key)) continue;
                             filter.Filter.Add(fL.Key);
                         }
-                    } 
+                    }
                 }
             }
-            
-            if (Slots != null && Slots.Count() > 0)
+
+            if (Slots != null )
             {
                 foreach (var slot in Slots)
                 {
-                    if (slot.Properties == null || slot.Properties.Filters == null || slot.Properties.Filters.Count() == 0)
+                    if (slot.Properties == null || slot.Properties.Filters == null ||
+                        !slot.Properties.Filters.Any())
                         continue;
                     foreach (var filter in slot.Properties.Filters)
                     {
-                        if(filter.Filter == null || filter.Filter.Count == 0) continue;
+                        if (filter.Filter == null || filter.Filter.Count == 0) continue;
                         foreach (var fL in _filterList)
                         {
                             if (!filter.Filter.Contains(fL.Value) || filter.Filter.Contains(fL.Key)) continue;
                             filter.Filter.Add(fL.Key);
                         }
-                    } 
+                    }
                 }
             }
-            
-            if (Chambers != null && Chambers.Count() > 0)
+
+            if (Chambers != null )
             {
                 foreach (var chamber in Chambers)
                 {
-                    if (chamber.Properties == null || chamber.Properties.Filters == null || chamber.Properties.Filters.Count() == 0)
+                    if (chamber.Properties == null || chamber.Properties.Filters == null ||
+                        !chamber.Properties.Filters.Any())
                         continue;
                     foreach (var filter in chamber.Properties.Filters)
                     {
-                        if(filter.Filter == null || filter.Filter.Count == 0) continue;
+                        if (filter.Filter == null || filter.Filter.Count == 0) continue;
                         foreach (var fL in _filterList)
                         {
                             if (!filter.Filter.Contains(fL.Value) || filter.Filter.Contains(fL.Key)) continue;
                             filter.Filter.Add(fL.Key);
                         }
-                    } 
+                    }
                 }
             }
 
-            if (Cartridges != null && Cartridges.Count() > 0)
+            if (Cartridges != null )
             {
                 foreach (var cartridge in Cartridges)
                 {
-                    if (cartridge.Properties == null || cartridge.Properties.Filters == null || cartridge.Properties.Filters.Count() == 0)
+                    if (cartridge.Properties == null || cartridge.Properties.Filters == null ||
+                        !cartridge.Properties.Filters.Any())
                         continue;
                     foreach (var filter in cartridge.Properties.Filters)
                     {
-                        if(filter.Filter == null || filter.Filter.Count == 0) continue;
+                        if (filter.Filter == null || filter.Filter.Count == 0) continue;
                         foreach (var fL in _filterList)
                         {
                             if (!filter.Filter.Contains(fL.Value) || filter.Filter.Contains(fL.Key)) continue;
                             filter.Filter.Add(fL.Key);
                         }
-                    } 
+                    }
                 }
             }
 
-            if (Grids != null && Grids.Count() > 0)
+            if (Grids != null )
             {
                 foreach (var grid in Grids)
                 {
-                    if (grid.Properties == null || grid.Properties.Filters == null || grid.Properties.Filters.Count() == 0)
+                    if (grid.Properties == null || grid.Properties.Filters == null ||
+                        !grid.Properties.Filters.Any())
                         continue;
                     foreach (var filter in grid.Properties.Filters)
                     {
-                        if(filter.Filter == null || filter.Filter.Count == 0) continue;
+                        if (filter.Filter == null || filter.Filter.Count == 0) continue;
                         foreach (var fL in _filterList)
                         {
                             if (!filter.Filter.Contains(fL.Value) || filter.Filter.Contains(fL.Key)) continue;
                             filter.Filter.Add(fL.Key);
                         }
-                    } 
+                    }
                 }
             }
         }
     }
-    
+
     // handbook.json
     public HandbookBase GetHandbook()
     {
         return Templates.Handbook;
     }
+
     public string FindHBItemParentId(string ItemId)
     {
         foreach (var item in Templates.Handbook.Items)
@@ -186,17 +202,20 @@ public class TemplatesServer(
                 return item.ParentId;
             }
         }
+
         return "null";
     }
+
     public void AddHbCategory(HandbookCategory HbCategory)
     {
         if (!MongoId.IsValidMongoId(HbCategory.Id)) return;
-        
+
         if (HbCategory.ParentId == null)
         {
             Templates.Handbook.Categories.Add(HbCategory);
             return;
         }
+
         int v = 0;
         foreach (var Categories in Templates.Handbook.Categories)
         {
@@ -206,16 +225,16 @@ public class TemplatesServer(
                 break;
             }
         }
+
         if (v == 0) return;
         Templates.Handbook.Categories.Add(HbCategory);
     }
-    
+
     // prices.json
     public Dictionary<MongoId, double> GetPrices()
     {
         return Templates.Prices;
     }
-    
     
     // profile.json
     public Dictionary<string, ProfileSides> GetProfiles()
@@ -228,7 +247,7 @@ public class TemplatesServer(
         Dictionary<string, ProfileSides> Profiles = GetProfiles();
         Profiles.TryAdd(mGProfile.profileName, mGProfile.profileSides);
     }
-    
+
     public void AddTraderInitLoyaltyLevel(MongoId Id, int Level = 1)
     {
         var profiles = GetProfiles();
@@ -238,39 +257,35 @@ public class TemplatesServer(
             profile.Value.Usec.Trader.InitialLoyaltyLevel.TryAdd(Id, Level);
         }
     }
-
-    // // traders
-    // public Dictionary<MongoId, Trader> GetTraders()
-    // {
-    //     return databaseService.GetTraders();
-    // }
-    //
-    // quest
+    
+    // quests.json
     public Dictionary<MongoId, Quest> GetQuests()
     {
         return Templates.Quests;
     }
-    
+
     public void AddCustomItem(NewItemFromCloneDetails item)
     {
         customItemService.CreateItemFromClone(item);
     }
+
     public void AddCustomItems(List<NewItemFromCloneDetails> itemList)
     {
-        foreach(var item in itemList)
+        foreach (var item in itemList)
         {
             AddCustomItem(item);
         }
     }
+
     public void AddMGItemsToDB(MGItem item)
     {
-
-        if(!IsItemExists(item.items.cloneId))
+        if (!IsItemExists(item.items.cloneId))
         {
-            logger.LogWithColor($"MG独立物品id为{item.items.newId}的\"cloneId\"未能在items.json找到，无法添加到游戏中，请检查\"cloneId\"是否正确！", Color.Cyan);
+            logger.LogWithColor($"MG独立物品id为{item.items.newId}的\"cloneId\"未能在items.json找到，无法添加到游戏中，请检查\"cloneId\"是否正确！",
+                Color.Cyan);
             return;
         }
-        
+
         /*
         if (FindHBItemParentId(item.items.cloneId) == "null")
         {
@@ -280,26 +295,28 @@ public class TemplatesServer(
         */
         if (!mGUtils.IsMongoId(item.items.newId))
         {
-            logger.Warning($"MG独立物品id为{item.items.newId}的\"newId\"不符合MongoId格式，建议修改newId，否则游戏内会报错。如果你安装了解除MongoId限制的mod，请忽视此警告消息。");
+            logger.Warning(
+                $"MG独立物品id为{item.items.newId}的\"newId\"不符合MongoId格式，建议修改newId，否则游戏内会报错。如果你安装了解除MongoId限制的mod，请忽视此警告消息。");
         }
+
         var newItemDetails = new NewItemFromCloneDetails()
         {
-            NewItemName=item.description.Name,
+            NewItemName = item.description.Name,
             FleaPriceRoubles = item.price,
-            HandbookParentId = item.HandbookId??"5b47574386f77428ca22b2f4",
+            HandbookParentId = item.HandbookId ?? "5b47574386f77428ca22b2f4",
             HandbookPriceRoubles = item.price,
             ItemTplToClone = item.items.cloneId,
             Locales = new Dictionary<string, LocaleDetails>()
             {
-                {"ch", item.description }
+                { "ch", item.description }
             },
             NewId = item.items.newId,
             OverrideProperties = item.items._props,
             ParentId = FindItemParentIdById(item.items.cloneId),
         };
-        AddCustomItem(newItemDetails);  //!!!!!
+        AddCustomItem(newItemDetails); //!!!!!
         var filterList = new Dictionary<string, string>()
-        { { item.items.newId, item.items.cloneId} };
+            { { item.items.newId, item.items.cloneId } };
         AddFilters(filterList);
     }
 
@@ -311,13 +328,15 @@ public class TemplatesServer(
 
     public void MGmodTemplates(MGModConfig_Templates TemplatesSetting)
     {
+        MGmodServers(TemplatesSetting);
         MGmodItems(TemplatesSetting);
         MGmodQuests(TemplatesSetting);
     }
 
     private void MGmodItems(MGModConfig_Templates TemplatesSetting)
     {
-        string[] AmmoBlacklist = [
+        string[] AmmoBlacklist =
+        [
             "5656eb674bdc2d35148b457c",
             "5ede474b0c226a66f5402622",
             "5ede475b549eed7c6d5c18fb",
@@ -332,9 +351,14 @@ public class TemplatesServer(
             "635267f063651329f75a4ee8"
         ];
         var ContainerExpand = TemplatesSetting.ContainerExpand;
-        string[] MedcParent = [ "5448f39d4bdc2d0a728b4568", "5448f3a14bdc2d27728b4569", "5448f3a64bdc2d60728b456a", "5448f3ac4bdc2dce718b4569" ];
-        string[] WeaponFilter = [ "FirstPrimaryWeapon", "SecondPrimaryWeapon", "Holster" ];
-        HashSet<MongoId> ArmorVestList = new HashSet<MongoId> { "5448e5284bdc2dcb718b4567", "5448e54d4bdc2dcc718b4568", "57bef4c42459772e8d35a53b" };
+        string[] MedcParent =
+        [
+            "5448f39d4bdc2d0a728b4568", "5448f3a14bdc2d27728b4569", "5448f3a64bdc2d60728b456a",
+            "5448f3ac4bdc2dce718b4569"
+        ];
+        string[] WeaponFilter = ["FirstPrimaryWeapon", "SecondPrimaryWeapon", "Holster"];
+        HashSet<MongoId> ArmorVestList = new HashSet<MongoId>
+            { "5448e5284bdc2dcb718b4567", "5448e54d4bdc2dcc718b4568", "57bef4c42459772e8d35a53b" };
         var ItemDB = GetItems();
         foreach (var Item in ItemDB)
         {
@@ -348,6 +372,7 @@ public class TemplatesServer(
             {
                 ItemProps.ExaminedByDefault = true;
             }
+
             // 武器栏可放全部武器 WeaponFilter
             if (ItemId == "55d7217a4bdc2d86028b456d" && TemplatesSetting.WeaponFilter)
             {
@@ -359,10 +384,12 @@ public class TemplatesServer(
                     }
                     else if (item.Name == "Scabbard")
                     {
-                        item.Properties.Filters.ElementAtOrDefault(0).Filter = ["5422acb9af1c889c16000029", "5447e1d04bdc2dff2f8b4567"];
+                        item.Properties.Filters.ElementAtOrDefault(0).Filter =
+                            ["5422acb9af1c889c16000029", "5447e1d04bdc2dff2f8b4567"];
                     }
                 }
             }
+
             // 子弹
             if (ItemParent == "5485a8684bdc2da71d8b4567")
             {
@@ -372,30 +399,36 @@ public class TemplatesServer(
                     // 功能：子弹堆叠 AmmoStack
                     ItemProps.StackMaxSize *= TemplatesSetting.AmmoStack;
                     ItemProps.Weight = 0;
-                    int StackMaxRandom = ItemProps.StackMaxSize??60;
+                    int StackMaxRandom = ItemProps.StackMaxSize ?? 60;
                     if (TemplatesSetting.AmmoStack > 5)
                     {
                         StackMaxRandom = 300;
                     }
+
                     if (TemplatesSetting.AmmoStack > 10)
                     {
                         StackMaxRandom = 600;
                     }
+
                     if (AmmoBlacklist.Contains(ItemId))
                     {
                         ItemProps.StackMinRandom = 1;
                         ItemProps.StackMaxRandom = 20;
-                    } else
+                    }
+                    else
                     {
                         ItemProps.StackMinRandom = 30;
                         ItemProps.StackMaxRandom = StackMaxRandom;
                     }
-
                 }
+
                 // 功能：子弹数据 AmmoInfo
                 if (TemplatesSetting.AmmoInfo)
                 {
-                    string retStr_ammo = "<color=#00cccc><b>肉伤：" + ItemProps.Damage + "     甲伤：" + ItemProps.ArmorDamage + "     穿甲：" + ItemProps.PenetrationPower + "     穿透率：" + ItemProps.PenetrationChanceObstacle + "     跳弹率：" + ItemProps.RicochetChance + "     碎弹率：" + ItemProps.FragmentationChance + "</b></color>\r\n";
+                    string retStr_ammo = "<color=#00cccc><b>肉伤：" + ItemProps.Damage + "     甲伤：" +
+                                         ItemProps.ArmorDamage + "     穿甲：" + ItemProps.PenetrationPower + "     穿透率：" +
+                                         ItemProps.PenetrationChanceObstacle + "     跳弹率：" + ItemProps.RicochetChance +
+                                         "     碎弹率：" + ItemProps.FragmentationChance + "</b></color>\r\n";
                     string newDesc = retStr_ammo + localesServer.GetInfoByKey(ItemId + " Description");
                     localesServer.SetInfo(new GeneralInfo
                     {
@@ -404,6 +437,7 @@ public class TemplatesServer(
                     });
                 }
             }
+
             // 容器扩容 ContainerExpand
             if (ContainerExpand.ContainsKey(ItemId))
             {
@@ -413,24 +447,29 @@ public class TemplatesServer(
                     ItemProps.Grids.ElementAtOrDefault(0).Properties.CellsH = ContainerExpand[ItemId].cellsH;
                     ItemProps.Grids.ElementAtOrDefault(0).Properties.CellsV = ContainerExpand[ItemId].cellsV;
                 }
+
                 // 容器兼容
                 if (ContainerExpand[ItemId].Filter)
                 {
-                    ItemProps.Grids.ElementAtOrDefault(0).Properties.Filters = [
-                        new GridFilter{
+                    ItemProps.Grids.ElementAtOrDefault(0).Properties.Filters =
+                    [
+                        new GridFilter
+                        {
                             Filter = ["54009119af1c881c07000029"],
                             ExcludedFilter = []
                         }
-                        ];
+                    ];
                 }
+
                 // 无负重
                 if (ContainerExpand[ItemId].Weight)
                 {
                     ItemProps.Weight = 0;
                 }
             }
+
             // 保险箱 Safes
-            if ( ItemParent == "5448bf274bdc2dfc2f8b456a")
+            if (ItemParent == "5448bf274bdc2dfc2f8b456a")
             {
                 // 容量格子调整为：宽6高8
                 if (TemplatesSetting.Safes.SizeExpand)
@@ -438,26 +477,32 @@ public class TemplatesServer(
                     ItemProps.Grids.ElementAtOrDefault(0).Properties.CellsH = 6;
                     ItemProps.Grids.ElementAtOrDefault(0).Properties.CellsV = 8;
                 }
+
                 // 去除安全箱物品存放限制
                 if (TemplatesSetting.Safes.Filter)
                 {
-                    ItemProps.Grids.ElementAtOrDefault(0).Properties.Filters = [
-                        new GridFilter{ 
-                            Filter = ["54009119af1c881c07000029"], 
+                    ItemProps.Grids.ElementAtOrDefault(0).Properties.Filters =
+                    [
+                        new GridFilter
+                        {
+                            Filter = ["54009119af1c881c07000029"],
                             ExcludedFilter = []
-                            },
-                        new GridFilter{ 
-                            Filter = ["54009119af1c881c07000029"], 
+                        },
+                        new GridFilter
+                        {
+                            Filter = ["54009119af1c881c07000029"],
                             ExcludedFilter = []
-                            }
-                        ];
+                        }
+                    ];
                 }
+
                 // 安全箱重量(可以实现负重)
                 if (TemplatesSetting.Safes.NoWeight)
                 {
                     ItemProps.Weight = -20;
                 }
             }
+
             // 钱堆叠 MoneyStack
             if (ItemParent == "543be5dd4bdc2deb348b4569" && TemplatesSetting.MoneyStack != 1)
             {
@@ -470,30 +515,36 @@ public class TemplatesServer(
                     ItemProps.StackMinRandom = 1000;
                     ItemProps.StackMaxRandom = 10000;
                 }
+
                 if (ItemId == "569668774bdc2da2298b4568")
                 {
                     ItemProps.StackMinRandom = 100;
                     ItemProps.StackMaxRandom = 500;
                 }
+
                 if (ItemId == "5696686a4bdc2da3298b456a")
                 {
                     ItemProps.StackMinRandom = 100;
                     ItemProps.StackMaxRandom = 500;
                 }
             }
+
             // 背包、盲盒 Backpack
             if (ItemParent == "5448e53e4bdc2d60728b4567")
             {
                 // 去除物品限制
                 if (TemplatesSetting.Backpack.Filter)
                 {
-                    ItemProps.Grids.ElementAtOrDefault(0).Properties.Filters = [
-                        new GridFilter{ 
-                            Filter=["54009119af1c881c07000029"], 
-                            ExcludedFilter=[]
+                    ItemProps.Grids.ElementAtOrDefault(0).Properties.Filters =
+                    [
+                        new GridFilter
+                        {
+                            Filter = ["54009119af1c881c07000029"],
+                            ExcludedFilter = []
                         }
-                        ];
+                    ];
                 }
+
                 // 背包折叠
                 if (TemplatesSetting.Backpack.SmallSize)
                 {
@@ -510,12 +561,14 @@ public class TemplatesServer(
                     // 武器人机工效惩罚
                     ItemProps.WeaponErgonomicPenalty = 0;
                 }
+
                 // 无负重
                 if (TemplatesSetting.Backpack.NoWeight)
                 {
                     ItemProps.Weight = 0;
                 }
             }
+
             // 弹挂修改 护甲修改 Armor
             if (ArmorVestList.Contains(ItemParent))
             {
@@ -524,6 +577,7 @@ public class TemplatesServer(
                     // 去除护甲穿戴冲突
                     ItemProps.BlocksArmorVest = false;
                 }
+
                 if (TemplatesSetting.Armor.NoBuff)
                 {
                     // 速度惩罚
@@ -533,13 +587,14 @@ public class TemplatesServer(
                     // 武器人机工效惩罚
                     ItemProps.WeaponErgonomicPenalty = 0;
                 }
+
                 // 重量
                 if (TemplatesSetting.Armor.NoWeight)
                 {
                     ItemProps.Weight = 0;
                 }
-
             }
+
             // 防护装备耐久
             if (ItemParent == "644120aa86ffbe10ee032b6f"
                 || ItemParent == "65649eb40bf0ed77b8044453")
@@ -549,6 +604,7 @@ public class TemplatesServer(
                     ItemProps.Durability = ItemProps.Durability * TemplatesSetting.EquipmentPlate.Durability;
                     ItemProps.MaxDurability = ItemProps.MaxDurability * TemplatesSetting.EquipmentPlate.Durability;
                 }
+
                 if (TemplatesSetting.EquipmentPlate.NoBuff)
                 {
                     // 速度惩罚
@@ -558,13 +614,14 @@ public class TemplatesServer(
                     // 武器人机工效惩罚
                     ItemProps.WeaponErgonomicPenalty = 0;
                 }
+
                 // 重量
                 if (TemplatesSetting.EquipmentPlate.NoWeight)
                 {
                     ItemProps.Weight = 0;
                 }
-                
             }
+
             // 头盔修改 Helmet
             if (ItemParent == "5a341c4086f77401f2541505")
             {
@@ -579,6 +636,7 @@ public class TemplatesServer(
                     // 去除所有冲突物品
                     ItemProps.ConflictingItems.Clear();
                 }
+
                 if (TemplatesSetting.Helmet.NoBuff)
                 {
                     // 速度惩罚
@@ -588,12 +646,14 @@ public class TemplatesServer(
                     // 武器人机工效惩罚
                     ItemProps.WeaponErgonomicPenalty = 0;
                 }
+
                 if (TemplatesSetting.Helmet.NoWeight)
                 {
                     // 重量
                     ItemProps.Weight = 0;
                 }
             }
+
             // 钥匙和卡无限使用次数 KeysDurability
             if (ItemParent == "5c164d2286f774194c5e69fa"
                 || ItemParent == "5c99f98d86f7745c314214b3")
@@ -603,6 +663,7 @@ public class TemplatesServer(
                     ItemProps.MaximumNumberOfUsage = 0;
                 }
             }
+
             // 医疗物品耐久调整 MedcDurability
             if (MedcParent.Contains(ItemParent)
                 && TemplatesSetting.MedcDurability != 1)
@@ -611,9 +672,11 @@ public class TemplatesServer(
                 {
                     ItemProps.MaxHpResource = 1;
                 }
+
                 ItemProps.MaxHpResource *= TemplatesSetting.MedcDurability;
                 ItemProps.HpResourceRate *= TemplatesSetting.MedcDurability;
             }
+
             // 武器无故障 WeaponNoLost
             if (FindItemParentsIdById(ItemId).Contains("5422acb9af1c889c16000029"))
             {
@@ -626,11 +689,12 @@ public class TemplatesServer(
                     ItemProps.AllowOverheat = false;
                     ItemProps.AllowSlide = false;
                 }
+
                 // 武器维修无损耗 WeaponRepairPerfect
                 if (TemplatesSetting.WeaponRepairPerfect)
                 {
-                    ItemProps.MaxRepairDegradation = 0;     //商人
-                    ItemProps.MaxRepairKitDegradation = 0;  //维修包
+                    ItemProps.MaxRepairDegradation = 0; //商人
+                    ItemProps.MaxRepairKitDegradation = 0; //维修包
                 }
                 /*
                 // 武器不消耗耐久
@@ -640,15 +704,17 @@ public class TemplatesServer(
                 }
                 */
             }
+
             //弹匣容量 MagazineCapacity
             if (ItemParent == "5448bc234bdc2d3c308b4569" && ItemProps.Cartridges != null
-                && TemplatesSetting.MagazineCapacity != 1)
+                                                         && TemplatesSetting.MagazineCapacity != 1)
             {
                 foreach (var Cartridge in ItemProps.Cartridges)
                 {
-                    Cartridge.MaxCount *=  TemplatesSetting.MagazineCapacity;
+                    Cartridge.MaxCount *= TemplatesSetting.MagazineCapacity;
                 }
             }
+
             // 优化 T7、夜视仪
             if (ItemParent == "5a2c3a9486f774688b05e574"
                 && TemplatesSetting.T7ThermalImaging)
@@ -656,6 +722,7 @@ public class TemplatesServer(
                 var T7Json = mGUtils.GetJsonDataFromFile<TemplateItem>(Paths.T7Json);
                 ItemProps = mGUtils.AssignNonNullProps(T7Json.Properties, ItemProps);
             }
+
             if (ItemParent == "5d21f59b6dbe99052b54ef83"
                 && TemplatesSetting.T7ThermalImaging)
             {
@@ -664,6 +731,7 @@ public class TemplatesServer(
             }
         }
     }
+
     private void MGmodQuests(MGModConfig_Templates TemplatesSetting)
     {
         // 功能：任务免费重置 ResetFree
@@ -675,7 +743,7 @@ public class TemplatesServer(
             RQT.Exploration.ChangeCost[0].Count = 0;
             RQT.Pickup.ChangeCost[0].Count = 0;
         }
-        
+
         var Quest = Templates.Quests;
         bool questOptimize = TemplatesSetting.QuestSystem.QuestOptimize;
 
@@ -685,12 +753,13 @@ public class TemplatesServer(
             foreach (var qusetId in Quest.Keys)
             {
                 var quest = Quest[qusetId];
-                
+
                 var AForFinish = quest.Conditions.AvailableForFinish;
                 foreach (var Finish in AForFinish)
                 {
                     Finish.Value = 1;
                 }
+
                 var AForStart = quest.Conditions.AvailableForStart;
                 foreach (var Start in AForStart)
                 {
@@ -700,4 +769,83 @@ public class TemplatesServer(
         }
     }
 
+    private void MGmodServers(MGModConfig_Templates TemplatesSetting)
+    {   
+        // 功能：PMC怒吼 PMCRoar
+        if (!TemplatesSetting.PMCRoar) return;
+        List<string> pmcroarFiles = mGUtils.GetFiles(BotSystemPathsType.PmcRoarPath);
+        foreach (var pmcroarFile in pmcroarFiles)
+        {
+            string fileName = $"{mGUtils.StripExtension(pmcroarFile)}.json";
+            string serverFile = Path.Combine(Paths.SPTServerLocalsPath, fileName);
+            if (!mGUtils.FileExists(serverFile)) continue;
+            PMCRoarMessageType pmcroar = mGUtils.GetJsonDataFromFile<PMCRoarMessageType>(new PathType
+            {
+                FileName = fileName,
+                Path = BotSystemPathsType.PmcRoarPath
+            });
+            Dictionary<string, string> server = mGUtils.GetJsonDataFromFile<Dictionary<string, string>>(new PathType
+            {
+                FileName = fileName,
+                Path = Paths.SPTServerLocalsPath
+            });
+            int ModKeyStart = 100000;
+            if (pmcroar?.killer != null)
+            {
+                foreach (var type in pmcroar.killer.Keys)
+                {
+                    string responseKey = $"pmcresponse-killer_{type}_";
+                    foreach (var old in server.Keys
+                                 .Where(k => k.StartsWith(responseKey)
+                                             && int.TryParse(k.Substring(responseKey.Length), out var n)
+                                             && n >= ModKeyStart).ToList())
+                        server.Remove(old);
+                    var responses = pmcroar.killer[type];
+                    var septs = responses.Count;
+                    for (int it = 0; it < septs; it++)
+                    {
+                        server.TryAdd(responseKey + (ModKeyStart + it), responses[it]);
+                    }
+                }
+            }
+
+            if (pmcroar?.victim != null)
+            {
+                foreach (var type in pmcroar.victim.Keys)
+                {
+                    string responseKey = $"pmcresponse-victim_{type}_";
+                    foreach (var old in server.Keys
+                                 .Where(k => k.StartsWith(responseKey)
+                                             && int.TryParse(k.Substring(responseKey.Length), out var n)
+                                             && n >= ModKeyStart).ToList())
+                        server.Remove(old);
+                    var responses = pmcroar.victim[type];
+                    var septs = responses.Count;
+                    for (int it = 0; it < septs; it++)
+                    {
+                        server.TryAdd(responseKey + (ModKeyStart + it), responses[it]);
+                    }
+                }
+            }
+
+            if (pmcroar?.suffix != null)
+            {
+                string response_suffix_Key = $"pmcresponse-suffix_";
+                foreach (var old in server.Keys
+                             .Where(k => k.StartsWith(response_suffix_Key)
+                                         && int.TryParse(k.Substring(response_suffix_Key.Length), out var n)
+                                         && n >= ModKeyStart).ToList())
+                    server.Remove(old);
+                var responses_suffix = pmcroar.suffix;
+                var septs_suffix = responses_suffix.Count;
+                for (int it = 0; it < septs_suffix; it++)
+                {
+                    server.TryAdd(response_suffix_Key + (it + ModKeyStart), responses_suffix[it]);
+                }
+            }
+            
+            mGUtils.DeleteFile(serverFile);
+            mGUtils.WriteFile(serverFile, mGUtils.Serialize(server));
+        }
+    }
 }

@@ -1,7 +1,6 @@
 ﻿using _MGMod.types.models.EFT.locales;
 using SPTarkov.DI.Annotations;
 using SPTarkov.Server.Core.DI;
-using SPTarkov.Server.Core.Services;
 using SPTarkov.Server.Core.Models.Spt.Tables;
 
 namespace _MGMod.types.server;

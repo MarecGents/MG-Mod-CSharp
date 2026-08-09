@@ -1,0 +1,26 @@
+{
+    "easy": {
+        "BotEasy": 60,
+        "BotNormal": 40,
+        "BotHard": 0,
+        "BotImpossible": 0
+    },
+    "normal": {
+        "BotEasy": 30,
+        "BotNormal": 60,
+        "BotHard": 10,
+        "BotImpossible": 0
+    },
+    "hard": {
+        "BotEasy": 10,
+        "BotNormal": 20,
+        "BotHard": 60,
+        "BotImpossible": 10
+    },
+    "impossible": {
+        "BotEasy": 10,
+        "BotNormal": 10,
+        "BotHard": 20,
+        "BotImpossible": 60
+    }
+}

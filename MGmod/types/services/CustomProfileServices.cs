@@ -29,11 +29,10 @@ public class CustomProfileServices(
 
 	private void AddProfileToServer(List<MGProfile> mgProfiles)
 	{
-		String serverPath = "..\\..\\..\\SPT_Data\\database\\locales\\server";
-		List<String> serverFiles = mGUtils.GetFiles(serverPath);
+		string serverPath = "..\\..\\..\\SPT_Data\\database\\locales\\server";
+		List<string> serverFiles = mGUtils.GetFiles(serverPath);
 		foreach (var serverFile in serverFiles)
 		{
-			if (!mGUtils.FileExists(serverFile, false)) continue;
 			var fileName = mGUtils.StripExtension(serverFile);
 			var serverTypePath = new PathType
 			{

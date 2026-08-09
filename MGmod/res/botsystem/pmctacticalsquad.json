@@ -1,0 +1,98 @@
+{
+    "USEC": {
+        "BossChance": 50,
+        "BossDifficult": "hard",
+        "BossEscortAmount": "3",
+        "BossEscortDifficult": "hard",
+        "BossEscortType": "pmcUSEC",
+        "BossName": "pmcUSEC",
+        "BossPlayer": true,
+        "BossZone": "{Need Change}",
+        "Delay": 0,
+        "DependKarma": false,
+        "DependKarmaPVE": false,
+        "ForceSpawn": true,
+        "IgnoreMaxBots": true,
+        "RandomTimeSpawn": false,
+        "ShowOnTarkovMap": false,
+        "ShowOnTarkovMapPvE": false,
+        "SpawnMode": [
+            "regular",
+            "pve"
+        ],
+        "Supports": [
+            {
+                "BossEscortAmount": "1",
+                "BossEscortDifficult": [
+                    "hard"
+                ],
+                "BossEscortType": "pmcUSEC"
+            },
+            {
+                "BossEscortAmount": "1",
+                "BossEscortDifficult": [
+                    "hard"
+                ],
+                "BossEscortType": "pmcUSEC"
+            },
+            {
+                "BossEscortAmount": "1",
+                "BossEscortDifficult": [
+                    "hard"
+                ],
+                "BossEscortType": "pmcUSEC"
+            }
+        ],
+        "Time": -1,
+        "TriggerId": "",
+        "TriggerName": ""
+    },
+    "BEAR": {
+        "BossChance": 50,
+        "BossDifficult": "hard",
+        "BossEscortAmount": "3",
+        "BossEscortDifficult": "hard",
+        "BossEscortType": "pmcBEAR",
+        "BossName": "pmcBEAR",
+        "BossPlayer": true,
+        "BossZone": "{Need Change}",
+        "Delay": 0,
+        "DependKarma": false,
+        "DependKarmaPVE": false,
+        "ForceSpawn": true,
+        "IgnoreMaxBots": true,
+        "RandomTimeSpawn": false,
+        "ShowOnTarkovMap": false,
+        "ShowOnTarkovMapPvE": false,
+        "SpawnMode": [
+            "regular",
+            "pve"
+        ],
+        "Supports": [
+            {
+                "BossEscortAmount": "1",
+                "BossEscortDifficult": [
+                    "hard"
+                ],
+                "BossEscortType": "pmcBEAR"
+            },
+            {
+                "BossEscortAmount": "1",
+                "BossEscortDifficult": [
+                    "hard"
+                ],
+                "BossEscortType": "pmcBEAR"
+            },
+            {
+                "BossEscortAmount": "1",
+                "BossEscortDifficult": [
+                    "hard"
+                ],
+                "BossEscortType": "pmcBEAR"
+            }
+        ],
+        "Time": -1,
+        "TriggerId": "",
+        "TriggerName": ""
+    }
+}

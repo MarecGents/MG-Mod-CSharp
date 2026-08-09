@@ -1,13 +1,17 @@
 ﻿using _MGMod.types.models.Custom;
+using _MGMod.types.models.Paths;
+using _MGMod.types.utils;
 using SPTarkov.DI.Annotations;
 using SPTarkov.Server.Core.DI;
+using SPTarkov.Server.Core.Models.Eft.Common.Tables;
 using SPTarkov.Server.Core.Models.Spt.Tables;
 
 namespace _MGMod.types.server;
 
 [Injectable(TypePriority = OnLoadOrder.Preload + 1)]
 public class BotsServer(
-    BotTable Bots 
+    BotTable Bots,
+    MGUtils mGUtils
     )
 {
     public BotTable GetBots()
@@ -15,6 +19,16 @@ public class BotsServer(
         var bots = Bots;
         return bots;
     }
+
+    public BotType GetBot(string key)
+    {
+        if (Bots.Types.TryGetValue(key, out var botType))
+        {
+            return botType;
+        }
+        return null;
+    }
+    
     public void SetBotsHealth(int rate, string? botType = null)
     {
         foreach(var key in Bots.Types.Keys)
@@ -45,6 +59,18 @@ public class BotsServer(
         if ( BotSetting?.AIHealth != 1)
         {
             SetBotsHealth(BotSetting.AIHealth);
+        }
+        
+        // 功能：AI名字池 BotNameAdd
+        if (BotSetting.BotSystem.BotNameAdd)
+        {
+            List<string> botNameList = mGUtils.GetJsonDataFromFile<List<string>>(BotSystemPathsType.PmcNamePath);
+            foreach (var key in new List<string>(["pmcusec", "pmcbear"]))
+            {
+                var botType = GetBot(key);
+                if (botType == null) continue;
+                botType.FirstNames.AddRange(botNameList);
+            }
         }
     }
 }

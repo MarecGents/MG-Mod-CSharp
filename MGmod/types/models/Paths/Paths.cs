@@ -32,6 +32,12 @@ public static class Paths
         Path = "./res/Keys"
     };
 
+    public static readonly PathType MapZoneFullJson = new()
+    {
+        FileName = "MapZoneFull.json",
+        Path = "./res/locations"
+    };
+
     public static readonly PathType QuestKeyJson = new()
     {
         FileName = "QuestKey.json",
@@ -42,12 +48,6 @@ public static class Paths
     {
         FileName = "profile.json",
         Path = "./res/profile"
-    };
-
-    public static readonly PathType QuestFixJson = new()
-    {
-        FileName = "questFix.json",
-        Path = "./res/quest"
     };
     
     public static readonly PathType GunSmithJson = new()
@@ -90,10 +90,10 @@ public static class Paths
 
     public static readonly string Traders = "./traders";
     
-    public static readonly TraderPathsType TraderPaths = new();
+    public static readonly string SPTServerLocalsPath = "../../../SPT_Data/database/locales/server/";
 }
 
-public class TraderPathsType
+public static class TraderPathsType
 {
     public static readonly string TraderImagesPath = "./images";
     public static readonly string TraderQuestImagesPath = "./images/quests";
@@ -130,6 +130,37 @@ public class TraderPathsType
     public static readonly string TraderBundles = "bundles.json";
     public static readonly string TraderGlobals = "globals.json";
     public static readonly string TraderInfo = "traderInfo.json";
+}
+
+public static class BotSystemPathsType
+{
+    public static readonly string BotSystemPath = "./res/botsystem/";
+    public static readonly string PmcRoarPath = "./res/botsystem/pmcroar/";
+    public static readonly string MapBotDifficultyPath = "./res/botsystem/mapbotdifficulty/";
+
+    public static readonly PathType EasyMapPath = new()
+    {
+        FileName = "easymap.json",
+        Path = MapBotDifficultyPath
+    };
+    public static readonly PathType HardMapPath = new()
+    {
+        FileName = "hardmap.json",
+        Path = MapBotDifficultyPath
+    };
+
+    public static readonly PathType PmcNamePath = new()
+    {
+        FileName =  "pmcname.json",
+        Path = BotSystemPath
+    };
+    
+    public static readonly PathType PmcTacticalSquadPath = new()
+    {
+        FileName =  "pmctacticalsquad.json",
+        Path = BotSystemPath
+    };
+
 }
 
 public class PathType

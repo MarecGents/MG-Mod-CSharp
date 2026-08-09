@@ -1,0 +1,126 @@
+{
+    "Bigmap": [
+        "ZoneBlockPost",
+        "ZoneBlockPostSniper",
+        "ZoneBlockPostSniper3",
+        "ZoneBrige",
+        "ZoneCrossRoad",
+        "ZoneDormitory",
+        "ZoneFactoryCenter",
+        "ZoneFactorySide",
+        "ZoneGasStation",
+        "ZoneOldAZS",
+        "ZoneScavBase",
+        "ZoneSnipeBrige",
+        "ZoneSnipeFactory",
+        "ZoneSnipeTower",
+        "ZoneTankSquare",
+        "ZoneWade"
+    ],
+    "Factory4Day": [
+        "BotZone"
+    ],
+    "Factory4Night": [
+        "BotZone"
+    ],
+    "Interchange": [
+        "ZoneCenter",
+        "ZoneCenterBot",
+        "ZoneGoshan",
+        "ZoneIDEA",
+        "ZoneIDEAPark",
+        "ZoneOLI",
+        "ZonePowerStation",
+        "ZoneRoad",
+        "ZoneTrucks"
+    ],
+    "Laboratory": [
+        "BotZoneBasement",
+        "BotZoneFloor1",
+        "BotZoneFloor2",
+        "BotZoneGate1",
+        "BotZoneGate2"
+    ],
+    "Lighthouse": [
+        "Zone_Blockpost",
+        "Zone_Hellicopter",
+        "Zone_Island",
+        "Zone_OldHouse",
+        "Zone_RoofBeach",
+        "Zone_RoofContainers",
+        "Zone_RoofRocks",
+        "Zone_TreatmentBeach",
+        "Zone_TreatmentContainers",
+        "Zone_TreatmentRocks",
+        "Zone_Chalet",
+        "Zone_Bridge",
+        "Zone_Containers",
+        "Zone_DestroyedHouse",
+        "Zone_LongRoad",
+        "Zone_Rocks",
+        "Zone_SniperPeak",
+        "Zone_Village"
+    ],
+    "RezervBase": [
+        "ZoneRailStrorage",
+        "ZoneSubCommand",
+        "ZonePTOR2",
+        "ZoneBarrack",
+        "ZoneSubStorage"
+    ],
+    "Shoreline": [
+        "ZoneBunkeSniper",
+        "ZoneBusStation",
+        "ZoneForestSpawn",
+        "ZoneForestTruck",
+        "ZoneGasStation",
+        "ZoneIsland",
+        "ZoneMeteoStation",
+        "ZonePort",
+        "ZonePowerStation",
+        "ZonePowerStationSniper",
+        "ZoneRailWays",
+        "ZoneSanatorium1",
+        "ZoneSanatorium2",
+        "ZoneSmuglers",
+        "ZoneGreenHouses"
+    ],
+    "TarkovStreets": [
+        "ZoneCard1",
+        "ZoneCarShowroom",
+        "ZoneConcordia_1",
+        "ZoneConstruction",
+        "ZoneHotel_1",
+        "ZoneHotel_2",
+        "ZoneSnipeBuilding",
+        "ZoneSnipeCard",
+        "ZoneSnipeStilo",
+        "ZoneSnipeSW01",
+        "ZoneStilo",
+        "ZoneSW00",
+        "ZoneSW01",
+        "ZoneClimova",
+        "ZoneSnipeCarShowroom",
+        "ZoneMvd"
+    ],
+    "Labyrinth": [
+        "BotZone"
+    ],
+    "Woods": [
+        "ZoneBigRocks",
+        "ZoneClearVill",
+        "ZoneHighRocks",
+        "ZoneHouse",
+        "ZoneMiniHouse",
+        "ZoneRoad",
+        "ZoneScavBase2",
+        "ZoneWoodCutter",
+        "ZoneBrokenVill"
+    ],
+    "Sandbox": [
+        "ZoneSandbox"
+    ],
+    "SandboxHigh": [
+        "ZoneSandbox"
+    ]
+}

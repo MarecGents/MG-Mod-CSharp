@@ -60,7 +60,7 @@ public class MGUtils(
 
     public string? Serialize<T>(T? obj)
     {
-        return jsonUtil.Serialize<T>(obj);
+        return jsonUtil.Serialize<T>(obj, true);
     }
 
     public T? Deserialize<T>(string? json)

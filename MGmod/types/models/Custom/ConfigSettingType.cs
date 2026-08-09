@@ -19,6 +19,22 @@ public class ConfigSettingType
 public class MGModConfig_Bot
 {
     public int AIHealth { get; set; }
+    
+    public MGModConfig_Bot_BotSystem BotSystem { get; set; }
+}
+
+public class MGModConfig_Bot_BotSystem
+{
+    public MGModConfig_Bot_BotSystem_BotBrain BotBrain {get; set;}
+    public string EquipmentQuality { get; set; }
+    public bool BotNameAdd { get; set; }
+}
+
+public class MGModConfig_Bot_BotSystem_BotBrain
+{
+    public bool enable { get; set; }
+    public string type { get; set; } // default 或 自定义
+    public Dictionary<string, string> customBotBrain { get; set; }
 }
 
 public class MGModConfig_Config
@@ -41,6 +57,8 @@ public class MGModConfig_Config
     public MGModConfig_Config_WeatherSettings WeatherSettings {  get; set; }
     public bool NoLostonDeath {  get; set; }
     public bool ScavEquipmentOptimize { get; set; }
+    public MGModConfig_Config_BotSystem BotSystem { get; set; }
+    public Dictionary<string, bool> GiftsAdd {get; set; }
 }
 
 public class MGModConfig_Config_RaidDefault
@@ -83,6 +101,11 @@ public class MGModConfig_Config_Weather
     public string type { get; set; }
     public List<double> values { get; set; }
     public List<double> weights { get; set; }
+}
+
+public class MGModConfig_Config_BotSystem
+{
+    public string PmcWavesOptimize  { get; set; }
 }
 
 public class MGModConfig_Globals
@@ -144,25 +167,16 @@ public class MGModConfig_Locations
     public bool Pass100 { get; set; }
     public bool Escape100 { get; set; }
     public Dictionary<string, bool> MapInsurance { get; set; }
+    public MGModConfig_Locations_BotSystem BotSystem { get; set; }
 }
 
-/*
-public class MapsBoolean
+public class MGModConfig_Locations_BotSystem
 {
-    public bool bigmap { get; set; }
-    public bool factory4_day { get; set; }
-    public bool factory4_night { get; set; }
-    public bool interchange { get; set; }
-    public bool laboratory { get; set; }
-    public bool lighthouse { get; set; }
-    public bool rezervbase { get; set; }
-    public bool sandbox { get; set; }
-    public bool sandbox_high { get; set; }
-    public bool shoreline { get; set; }
-    public bool tarkovstreets { get; set; }
-    public bool woods { get; set; }
+    public string ScavWavesOptimize { get; set; }
+    public bool MapRefershConfig { get; set; }
+    public bool PmcTacticalSquad { get; set; }
+    public string MapBotDifficulty { get; set; }
 }
-*/
 
 public class MGModConfig_Templates
 {
@@ -185,6 +199,7 @@ public class MGModConfig_Templates
     public bool T7ThermalImaging { get; set; }
     public bool ResetFree { get; set; }
     public MGModConfig_Templates_QuestSystem QuestSystem { get; set; }
+    public bool PMCRoar  { get; set; }
 }
 
 public class MGModConfig_Templates_ContainerExpands
@@ -232,20 +247,30 @@ public class MGModConfig_Templates_QuestSystem
 {
     public bool QuestOptimize { get; set; }
 }
+
 public class MGModConfig_Traders
 {
     public EnableValueInt InsuranceTime { get; set; }  // string || int
     public EnableValueDouble InsuranceCost { get; set; }  // string || double
 }
+
 public class MGModConfig_MGCustom
 {
     public bool CustomTrader { get; set; }
     public bool CustomItem { get; set; }
     public bool CustomAssort { get; set; }
     public bool CustomProfile { get; set; }
-    public bool AmmoInfo { get; set; }
+    public bool CustomBoss { get; set; }
     public bool KeyClassfy { get; set; }
     public bool SyncFlea { get; set; }
+    public MGModConfig_MGCustom_SeasonalActivity SeasonalActivity { get; set; }
+}
+
+public class MGModConfig_MGCustom_SeasonalActivity
+{
+    public bool enable { get; set; }
+    public Dictionary<string, bool> AcitvitiesSwitch { get; set; }
+    public Dictionary<string, bool> NewActivitiesSwitch { get; set; }
 }
 
 public class EnableValueInt
