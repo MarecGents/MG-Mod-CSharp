@@ -2,8 +2,8 @@
 
 **MG-Mod 服务端 Mod 核心逻辑库** — 基于 C# 的 SPT Mod 框架
 
-[![SPT Version](https://img.shields.io/badge/SPT-4.1.0-blue)](https://dev.sp-tarkov.com/)
-[![MGMod Version](https://img.shields.io/badge/version-v0.9.0.040100-green)]()
+[![SPT Version](https://img.shields.io/badge/SPT-4.1.2-blue)](https://dev.sp-tarkov.com/)
+[![MGMod Version](https://img.shields.io/badge/version-v1.0.0.040102-green)]()
 [![.NET](https://img.shields.io/badge/.NET-10.0-512BD4)](https://dotnet.microsoft.com/)
 [![License](https://img.shields.io/badge/License-CC%20BY--NC--ND%204.0-lightgrey)](LICENSE)
 
@@ -32,6 +32,7 @@ MG-Mod-CSharp/
 │   └── utils/            ← 工具类
 ├── db/                   ← 游戏数据库覆盖
 ├── res/                  ← 运行时配置和资源
+├── res/botsystem/         ← ZDFW BotSystem 配置（AI名字池/PMC战术小队/地图难度/地图刷新/PMC战吼）
 ├── traders/              ← 自定义商人数据
 ├── images/               ← 图片资源
 ├── bundles/              ← 资源包（编译时输出）
@@ -45,9 +46,9 @@ MG-Mod-CSharp/
 | 语言 | C# 14 |
 | 运行时 | .NET 10.0 |
 | 项目类型 | 类库 (Library) |
-| 框架依赖 | SPT.Common 4.1.0, SPT.DI 4.1.0, SPT.Server.Core 4.1.0 |
+| 框架依赖 | SPT.Common 4.1.2, SPT.DI 4.1.2, SPT.Server.Core 4.1.2 |
 | 架构模式 | 依赖注入 (DI) + 服务层 |
-| 版本 | v0.9.0.040100 |
+| 版本 | v1.0.0.040102 |
 
 ---
 
@@ -57,7 +58,7 @@ MG-Mod-CSharp/
 
 | 模块 | 职能 |
 |------|------|
-| `BotsServer` | AI 机器人参数配置 |
+| `BotsServer` | AI 机器人参数配置（AI 血量、AI 名字池、PMC 战术小队、地图难度分布、地图刷新参数、PMC 战吼） |
 | `ConfigsServer` | 全局配置（空投、AI生成、战局默认、搜刮倍率等） |
 | `GlobalsServer` | 全局游戏参数（跳蚤、撤离、装载速度、装备增益） |
 | `HideoutServer` | 藏身处系统（建造/生产/Scav箱/燃料/QTE） |
