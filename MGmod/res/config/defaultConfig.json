@@ -224,7 +224,8 @@
             "SandboxHigh": true,
             "Shoreline": true,
             "TarkovStreets": true,
-            "Woods": true
+            "Woods": true,
+            "Labyrinth": false
         },
         "BotSystem": {
             "ScavWavesOptimize": "light",
