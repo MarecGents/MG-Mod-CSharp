@@ -3,7 +3,7 @@
 **MG-Mod 服务端 Mod 核心逻辑库** — 基于 C# 的 SPT Mod 框架
 
 [![SPT Version](https://img.shields.io/badge/SPT-4.1.2-blue)](https://dev.sp-tarkov.com/)
-[![MGMod Version](https://img.shields.io/badge/version-v1.0.0.040102-green)]()
+[![MGMod Version](https://img.shields.io/badge/version-v1.0.1.040102-green)]()
 [![.NET](https://img.shields.io/badge/.NET-10.0-512BD4)](https://dotnet.microsoft.com/)
 [![License](https://img.shields.io/badge/License-CC%20BY--NC--ND%204.0-lightgrey)](LICENSE)
 
@@ -33,6 +33,7 @@ MG-Mod-CSharp/
 ├── db/                   ← 游戏数据库覆盖
 ├── res/                  ← 运行时配置和资源
 ├── res/botsystem/         ← ZDFW BotSystem 配置（AI名字池/PMC战术小队/地图难度/地图刷新/PMC战吼）
+├── res/quest/              ← 任务数据（quests.json、quest3X4.json 3X4 任务标记）
 ├── traders/              ← 自定义商人数据
 ├── images/               ← 图片资源
 ├── bundles/              ← 资源包（编译时输出）
@@ -48,7 +49,7 @@ MG-Mod-CSharp/
 | 项目类型 | 类库 (Library) |
 | 框架依赖 | SPT.Common 4.1.2, SPT.DI 4.1.2, SPT.Server.Core 4.1.2 |
 | 架构模式 | 依赖注入 (DI) + 服务层 |
-| 版本 | v1.0.0.040102 |
+| 版本 | v1.0.1.040102 |
 
 ---
 
@@ -63,8 +64,8 @@ MG-Mod-CSharp/
 | `GlobalsServer` | 全局游戏参数（跳蚤、撤离、装载速度、装备增益） |
 | `HideoutServer` | 藏身处系统（建造/生产/Scav箱/燃料/QTE） |
 | `LocalesServer` | 本地化/翻译 |
-| `LocationsServer` | 战局地图（时间/Boss刷新/撤离/通过率） |
-| `TemplatesServer` | 模板数据（物品鉴定、容器扩容、堆叠、过滤） |
+| `LocationsServer` | 战局地图（时间/Boss刷新/撤离/通过率/Labyrinth 地图回保） |
+| `TemplatesServer` | 模板数据（物品鉴定、容器扩容、堆叠、过滤、任务数据（3X4 标记）） |
 | `TradersServer` | 商人系统（保险、交易） |
 
 ### Services 层（7 个业务服务）
