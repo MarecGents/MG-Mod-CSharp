@@ -43,11 +43,17 @@ public static class Paths
         FileName = "QuestKey.json",
         Path = "./res/Keys"
     };
-
+    
     public static readonly PathType ProfileJson = new()
     {
         FileName = "profile.json",
         Path = "./res/profile"
+    };
+    
+    public static readonly PathType Quest3X4Json = new()
+    {
+        FileName = "quest3X4.json",
+        Path = "./res/quest"
     };
     
     public static readonly PathType GunSmithJson = new()

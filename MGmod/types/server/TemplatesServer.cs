@@ -767,6 +767,35 @@ public class TemplatesServer(
                 }
             }
         }
+        
+        // 功能：3X4任务标记 Quest3X4Marker
+        if (TemplatesSetting.QuestSystem.Quest3X4Marker)
+        {
+            Dictionary<MongoId, string> quest3X4Json = mGUtils.GetJsonDataFromFile<Dictionary<MongoId, string>>(Paths.Quest3X4Json);
+            var globalLocale = localesServer.GetLocalesGlobal();
+            foreach (var lang in globalLocale.Keys)
+            {
+                if (globalLocale.TryGetValue(lang, out var lazyLoad))
+                {
+                    lazyLoad.AddTransformer(localeData =>
+                    {
+                        foreach (var quest in quest3X4Json)
+                        {
+                            if (!localeData.TryGetValue($"{quest.Key} name", out var questName) || string.IsNullOrEmpty(questName))
+                            {
+                                continue;
+                            }
+                            string newQuestName =
+                                $"{questName}<color=#ff0000><b>【Road of 3X4】</b></color>";
+                            localeData[$"{quest.Key} name"] = newQuestName;
+                        }
+                        return localeData;
+                    });
+                }
+                
+            }
+            
+        }
     }
 
     private void MGmodServers(MGModConfig_Templates TemplatesSetting)

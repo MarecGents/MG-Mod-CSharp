@@ -246,6 +246,7 @@ public class MGModConfig_Templates_EquipmentPlate
 public class MGModConfig_Templates_QuestSystem
 {
     public bool QuestOptimize { get; set; }
+    public bool Quest3X4Marker { get; set; }
 }
 
 public class MGModConfig_Traders

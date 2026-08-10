@@ -2,6 +2,7 @@
 using SPTarkov.DI.Annotations;
 using SPTarkov.Server.Core.DI;
 using SPTarkov.Server.Core.Models.Spt.Tables;
+using SPTarkov.Server.Core.Utils.Json;
 
 namespace _MGMod.types.server;
 
@@ -37,9 +38,14 @@ public class LocalesServer(
         return locale;
     }
 
+    public Dictionary<string, LazyLoad<GlobalLocaleDictionary>> GetLocalesGlobal()
+    {
+        return GetLocales().Global;
+    }
+
     public string GetLocale(string lang)
     {
-        var global = Locale.Global[lang].Value;
+        var global = GetLocalesGlobal()[lang].Value;
 
         if (global != null) return global[lang];
         

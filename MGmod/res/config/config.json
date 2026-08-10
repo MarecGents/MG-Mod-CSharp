@@ -459,7 +459,8 @@
         "T7ThermalImaging": false,
         "ResetFree": false,
         "QuestSystem": {
-            "QuestOptimize": false
+            "QuestOptimize": false,
+            "Quest3X4Marker": false
         },
         "PMCRoar": false
     },
